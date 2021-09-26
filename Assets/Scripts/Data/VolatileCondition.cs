@@ -75,7 +75,7 @@ public class VolatileRecharge : VolatileCondition
         }
         else
         {
-            yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} must recharge!");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} must recharge!");
         }
     }
 }
@@ -222,7 +222,7 @@ public class VolatileBound : VolatileCondition
     {
         Unit.OnTurnEndList.Remove(ResidualDamage);
         Unit.CanSwitch -= Trapped;
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is freed from {move.Name}!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is freed from {move.Name}!");
     }
 
     IEnumerator ResidualDamage()
@@ -230,7 +230,7 @@ public class VolatileBound : VolatileCondition
         if (counter > 0)
         {
             counter--;
-            yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is hurt by {move.Name}!");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by {move.Name}!");
             yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP * damage));
             yield break;
         }
@@ -268,7 +268,7 @@ public class VolatileFlinch : VolatileCondition
     IEnumerator Flinched()
     {
         Unit.CanMove = false;
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} flinched!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} flinched!");
     }
     IEnumerator Unflinch()
     {
@@ -332,7 +332,7 @@ public class VolatileConfused : VolatileCondition
 
         Unit.OnBeforeMoveList.Add(Confusion);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} became confused due to fatigue!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} became confused due to fatigue!");
     }
     public override IEnumerator OnEnd()
     {
@@ -344,10 +344,10 @@ public class VolatileConfused : VolatileCondition
 
     IEnumerator Confusion()
     {
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is confused!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is confused!");
         if (Random.value < 0.33f)
         {
-            yield return Unit.System.DialogBox.TypeDialog("It hurt it self in its confusion!");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog("It hurt it self in its confusion!");
             Unit.CanMove = false;
             yield return Unit.TakeDamage(damage());
         }
@@ -432,7 +432,7 @@ public class VolatileSeeded : VolatileCondition
     public override IEnumerator OnStart()
     {
         Unit.OnTurnEndList.Add(Drain);
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} was seeded!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} was seeded!");
     }
     public override IEnumerator OnEnd()
     {
@@ -447,7 +447,7 @@ public class VolatileSeeded : VolatileCondition
         yield return Unit.TakeDamage(damage);
         yield return source.TakeDamage(-damage);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} was seeded!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} was seeded!");
     }
 }
 
@@ -467,7 +467,7 @@ public class VolatileRage : VolatileCondition
         Unit.OnHitList.Add(Rage);
         Unit.OnTurnEndList.Add(Clear);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} started building its rage!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} started building its rage!");
     }
     public override IEnumerator OnEnd()
     {
@@ -540,7 +540,7 @@ public class VolatileTransform : VolatileCondition
 
     public override IEnumerator OnStart()
     {
-        var dialogBox = Unit.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
         Unit.Transform(target.Pokemon);
         Unit.StatStage = target.StatStage;
 

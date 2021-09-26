@@ -14,7 +14,7 @@ public class BoundEffect : MoveEffect
 
         if(!target.Volatiles.ContainsKey(VolatileID.Bound))
         {
-            yield return source.System.DialogBox.TypeDialog($"{message.Replace("<source>", source.Name).Replace("<target>", target.Name)}");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{message.Replace("<source>", source.Name).Replace("<target>", target.Name)}");
             yield return target.AddVolatileCondition(bound);
         }
         
@@ -51,7 +51,7 @@ public class DisableEffect : MoveEffect
     {
         if(target.LastUsedMove is null)
         {
-            yield return source.System.DialogBox.TypeDialog("But it failed!");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog("But it failed!");
         }
         
 
@@ -60,7 +60,7 @@ public class DisableEffect : MoveEffect
             yield return target.RemoveVolatileCondition(VolatileID.Disabled); 
         }
 
-        yield return source.System.DialogBox.TypeDialog($"{target.Name}'s {target.LastUsedMove.Base.Name} is disabled!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{target.Name}'s {target.LastUsedMove.Base.Name} is disabled!");
         yield return target.AddVolatileCondition(new VolatileDisabled());
 
     }
@@ -84,7 +84,7 @@ public class SeededEffect : MoveEffect
         if(!target.Volatiles.ContainsKey(VolatileID.Seeded))
             yield return target.AddVolatileCondition(new VolatileSeeded());
         else
-            yield return source.System.DialogBox.TypeDialog($"{target.Name} is already seeded!");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{target.Name} is already seeded!");
 
     }
 }
@@ -104,8 +104,8 @@ public class TeleportEffect : MoveEffect
 {
     public override IEnumerator Run(BattleUnit source, BattleUnit target)
     {
-        yield return source.System.DialogBox.TypeDialog($"{source.Name} fled from battle!");
-        source.System.BattleOver(true);
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{source.Name} fled from battle!");
+        BattleSystem.Instance.BattleOver(true);
     }
 }
 

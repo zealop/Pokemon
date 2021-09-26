@@ -11,7 +11,7 @@ public class MultiTurn : MoveModifier
     }
     IEnumerator Charge(BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
 
         if (!source.Volatiles.ContainsKey(VolatileID.Charging))
         {
@@ -39,7 +39,7 @@ public class MultiTurnFly : MultiTurn
 
     IEnumerator Charge(BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
 
         if (!source.Volatiles.ContainsKey(VolatileID.Fly))
         {
@@ -67,7 +67,7 @@ public class MultiTurnDig : MultiTurn
 
     IEnumerator Charge(BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
 
         if (!source.Volatiles.ContainsKey(VolatileID.Dig))
         {
@@ -96,7 +96,7 @@ public class MultiTurnBash : MultiTurn
 
     IEnumerator Charge(BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
 
         if (!source.Volatiles.ContainsKey(VolatileID.Charging))
         {
@@ -126,7 +126,7 @@ public class MultiTurnBide : MultiTurn
 
     IEnumerator Endure(BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
 
         
 

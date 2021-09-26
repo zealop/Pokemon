@@ -13,7 +13,7 @@ public class OHKO : MoveModifier
 
     int OHKODamage(BattleUnit source, BattleUnit target)
     {
-        source.System.MessageQueue.Enqueue($"It's a one-hit KO!");
+        BattleSystem.Instance.MessageQueue.Enqueue($"It's a one-hit KO!");
         return target.MaxHP;
     }
 

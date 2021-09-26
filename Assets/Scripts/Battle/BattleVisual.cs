@@ -27,12 +27,18 @@ public class BattleVisual : MonoBehaviour
 
     public void Setup()
     {
+        hud.gameObject.SetActive(true);
         hud.SetData(unit);
 
         image.color = originalColor;
 
         PlayEnterAnimation();
     }
+    public void Clear()
+    {
+        hud.gameObject.SetActive(false);
+    }
+    
     public void Transform(PokemonBase pokemon)
     {
         image.sprite = unit.IsPlayerUnit ? pokemon.BackSprite : pokemon.FrontSprite;

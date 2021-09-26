@@ -17,7 +17,7 @@ public class BattleUnit : MonoBehaviour
     public StatusCondition Status { get => Pokemon.Status; set => Pokemon.Status = value; }
 
 
-    public BattleSystem System { get; private set; }
+    //public BattleSystem System { get; private set; }
     public BattleVisual Visual { get; private set; }
 
     public bool LockedAction;
@@ -73,7 +73,7 @@ public class BattleUnit : MonoBehaviour
         Visual = GetComponent<BattleVisual>();
     }
 
-    public void Setup(Pokemon pokemon, BattleSystem system)
+    public void Setup(Pokemon pokemon)
     {
         Pokemon = pokemon;
         Types = new List<PokemonType>() { pokemon.Base.Type1, pokemon.Base.Type2 };
@@ -85,7 +85,6 @@ public class BattleUnit : MonoBehaviour
         Volatiles = new Dictionary<VolatileID, VolatileCondition>();
         MirrorMoves = new Dictionary<BattleUnit, MoveBase>();
 
-        System = system;
         Visual.Setup();
 
         Transform(Pokemon);
@@ -114,7 +113,7 @@ public class BattleUnit : MonoBehaviour
         if (HP <= 0)
         {
             Visual.PlayFaintAnimation();
-            yield return System.DialogBox.TypeDialog($"{Name} fainted!");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Name} fainted!");
         }
     }
 
@@ -123,7 +122,7 @@ public class BattleUnit : MonoBehaviour
 
         if (Status is object)
         {
-            yield return System.DialogBox.TypeDialog($"It doesn't affect {Name}");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog($"It doesn't affect {Name}");
             yield break;
         }
 
@@ -286,7 +285,7 @@ public class BattleUnit : MonoBehaviour
 
             StatStage.Value[stat] = Mathf.Clamp(StatStage.Value[stat] + boost, -6, 6);
 
-            yield return System.DialogBox.TypeDialog($"{Name}'s {stat} {message}!");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Name}'s {stat} {message}!");
         }
     }
     public Move GetRandomMove()

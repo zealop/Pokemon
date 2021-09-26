@@ -5,6 +5,12 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField] new string name;
+    [SerializeField] Sprite sprite;
+
+    public string Name { get => name; }
+    public Sprite Sprite { get => sprite; }
+
     public event Action OnEncountered;
     public event Action<Collider2D> OnEnterTrainerView;
 

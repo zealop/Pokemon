@@ -8,6 +8,6 @@ public class DrainEffect : MoveEffect
     public override IEnumerator Run(BattleUnit source, BattleUnit target)
     {
         yield return source.TakeDamage(-Mathf.FloorToInt(target.LastHitDamage * ratio));
-        yield return source.System.DialogBox.TypeDialog($"{target.Name} had its energy drained!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{target.Name} had its energy drained!");
     }
 }

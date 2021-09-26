@@ -55,18 +55,18 @@ public class StatusPoison : StatusCondition
 
         Unit.OnTurnEndList.Add(PoisonDamage);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is poisoned!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is poisoned!");
     }
     public override IEnumerator OnEnd()
     {
         Unit.OnTurnEndList.Remove(PoisonDamage);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is cured of its poison!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is cured of its poison!");
     }
 
     IEnumerator PoisonDamage()
     {
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is hurt by poison!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by poison!");
         yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP*damage));
     }
 }
@@ -82,19 +82,19 @@ public class StatusBurn : StatusCondition
         Unit.AttackerModList.Add(BurnMod);
         Unit.OnTurnEndList.Add(BurnDamage);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is burned!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is burned!");
     }
     public override IEnumerator OnEnd()
     {
         Unit.AttackerModList.Remove(BurnMod);
         Unit.OnTurnEndList.Remove(BurnDamage);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is cured of its burn!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is cured of its burn!");
     }
 
     IEnumerator BurnDamage()
     {
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is hurt by its burn!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by its burn!");
         yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP * damage));
     }
 
@@ -125,13 +125,13 @@ public class StatusSleep : StatusCondition
     {
         Unit.OnBeforeMoveList.Add(SleepCheck);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} fell asleep!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} fell asleep!");
     }
     public override IEnumerator OnEnd()
     {
         Unit.OnBeforeMoveList.Remove(SleepCheck);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} woke up!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} woke up!");
     }
 
     IEnumerator SleepCheck()
@@ -140,7 +140,7 @@ public class StatusSleep : StatusCondition
         {
             counter--;
             Unit.CanMove = false;
-            yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is fast asleep!");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is fast asleep!");
             yield break;
         }
 
@@ -162,14 +162,14 @@ public class StatusParalyze : StatusCondition
         Unit.OnBeforeMoveList.Add(ParalyzeCheck);
         Unit.SpeedModList.Add(ParalyzeSlow);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is paralyzed!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is paralyzed!");
     }
     public override IEnumerator OnEnd()
     {
         Unit.OnBeforeMoveList.Remove(ParalyzeCheck);
         Unit.SpeedModList.Remove(ParalyzeSlow);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is cured of its paralysis!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is cured of its paralysis!");
     }
 
     IEnumerator ParalyzeCheck()
@@ -177,7 +177,7 @@ public class StatusParalyze : StatusCondition
         if (Random.value < chance)
         {
             Unit.CanMove = false;
-            yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is fully paralyzed!");
+            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is fully paralyzed!");
             yield break;
         }
     }
@@ -200,14 +200,14 @@ public class StatusFreeze : StatusCondition
         Unit.OnBeforeMoveList.Add(FreezeCheck);
         Unit.OnHitList.Add(FireHit);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is frozen solid!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is frozen solid!");
     }
     public override IEnumerator OnEnd()
     {
         Unit.OnBeforeMoveList.Remove(FreezeCheck);
         Unit.OnHitList.Remove(FireHit);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} thawed out!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} thawed out!");
     }
 
     IEnumerator FreezeCheck()
@@ -219,7 +219,7 @@ public class StatusFreeze : StatusCondition
         }
 
         Unit.CanMove = false;
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is frozen solid!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is frozen solid!");
     }
 
     IEnumerator FireHit(MoveBase move, BattleUnit source, int damage)
@@ -242,18 +242,18 @@ public class StatusToxic : StatusCondition
         counter = 1;
         Unit.OnTurnEndList.Add(PoisonDamage);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is badly poisoned!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is badly poisoned!");
     }
     public override IEnumerator OnEnd()
     {
         Unit.OnTurnEndList.Add(PoisonDamage);
 
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is cured of its poison!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is cured of its poison!");
     }
 
     IEnumerator PoisonDamage()
     {
-        yield return Unit.System.DialogBox.TypeDialog($"{Unit.Name} is hurt by poison!");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by poison!");
         yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP * damage * counter));
     }
 }

@@ -113,7 +113,7 @@ public class MoveBase : SerializedScriptableObject
     }
     public IEnumerator DefaultDamageBehaviour(BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
 
         yield return dialogBox.TypeDialog($"{source.Name} used {Name}");
         source.LastUsedMove.PP--;
@@ -159,7 +159,7 @@ public class MoveBase : SerializedScriptableObject
     }
     public IEnumerator Behaviour(BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
 
         yield return dialogBox.TypeDialog($"{source.Name} used {Name}");
         source.LastUsedMove.PP--;
@@ -195,7 +195,7 @@ public class MoveBase : SerializedScriptableObject
 
     IEnumerator AccuracyCheck(BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
 
         bool invulnerable = target.Invulnerability(this, source);
 
@@ -230,11 +230,11 @@ public class MoveBase : SerializedScriptableObject
         damage = Mathf.FloorToInt(d * critMod * randMod * typeMod * attackMod * defenseMod);
 
         if (critMod > 1f)
-            source.System.MessageQueue.Enqueue("A critical hit!");
+            BattleSystem.Instance.MessageQueue.Enqueue("A critical hit!");
         if (typeMod > 1f)
-            source.System.MessageQueue.Enqueue("It's super effective!");
+            BattleSystem.Instance.MessageQueue.Enqueue("It's super effective!");
         if (typeMod < 1f)
-            source.System.MessageQueue.Enqueue("It's not very effective!");
+            BattleSystem.Instance.MessageQueue.Enqueue("It's not very effective!");
         //if (typeMod == 0)
         //    system.MessageQueue.Enqueue($"It doesn't affect {target.Name}!");
 

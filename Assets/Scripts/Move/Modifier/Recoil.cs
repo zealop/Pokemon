@@ -13,7 +13,7 @@ public class Recoil : MoveModifier
 
     IEnumerator NormalRecoil(int damage, BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
         int recoil = isStruggle ? source.MaxHP / 4 : Mathf.FloorToInt(damage * ratio);
 
         yield return source.TakeDamage(recoil);
@@ -32,7 +32,7 @@ public class Drain : MoveModifier
 
     IEnumerator Draining(int damage, BattleUnit source, BattleUnit target)
     {
-        var dialogBox = source.System.DialogBox;
+        var dialogBox = BattleSystem.Instance.DialogBox;
         int drain = Mathf.FloorToInt(damage * ratio);
 
         yield return source.TakeDamage(-drain);
