@@ -62,4 +62,4 @@ MonoBehaviour:
   target: 0
   pp: 20
   power: 0
-  accuracy: 100
+  accuracy: 75

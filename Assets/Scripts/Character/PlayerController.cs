@@ -6,31 +6,24 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public event Action OnEncountered;
+    public event Action<Collider2D> OnEnterTrainerView;
 
     private Vector2 input;
 
-    private CharacterAnimator animator;
     private Character character;
 
     private void Awake()
     {
-        animator = GetComponent<CharacterAnimator>();
         character = GetComponent<Character>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
-
-    // Update is called once per frame
     public void HandleUpdate()
     {
         //test battle
         //animator.SetBool("isMoving", false);
         //OnEncountered();
 
-        if (!animator.IsMoving)
+        if (!character.IsMoving)
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
@@ -41,9 +34,11 @@ public class PlayerController : MonoBehaviour
 
             if (input != Vector2.zero)
             {
-                StartCoroutine(character.Move(input, CheckForEncounters));
+                StartCoroutine(character.Move(input, OnMoveOver));
             }
         }
+
+        character.HandleUpdate();
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -53,7 +48,7 @@ public class PlayerController : MonoBehaviour
 
     void Interact()
     {
-        var faceDirection = new Vector3(animator.MoveX, animator.MoveY);
+        var faceDirection = new Vector3(character.Animator.MoveX, character.Animator.MoveY);
         var interactPos = transform.position + faceDirection;
 
         //Debug.DrawLine(transform.position, interactPos, Color.green, 0.5f);
@@ -61,9 +56,15 @@ public class PlayerController : MonoBehaviour
         var collider = Physics2D.OverlapCircle(interactPos, 0.3f, GameLayers.i.InteractableLayer);
         if (collider is object)
         {
-            collider.GetComponent<Interactable>()?.Interact();
+            collider.GetComponent<Interactable>()?.Interact(transform);
         }
 
+    }
+    private void OnMoveOver()
+    {
+
+        CheckForEncounters();
+        CheckIfInTrainersView();
     }
 
     private void CheckForEncounters()
@@ -72,9 +73,20 @@ public class PlayerController : MonoBehaviour
         {
             if (UnityEngine.Random.Range(1, 101) <= 10)
             {
-                animator.IsMoving = false;
+                character.Animator.IsMoving = false;
                 OnEncountered();
             }
+        }
+    }
+
+    private void CheckIfInTrainersView()
+    {
+        var collider = Physics2D.OverlapCircle(transform.position, 0.1f, GameLayers.i.FOVLayer);
+
+        if (collider is object)
+        {
+            character.Animator.IsMoving = false;
+            OnEnterTrainerView?.Invoke(collider);
         }
     }
 }
