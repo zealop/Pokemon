@@ -110,6 +110,7 @@ public class BattleUnit : MonoBehaviour
     {
         Pokemon.UpdateHP(damage);
         yield return Visual.HUD.UpdateHP();
+        yield return BattleSystem.Instance.ShowMessages();
         if (HP <= 0)
         {
             Visual.PlayFaintAnimation();

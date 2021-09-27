@@ -23,9 +23,10 @@ public class PokemonBase : ScriptableObject
     [BoxGroup("Types")]
     [SerializeField] PokemonType type2;
 
-    [SerializeField] int weight;
-    [SerializeField] int height;
+    [SerializeField] int catchRate;
 
+    [SerializeField] int height;
+    [SerializeField] int weight;
 
     [BoxGroup("Base Stat")]
     [SerializeField] int hp;
@@ -42,23 +43,26 @@ public class PokemonBase : ScriptableObject
 
     [SerializeField] List<LearnableMove> learnableMoves;
 
-    public string Name { get => name; }
-    public string Description { get => description; }
-    public Sprite FrontSprite { get => frontSprite; }
-    public Sprite BackSprite { get => backSprite; }
-    public PokemonType Type1 { get => type1; }
-    public PokemonType Type2 { get => type2; }
+    public string Name => name;
+    public string Description => description;
+    public Sprite FrontSprite => frontSprite;
+    public Sprite BackSprite => backSprite;
+    public PokemonType Type1 => type1;
+    public PokemonType Type2 => type2;
 
-    public int Weight { get => weight; }
-    public int Height { get => height; }
-    public int HP { get => hp; }
-    public int Attack { get => attack; }
-    public int Defense { get => defense; }
-    public int SpAttack { get => spAttack; }
-    public int SpDefense { get => spDefense; }
-    public int Speed { get => speed; }
+    public int CatchRate => catchRate;
 
-    public List<LearnableMove> LearnableMoves { get => learnableMoves; }
+    public int Height => height;
+    public int Weight => weight;
+    
+    public int HP => hp;
+    public int Attack => attack;
+    public int Defense => defense;
+    public int SpAttack => spAttack;
+    public int SpDefense => spDefense;
+    public int Speed => speed;
+
+    public List<LearnableMove> LearnableMoves => learnableMoves;
 }
 
 [System.Serializable]
@@ -67,8 +71,8 @@ public class LearnableMove
     [SerializeField] MoveBase moveBase;
     [SerializeField] int level;
 
-    public MoveBase Base { get => moveBase; }
-    public int Level { get => level; }
+    public MoveBase Base => moveBase;
+    public int Level => level;
 }
 
 public enum BoostableStat
@@ -127,7 +131,7 @@ public class TypeChart
     public static float GetEffectiveness(PokemonType attackType, List<PokemonType> defenseTypes)
     {
         float result = 1f;
-        foreach(var defenseType in defenseTypes)
+        foreach (var defenseType in defenseTypes)
         {
             if (defenseType == PokemonType.None)
                 continue;

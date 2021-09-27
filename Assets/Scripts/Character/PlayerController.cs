@@ -26,8 +26,8 @@ public class PlayerController : MonoBehaviour
     public void HandleUpdate()
     {
         //test battle
-        //animator.SetBool("isMoving", false);
-        //OnEncountered();
+        character.Animator.IsMoving = false;
+        OnEncountered();
 
         if (!character.IsMoving)
         {

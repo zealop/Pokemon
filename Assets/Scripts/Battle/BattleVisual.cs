@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 public class BattleVisual : MonoBehaviour
 {
-    
+
     [SerializeField] BattleHUD hud;
 
     BattleUnit unit;
@@ -32,13 +32,15 @@ public class BattleVisual : MonoBehaviour
 
         image.color = originalColor;
 
+        transform.localScale = new Vector3(1, 1, 1);
+
         PlayEnterAnimation();
     }
     public void Clear()
     {
         hud.gameObject.SetActive(false);
     }
-    
+
     public void Transform(PokemonBase pokemon)
     {
         image.sprite = unit.IsPlayerUnit ? pokemon.BackSprite : pokemon.FrontSprite;
@@ -77,5 +79,25 @@ public class BattleVisual : MonoBehaviour
         sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
         sequence.Join(image.DOFade(0f, 0.5f));
     }
+    public IEnumerator PlayCaptureAnimation()
+    {
+        var sequence = DOTween.Sequence();
 
+        sequence.Join(image.DOFade(0, 0.5f));
+        sequence.Join(transform.DOLocalMoveY(originalPos.y + 50f, 0.5f));
+        sequence.Join(transform.DOScale(new Vector3(0.3f, 0.3f, 1f), 0.5f));
+
+        yield return sequence.WaitForCompletion();
+    }
+
+    public IEnumerator PlayBreakoutAnimation()
+    {
+        var sequence = DOTween.Sequence();
+
+        sequence.Join(image.DOFade(1, 0.5f));
+        sequence.Join(transform.DOLocalMoveY(originalPos.y, 0.5f));
+        sequence.Join(transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f));
+
+        yield return sequence.WaitForCompletion();
+    }
 }

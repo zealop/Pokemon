@@ -277,7 +277,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 15, y: 0}
-  m_SizeDelta: {x: 192.01, y: 50}
+  m_SizeDelta: {x: 250, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &7305684710527471666
 CanvasRenderer:
@@ -461,8 +461,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4c3da83dc0bcf946827e4153f525c74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: statusColors
+      Entry: 6
+      Data: 
   nameText: {fileID: 5028579886154603421}
   levelText: {fileID: 306495599775397122}
+  statusText: {fileID: 0}
   hpBar: {fileID: 4790599567025179912}
 --- !u!114 &7434980998210787605
 MonoBehaviour:
@@ -515,7 +528,7 @@ RectTransform:
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: -7.5200043, y: 0}
-  m_SizeDelta: {x: 62.65, y: 50}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &1862643972655706560
 CanvasRenderer:
@@ -552,10 +565,10 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 4
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Lvl
+  m_Text: Lvl 100

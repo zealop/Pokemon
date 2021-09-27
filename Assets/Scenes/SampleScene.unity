@@ -2643,6 +2643,7 @@ MonoBehaviour:
   partyScreen: {fileID: 724962565}
   playerImage: {fileID: 593635737}
   trainerImage: {fileID: 1920725418}
+  pokeballSprite: {fileID: 8217811622650317380, guid: 2c259e75007e0a34baada1542a6eadef, type: 3}
 --- !u!1 &756184478
 GameObject:
   m_ObjectHideFlags: 0
@@ -4204,6 +4205,9 @@ MonoBehaviour:
   dialog:
     lines:
     - Fight me bitch!
+  dialogAfterBattle:
+    lines:
+    - Lucky dog...
   exclamation: {fileID: 1523005665}
   fov: {fileID: 2127610897}
 --- !u!61 &1682604429
@@ -4768,7 +4772,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 324266331
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1 &1804094842

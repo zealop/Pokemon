@@ -182,11 +182,11 @@ MonoBehaviour:
     SerializationNodes:
     - Name: statusColors
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[ConditionID, Assembly-CSharp],[UnityEngine.Color,
+      Data: 0|System.Collections.Generic.Dictionary`2[[StatusID, Assembly-CSharp],[UnityEngine.Color,
         UnityEngine.CoreModule]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[ConditionID, Assembly-CSharp]],
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[StatusID, Assembly-CSharp]],
         mscorlib
     - Name: 
       Entry: 12
@@ -561,7 +561,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 15, y: 0}
-  m_SizeDelta: {x: 192.01, y: 50}
+  m_SizeDelta: {x: 150, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &3767134707472430221
 CanvasRenderer:
@@ -639,8 +639,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -7.5200195, y: 0}
-  m_SizeDelta: {x: 62.65, y: 50}
+  m_AnchoredPosition: {x: -15, y: 0}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &3767134707682133389
 CanvasRenderer:
@@ -677,13 +677,13 @@ MonoBehaviour:
     m_BestFit: 0
     m_MinSize: 4
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 5
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Lvl
+  m_Text: Lvl 100
 --- !u!1 &3767134707726551585
 GameObject:
   m_ObjectHideFlags: 0

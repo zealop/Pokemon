@@ -27,4 +27,16 @@ public class PokemonParty : MonoBehaviour
         var candidates = party.Where(x => x.HP > 0 && x != current);
         return candidates.ElementAt(Random.Range(0, candidates.Count()));
     }
+
+    public void AddPokemon(Pokemon newPokemon)
+    {
+        if(party.Count < 6)
+        {
+            party.Add(newPokemon);
+        }
+        else
+        {
+            //TODO: transfer to PC
+        }
+    }
 }

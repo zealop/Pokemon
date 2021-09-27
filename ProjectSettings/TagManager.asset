@@ -53,3 +53,6 @@ TagManager:
   - name: UI
     uniqueID: 3436528999
     locked: 0
+  - name: Battle
+    uniqueID: 324266331
+    locked: 0

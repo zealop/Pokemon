@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,8 @@ public class BattleSystem : MonoBehaviour
 
     [SerializeField] Image playerImage;
     [SerializeField] Image trainerImage;
+
+    [SerializeField] GameObject pokeballSprite;
 
     public event System.Action<bool> OnBattleOver;
 
@@ -52,6 +55,8 @@ public class BattleSystem : MonoBehaviour
         this.playerParty = party;
         this.wildPokemon = wild;
 
+        player = playerParty.GetComponent<PlayerController>();
+
         StartCoroutine(SetupBattle());
     }
     public void StartTrainerBattle(PokemonParty playerParty, PokemonParty trainerParty)
@@ -69,6 +74,9 @@ public class BattleSystem : MonoBehaviour
     {
         playerUnit.Visual.Clear();
         enemyUnit.Visual.Clear();
+
+        playerUnit.Setup(playerParty.GetHealthyPokemon());
+        dialogBox.SetMoveName(playerUnit.Moves);
 
         if (isTrainerBattle)
         {
@@ -102,9 +110,9 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.Base.Name} appeared.");
         }
 
-        playerUnit.Setup(playerParty.GetHealthyPokemon());
 
-        dialogBox.SetMoveName(playerUnit.Moves);
+
+
         yield return dialogBox.TypeDialog($"Go {playerUnit.Name}!");
 
         partyScreen.Init();
@@ -154,6 +162,12 @@ public class BattleSystem : MonoBehaviour
         {
             HandlePartySelection();
         }
+
+        //test button
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            StartCoroutine(ThrowPokeball());
+        }
     }
 
 
@@ -192,7 +206,11 @@ public class BattleSystem : MonoBehaviour
                     MoveSelection();
                     break;
                 case 1: //Bag
-                    break;
+                    {
+                        StartCoroutine(ThrowPokeball());
+                        break;
+                    }
+                   
 
                 case 2: //Party
                     OpenPartyScreen();
@@ -377,12 +395,12 @@ public class BattleSystem : MonoBehaviour
                 yield return RunMove(node);
         }
 
-        yield return playerUnit.OnTurnEnd();
-        yield return enemyUnit.OnTurnEnd();
+        if (playerUnit.HP > 0) yield return playerUnit.OnTurnEnd();
+        if (enemyUnit.HP > 0) yield return enemyUnit.OnTurnEnd();
 
 
         CheckForBattleOver();
-        if(state != BattleState.PerformMove)
+        if (state != BattleState.PerformMove)
         {
             yield break;
         }
@@ -405,8 +423,6 @@ public class BattleSystem : MonoBehaviour
         var target = node.Target;
 
         yield return source.RunMove(move, target);
-
-        yield return ShowMessages();
     }
 
     public IEnumerator ShowMessages()
@@ -444,12 +460,97 @@ public class BattleSystem : MonoBehaviour
 
             if (nextPokemon is object)
             {
-                
+
                 OpenPartyScreen();
             }
-               
+
             else
                 BattleOver(false);
         }
+    }
+
+    IEnumerator ThrowPokeball()
+    {
+        state = BattleState.Busy;
+
+        if(isTrainerBattle)
+        {
+            yield return dialogBox.TypeDialog("You can't steal a trainer Pokemon!");
+            yield break;
+        }
+
+        yield return dialogBox.TypeDialog($"{player.Name} used Pokeball!");
+
+        var pokeballObject = Instantiate(pokeballSprite, playerUnit.transform.position - new Vector3(2, 0), Quaternion.identity);
+        var pokeball = pokeballObject.GetComponent<SpriteRenderer>();
+
+        //Animations
+        //Throwing ball
+        yield return pokeball.transform.DOJump(enemyUnit.transform.position + new Vector3(0, 2), 2f, 1, 1f).WaitForCompletion();
+        yield return enemyUnit.Visual.PlayCaptureAnimation();
+        yield return pokeball.transform.DOMoveY(enemyUnit.transform.position.y - 1.3f, 0.5f).WaitForCompletion();
+        //shake pokball
+        int shakeCount = TryToCatchPokemon(enemyUnit.Pokemon);
+
+
+        for (int i = 0; i < Mathf.Max(shakeCount, 3); i++)
+        {
+            yield return new WaitForSeconds(0.5f);
+            yield return pokeball.transform.DOPunchRotation(new Vector3(0, 0, 10f), 0.8f).WaitForCompletion();
+        }
+
+        if(shakeCount == 4)
+        {
+            //pokemon caught
+            yield return dialogBox.TypeDialog($"{enemyUnit.Name} was caught!");
+            yield return pokeball.DOFade(0, 1.5f).WaitForCompletion();
+
+            playerParty.AddPokemon(enemyUnit.Pokemon);
+            yield return dialogBox.TypeDialog($"{enemyUnit.Name} has been added to your party!");
+
+            BattleOver(true);
+        }
+        else
+        {
+            //pokemon not caught
+            yield return new WaitForSeconds(1f);
+            pokeball.DOFade(0, 0.2f);
+            yield return enemyUnit.Visual.PlayBreakoutAnimation();
+
+            if(shakeCount < 2)
+                yield return dialogBox.TypeDialog($"{enemyUnit.Name} broke free!");
+            else
+                yield return dialogBox.TypeDialog($"It was so close!");   
+        }
+        Destroy(pokeball);
+
+        yield return RunTurn();
+    }
+
+    int TryToCatchPokemon(Pokemon pokemon)
+    {
+        int catchRate = pokemon.Base.CatchRate;
+        float statusBonus = StatusCondition.CatchBonus(pokemon.Status);
+        float a = (3 * pokemon.MaxHP - 2 * pokemon.HP) * catchRate * statusBonus / (3 * pokemon.MaxHP);
+
+        //auto caught
+        if (a >= 255)
+            return 4;
+
+        float b = 1048560 / Mathf.Pow(16711680 / a, 0.25f);
+        int shakeCount = 0;
+
+        while(shakeCount < 4)
+        {
+            int random = Random.Range(0, 65536);
+            if (random >= b)
+                break;
+
+            shakeCount++;
+        }
+
+
+        return shakeCount;
+
     }
 }

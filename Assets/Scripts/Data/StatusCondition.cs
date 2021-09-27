@@ -7,31 +7,35 @@ public class StatusCondition
 {
     public virtual StatusID ID { get; }
     public BattleUnit Unit { get; set; }
-    static public StatusCondition Create(StatusID id)
+    public static StatusCondition Create(StatusID id)
     {
-        switch(id)
+        return id switch
         {
-            case StatusID.PSN:
-                return new StatusPoison();
-
-            case StatusID.BRN:
-                return new StatusBurn();
-
-            case StatusID.SLP:
-                return new StatusSleep();
-
-            case StatusID.PRZ:
-                return new StatusParalyze();
-
-            case StatusID.FRZ:
-                return new StatusFreeze();
-
-            case StatusID.TOX:
-                return new StatusToxic();
-        }
-
-        return null;
+            StatusID.PSN => new StatusPoison(),
+            StatusID.BRN => new StatusBurn(),
+            StatusID.SLP => new StatusSleep(),
+            StatusID.PRZ => new StatusParalyze(),
+            StatusID.FRZ => new StatusFreeze(),
+            StatusID.TOX => new StatusToxic(),
+            _ => null,
+        };
     }
+    public static float CatchBonus(StatusCondition condition)
+    {
+        if (condition is null) return 1;
+
+        return condition.ID switch
+        {
+            StatusID.PSN => 1.5f,
+            StatusID.BRN => 1.5f,
+            StatusID.SLP => 2f,
+            StatusID.PRZ => 2f,
+            StatusID.FRZ => 1.5f,
+            StatusID.TOX => 1.5f,
+            _ => 1f,
+        };
+    }
+    
 
     public virtual IEnumerator OnStart()
     {
