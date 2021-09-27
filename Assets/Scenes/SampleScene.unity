@@ -4626,45 +4626,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: psnColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: psnColor.b
-      value: 0.7921569
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: psnColor.g
-      value: 0.20392157
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: psnColor.r
-      value: 0.85882354
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: serializationData.PrefabModifications.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706779076828, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 3.2999878
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134707682133391, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -7.5200195
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134708183727741, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 9.200012
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
 --- !u!1 &1771529886
@@ -12260,45 +12224,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: psnColor.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: psnColor.b
-      value: 0.7921569
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: psnColor.g
-      value: 0.20392157
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: psnColor.r
-      value: 0.85882354
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
       propertyPath: serializationData.Prefab
       value: 
       objectReference: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: serializationData.PrefabModifications.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706758780028, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: serializationData.PrefabModificationsReferencedUnityObjects.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134706779076828, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 3.2999878
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134707682133391, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -7.5200195
-      objectReference: {fileID: 0}
-    - target: {fileID: 3767134708183727741, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 9.200012
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c3f1f48554e5aa4b86ee07c8b2b53e9, type: 3}
 --- !u!1001 &6440834253003198621
