@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,6 +17,8 @@ public class Pokemon
     }
 
     public PokemonBase Base => _base;
+
+    public int EXP { get; set; }
     public int Level => level;
     public StatusCondition Status { get; set; }
 
@@ -34,7 +35,7 @@ public class Pokemon
     public int MaxHP { get; private set; }
     public int HP { get; set; }
 
-
+    public int ExpReward => level * Base.ExpYield;
     public void Init()
     {
         Moves = new List<Move>();
@@ -46,6 +47,8 @@ public class Pokemon
             if (Moves.Count >= 4)
                 break;
         }
+
+        EXP = EXPChart.GetEXPAtLevel(Base.GrowthRate, level);
 
         CalculateStats();
         Status = null;
@@ -76,6 +79,11 @@ public class Pokemon
     public int IndexofMove(MoveBase move)
     {
         return Moves.FindIndex(m => m.Base == move);
+    }
+
+    public void LevelUp()
+    {
+        level++;
     }
 }
 

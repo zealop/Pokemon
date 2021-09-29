@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FlatDamage : MoveModifier
@@ -14,7 +13,7 @@ public class FlatDamage : MoveModifier
     int Flat(BattleUnit source, BattleUnit target)
     {
 
-        return scaleLevel ? source.Level : damage ;
+        return scaleLevel ? source.Level : damage;
     }
 }
 
@@ -60,7 +59,7 @@ public class SuperFang : MoveModifier
 {
     public override void ModifyMove()
     {
-        _base.Damage =  Halved;
+        _base.Damage = Halved;
     }
 
     int Halved(BattleUnit source, BattleUnit target)

@@ -30,7 +30,7 @@ public class FoeSwitchEffect : MoveEffect
             yield return BattleSystem.Instance.DialogBox.TypeDialog($"{target.Name} {message}");
             BattleSystem.Instance.BattleOver(true);
         }
-        
+
 
         //if(target.IsPlayerUnit)
 
@@ -90,7 +90,7 @@ public class PumpEffect : MoveEffect
 {
     [SerializeField] int crit = 2;
     public override IEnumerator Run(BattleUnit source, BattleUnit target)
-    { 
+    {
         source.StatStage.CritStage = crit;
 
         yield return BattleSystem.Instance.DialogBox.TypeDialog($"{source.Name} is getting pumped!");
@@ -125,7 +125,7 @@ public class RestEffect : MoveEffect
 {
     public override IEnumerator Run(BattleUnit source, BattleUnit target)
     {
-        if(source.Status.ID == StatusID.SLP || source.HP == source.MaxHP)
+        if (source.Status.ID == StatusID.SLP || source.HP == source.MaxHP)
         {
             yield return BattleSystem.Instance.DialogBox.TypeDialog($"But it failed!");
             yield break;
@@ -149,7 +149,7 @@ public class ConversionEffect : MoveEffect
             yield break;
         }
 
-        source.Types = new List<PokemonType>() { moveType};
+        source.Types = new List<PokemonType>() { moveType };
 
         yield return dialogBox.TypeDialog($"{source.Name} transformed into the {moveType} type!");
     }

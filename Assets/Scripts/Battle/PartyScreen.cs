@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,9 +19,9 @@ public class PartyScreen : MonoBehaviour
     {
         this.party = party;
 
-        for(int i=0; i< memberSlots.Length; i++)
+        for (int i = 0; i < memberSlots.Length; i++)
         {
-            if(i < party.Count)
+            if (i < party.Count)
             {
                 memberSlots[i].gameObject.SetActive(true);
                 memberSlots[i].SetData(party[i]);
@@ -38,7 +37,7 @@ public class PartyScreen : MonoBehaviour
 
     public void UpdateMemberSelection(int selected)
     {
-        for(int i = 0; i< party.Count; i++)
+        for (int i = 0; i < party.Count; i++)
         {
             if (i == selected)
                 memberSlots[i].SetSelected(true);
@@ -46,7 +45,7 @@ public class PartyScreen : MonoBehaviour
                 memberSlots[i].SetSelected(false);
         }
     }
-        
+
 
     public void SetMessageText(string message)
     {

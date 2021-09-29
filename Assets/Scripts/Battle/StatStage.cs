@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
 
 public class StatStage
@@ -33,7 +31,7 @@ public class StatStage
 
             var array = aimStat.Contains(stat) ? aim : common;
             return stage >= 0 ? array[stage] : 1 / array[-stage];
-                
+
         }
     }
 }

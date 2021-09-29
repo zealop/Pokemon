@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public class PokemonParty : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class PokemonParty : MonoBehaviour
     public int Count { get => party.Count; }
     private void Start()
     {
-        foreach(var pokemon in party)
+        foreach (var pokemon in party)
         {
             pokemon.Init();
         }
@@ -30,7 +29,7 @@ public class PokemonParty : MonoBehaviour
 
     public void AddPokemon(Pokemon newPokemon)
     {
-        if(party.Count < 6)
+        if (party.Count < 6)
         {
             party.Add(newPokemon);
         }

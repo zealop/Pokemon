@@ -1,8 +1,8 @@
+using Sirenix.OdinInspector;
+using Sirenix.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
 
 [CreateAssetMenu(fileName = "Move", menuName = "New move")]
 public class MoveBase : SerializedScriptableObject

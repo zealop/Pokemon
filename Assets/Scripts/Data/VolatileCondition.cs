@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using UnityEngine;
 
 public enum VolatileID
 {
@@ -151,7 +151,7 @@ public class VolatileBide : VolatileCondition
 
         yield return null;
     }
-    
+
 }
 public class VolatileDig : VolatileCondition
 {
@@ -545,7 +545,7 @@ public class VolatileTransform : VolatileCondition
         Unit.StatStage = target.StatStage;
 
         Unit.Moves.Clear();
-        foreach(var move in target.Moves)
+        foreach (var move in target.Moves)
         {
             var newMove = new Move(move.Base);
             newMove.PP = 5;
@@ -557,7 +557,7 @@ public class VolatileTransform : VolatileCondition
     }
     public override IEnumerator OnEnd()
     {
-        
+
 
         yield return null;
     }

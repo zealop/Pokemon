@@ -28,9 +28,9 @@ public class BattleDialogBox : MonoBehaviour
     public IEnumerator TypeDialog(string dialog)
     {
         dialogText.text = "";
-        foreach(var letter in dialog.ToCharArray())
+        foreach (var letter in dialog.ToCharArray())
         {
-            dialogText.text += letter;  
+            dialogText.text += letter;
             yield return new WaitForSeconds(1f / lettersPerSecond);
         }
 
@@ -55,7 +55,7 @@ public class BattleDialogBox : MonoBehaviour
 
     public void UpdateActionSelection(int selectedAction)
     {
-        for(int i=0; i<actionTexts.Count; i++)
+        for (int i = 0; i < actionTexts.Count; i++)
         {
             actionTexts[i].color = i == selectedAction ? highlightedColor : Color.black;
         }
@@ -68,7 +68,7 @@ public class BattleDialogBox : MonoBehaviour
             moveTexts[i].color = i == selectedMove ? highlightedColor : Color.black;
         }
 
-        if(move.Disabled)
+        if (move.Disabled)
         {
             ppText.text = "Disabled";
             typeText.text = "";
@@ -78,15 +78,15 @@ public class BattleDialogBox : MonoBehaviour
             ppText.text = $"PP {move.PP}/{move.Base.PP}";
             typeText.text = move.Base.Type.ToString();
         }
-        
+
     }
     public void SetMoveName(List<Move> moves)
     {
-        for(int i=0; i < moveTexts.Count; i++)
+        for (int i = 0; i < moveTexts.Count; i++)
         {
-                moveTexts[i].text = i < moves.Count ? moves[i].Base.Name : "-";
-                
- 
+            moveTexts[i].text = i < moves.Count ? moves[i].Base.Name : "-";
+
+
         }
     }
 }

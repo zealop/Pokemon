@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MultiTurn : MoveModifier
@@ -128,7 +127,7 @@ public class MultiTurnBide : MultiTurn
     {
         var dialogBox = BattleSystem.Instance.DialogBox;
 
-        
+
 
         if (!source.Volatiles.ContainsKey(VolatileID.Bide))
         {
@@ -152,10 +151,10 @@ public class MultiTurnBide : MultiTurn
                 yield return _base.DefaultDamageBehaviour(source, target);
 
                 yield return source.RemoveVolatileCondition(VolatileID.Bide);
-               
+
             }
 
-            
+
         }
 
     }

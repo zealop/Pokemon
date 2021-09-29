@@ -1,12 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class LockedMoveEffect : MoveEffect
 {
     public override IEnumerator Run(BattleUnit source, BattleUnit target)
     {
-        if(!source.Volatiles.ContainsKey(VolatileID.LockedMove))
+        if (!source.Volatiles.ContainsKey(VolatileID.LockedMove))
         {
             yield return source.AddVolatileCondition(new VolatileLockedMove());
         }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MultiStrike : MoveModifier
@@ -7,7 +5,7 @@ public class MultiStrike : MoveModifier
     [SerializeField] int count;
     [SerializeField] bool accuracyCheck;
 
-    
+
     public override void ModifyMove()
     {
         _base.HitCount = MultiHit;

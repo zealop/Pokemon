@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BoundEffect : MoveEffect
@@ -12,12 +11,12 @@ public class BoundEffect : MoveEffect
 
         VolatileCondition bound = new VolatileBound(_base, source);
 
-        if(!target.Volatiles.ContainsKey(VolatileID.Bound))
+        if (!target.Volatiles.ContainsKey(VolatileID.Bound))
         {
             yield return BattleSystem.Instance.DialogBox.TypeDialog($"{message.Replace("<source>", source.Name).Replace("<target>", target.Name)}");
             yield return target.AddVolatileCondition(bound);
         }
-        
+
     }
 }
 
@@ -49,15 +48,15 @@ public class DisableEffect : MoveEffect
 {
     public override IEnumerator Run(BattleUnit source, BattleUnit target)
     {
-        if(target.LastUsedMove is null)
+        if (target.LastUsedMove is null)
         {
             yield return BattleSystem.Instance.DialogBox.TypeDialog("But it failed!");
         }
-        
+
 
         if (target.Volatiles.ContainsKey(VolatileID.Disabled))
         {
-            yield return target.RemoveVolatileCondition(VolatileID.Disabled); 
+            yield return target.RemoveVolatileCondition(VolatileID.Disabled);
         }
 
         yield return BattleSystem.Instance.DialogBox.TypeDialog($"{target.Name}'s {target.LastUsedMove.Base.Name} is disabled!");
@@ -72,7 +71,7 @@ public class RechargeEffect : MoveEffect
     {
 
         yield return target.AddVolatileCondition(new VolatileRecharge());
-        
+
 
     }
 }
@@ -81,7 +80,7 @@ public class SeededEffect : MoveEffect
 {
     public override IEnumerator Run(BattleUnit source, BattleUnit target)
     {
-        if(!target.Volatiles.ContainsKey(VolatileID.Seeded))
+        if (!target.Volatiles.ContainsKey(VolatileID.Seeded))
             yield return target.AddVolatileCondition(new VolatileSeeded());
         else
             yield return BattleSystem.Instance.DialogBox.TypeDialog($"{target.Name} is already seeded!");

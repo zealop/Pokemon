@@ -14,3 +14,7 @@ public class BoostEffect : MoveEffect
         yield return booster.ApplyStatBoost(boosts);
     }
 }
+public enum BoostableStat
+{
+    Attack, Defense, SpAttack, SpDefense, Speed, Accuracy, Evasion
+}

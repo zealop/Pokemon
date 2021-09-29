@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +8,7 @@ public class MapArea : MonoBehaviour
     public Pokemon GetRandomPokemon()
     {
         var wildPokemon = wildPokemons[Random.Range(0, wildPokemons.Count)];
-        
+
         return new Pokemon(wildPokemon.Base, wildPokemon.Level);
     }
 }

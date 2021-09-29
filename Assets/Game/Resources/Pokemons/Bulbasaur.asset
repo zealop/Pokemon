@@ -13,15 +13,16 @@ MonoBehaviour:
   m_Name: Bulbasaur
   m_EditorClassIdentifier: 
   name: Bulbasaur
-  description: 
   frontSprite: {fileID: 21300000, guid: 0f37bf3cf5680a64d863b5f155b2a597, type: 3}
   backSprite: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
+  catchRate: 45
   type1: 5
   type2: 8
-  catchRate: 450
   height: 69
   weight: 7
-  hp: 0
+  expYield: 2000
+  growthRate: 3
+  hp: 45
   attack: 49
   defense: 49
   spAttack: 65
@@ -30,11 +31,5 @@ MonoBehaviour:
   learnableMoves:
   - moveBase: {fileID: 11400000, guid: a7e4d7873b358eb4894e99777744e019, type: 2}
     level: 1
-  - moveBase: {fileID: 11400000, guid: eed53f65a9bb32e4982d70677b122c1a, type: 2}
-    level: 4
   - moveBase: {fileID: 11400000, guid: 30c337cc7685075418a2a22ae2b1eab1, type: 2}
     level: 7
-  - moveBase: {fileID: 11400000, guid: 5530134cd3b63fc4c9fda31b0219d599, type: 2}
-    level: 8
-  - moveBase: {fileID: 11400000, guid: b57ecdfb293f04a46a56b65b07df5fd7, type: 2}
-    level: 8

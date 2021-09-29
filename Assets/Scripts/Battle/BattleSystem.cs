@@ -112,12 +112,12 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.Base.Name} appeared.");
         }
 
-        escapeAttempts = 0;    
+        escapeAttempts = 0;
 
         yield return dialogBox.TypeDialog($"Go {playerUnit.Name}!");
 
         partyScreen.Init();
-
+      
         ActionSelection();
     }
 
@@ -398,8 +398,8 @@ public class BattleSystem : MonoBehaviour
         if (playerUnit.HP > 0) yield return playerUnit.OnTurnEnd();
         if (enemyUnit.HP > 0) yield return enemyUnit.OnTurnEnd();
 
+        yield return CheckForBattleOver();
 
-        CheckForBattleOver();
         if (state != BattleState.PerformMove)
         {
             yield break;
@@ -432,16 +432,19 @@ public class BattleSystem : MonoBehaviour
             yield return dialogBox.TypeDialog(MessageQueue.Dequeue());
         }
     }
-    public void CheckForBattleOver()
+    public IEnumerator CheckForBattleOver()
     {
         if (enemyUnit.HP <= 0)
         {
+            //gain exp
+            yield return playerUnit.GainEXP(enemyUnit.Pokemon, isTrainerBattle);
+            yield return new WaitForSeconds(1);
             if (isTrainerBattle)
             {
                 var nextPokemon = trainerParty.GetHealthyPokemon();
                 if (nextPokemon is object)
                 {
-                    StartCoroutine(SendNextTrainerPokemon(nextPokemon));
+                    yield return SendNextTrainerPokemon(nextPokemon);
                 }
                 else
                 {
@@ -570,7 +573,7 @@ public class BattleSystem : MonoBehaviour
             escapeAttempts++;
 
             int oddEscape = (playerSpeed * 128 / enemySpeed + 30 * escapeAttempts) % 256;
-            if (enemySpeed < playerSpeed || Random.Range(0,256) < oddEscape)
+            if (enemySpeed < playerSpeed || Random.Range(0, 256) < oddEscape)
             {
                 yield return dialogBox.TypeDialog("Ran away safely!");
                 BattleOver(true);

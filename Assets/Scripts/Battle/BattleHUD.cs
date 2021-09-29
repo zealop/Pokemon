@@ -1,46 +1,117 @@
-using Sirenix.OdinInspector;
-using Sirenix.Serialization;
+using DG.Tweening;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class BattleHUD : SerializedMonoBehaviour
+public class BattleHUD : MonoBehaviour
 {
     [SerializeField] Text nameText;
     [SerializeField] Text levelText;
-    [SerializeField] Text statusText;
-    [SerializeField] HPBar hpBar;
+    [SerializeField] Image hpBar;
+    [SerializeField] Text hpText;
+    [SerializeField] Image expBar;
+    [SerializeField] Image statusImage;
+    [SerializeField] StatusSprite statusSprite;
+
+    private float NormalizedHP => (float)unit.HP / unit.MaxHP;
+    private float NormalizedEXP
+    {
+        get
+        {
+            int currentLevelEXP = EXPChart.GetEXPAtLevel(unit.Pokemon.Base.GrowthRate, unit.Level);
+            int nextLevelEXP = EXPChart.GetEXPAtLevel(unit.Pokemon.Base.GrowthRate, unit.Level + 1);
+
+            return (float)(unit.Pokemon.EXP - currentLevelEXP) / (nextLevelEXP - currentLevelEXP);
+        }
+    }
 
     BattleUnit unit;
-
-    [OdinSerialize] Dictionary<StatusID, Color> statusColors;
+    Sequence statusSequence;
     public void SetData(BattleUnit unit)
     {
         this.unit = unit;
 
         nameText.text = unit.Name;
-        levelText.text = $"Lvl {unit.Level}";
-        hpBar.SetHP((float)unit.HP / unit.MaxHP);
+        SetLevelText();
 
-        SetStatusText();
+        hpBar.transform.localScale = new Vector3(NormalizedHP, 1);
+
+        SetStatusImage();
+
+        if (hpText is object)
+        {
+            hpText.text = $"{unit.HP}/{unit.MaxHP}";
+        }
+        if (expBar is object)
+        {
+            expBar.transform.localScale = new Vector3(NormalizedEXP, 1);
+        }
     }
-  
+
+    private void SetLevelText()
+    {
+        levelText.text = $"Lvl {unit.Level}";
+    }
 
     public IEnumerator UpdateHP()
     {
-        yield return hpBar.SetHPSmooth((float)unit.HP / unit.MaxHP);
+        if (hpText is object)
+        {
+            StartCoroutine(UpdateHPTextSmooth(1.5f));
+        }
+        yield return hpBar.transform.DOScaleX(NormalizedHP, 1.5f).WaitForCompletion();
     }
 
-    public void SetStatusText()
+    private IEnumerator UpdateHPTextSmooth(float timer)
     {
-        if (unit.Status is null)
+        int curHp = int.Parse(hpText.text.Split('/')[0]);
+        while (timer > 0)
         {
-            statusText.text = "";
+            timer -= Time.deltaTime;
+
+            int hp = unit.HP + Mathf.FloorToInt((curHp - unit.HP) * timer / 1.5f);
+            Debug.Log(hp);
+            hpText.text = $"{hp}/{unit.MaxHP}";
+            yield return null;
+        }
+    }
+
+    public IEnumerator UpdateEXP()
+    {
+        if (NormalizedEXP > 1f)
+        {
+            yield return expBar.transform.DOScaleX(1f, 1.5f).WaitForCompletion();
+            expBar.transform.localScale = new Vector3(0, 1);
+
+            yield return unit.LevelUp();
+            SetLevelText();
+
+            yield return UpdateEXP();
         }
         else
         {
-            statusText.text = unit.Status.ID.ToString();
-            statusText.color = statusColors[unit.Status.ID];
+            yield return expBar.transform.DOScaleX(NormalizedEXP, 1.5f).WaitForCompletion();
         }
     }
+
+    public void SetStatusImage()
+    {
+        StatusCondition status = unit.Status;
+
+        if (status is object)
+        {
+            statusImage.gameObject.SetActive(true);
+            statusImage.sprite = statusSprite.Sprites[status.ID];
+
+            statusSequence = DOTween.Sequence();
+            statusSequence.Append(statusImage.DOFade(0, 1));
+            statusSequence.Append(statusImage.DOFade(1, 1));
+            statusSequence.SetLoops(-1);
+        }
+        else
+        {
+            statusImage.gameObject.SetActive(false);
+            statusSequence.Kill();
+        }
+    }
+
 }

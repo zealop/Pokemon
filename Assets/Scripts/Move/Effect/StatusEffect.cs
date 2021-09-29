@@ -14,7 +14,7 @@ public class StatusEffect : MoveEffect
 
 public class TriEffect : MoveEffect
 {
-    List<StatusID> conditions = new List<StatusID>{ StatusID.BRN, StatusID.FRZ, StatusID.PRZ};
+    List<StatusID> conditions = new List<StatusID> { StatusID.BRN, StatusID.FRZ, StatusID.PRZ };
     public override IEnumerator Run(BattleUnit source, BattleUnit target)
     {
         StatusID condition = conditions[Random.Range(0, conditions.Count)];

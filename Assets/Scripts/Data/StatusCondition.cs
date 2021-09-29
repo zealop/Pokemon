@@ -1,8 +1,9 @@
+using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum StatusID {PSN, BRN, SLP, PRZ, FRZ, TOX}
+public enum StatusID { PSN, BRN, SLP, PRZ, FRZ, TOX }
 public class StatusCondition
 {
     public virtual StatusID ID { get; }
@@ -35,7 +36,7 @@ public class StatusCondition
             _ => 1f,
         };
     }
-    
+
 
     public virtual IEnumerator OnStart()
     {
@@ -53,7 +54,7 @@ public class StatusPoison : StatusCondition
 
     static float damage = 1 / 8f;
 
-    
+
     public override IEnumerator OnStart()
     {
 
@@ -71,7 +72,7 @@ public class StatusPoison : StatusCondition
     IEnumerator PoisonDamage()
     {
         yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by poison!");
-        yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP*damage));
+        yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP * damage));
     }
 }
 
@@ -112,7 +113,7 @@ public class StatusBurn : StatusCondition
 }
 public class StatusSleep : StatusCondition
 {
-    public override StatusID ID { get => StatusID.SLP;} 
+    public override StatusID ID { get => StatusID.SLP; }
 
 
     int counter;
@@ -140,7 +141,7 @@ public class StatusSleep : StatusCondition
 
     IEnumerator SleepCheck()
     {
-        if(counter > 0)
+        if (counter > 0)
         {
             counter--;
             Unit.CanMove = false;
@@ -149,7 +150,7 @@ public class StatusSleep : StatusCondition
         }
 
         yield return Unit.RemoveStatusCondition();
-        
+
     }
 }
 
@@ -238,7 +239,7 @@ public class StatusToxic : StatusCondition
     public override StatusID ID { get => StatusID.TOX; }
 
 
-    static float damage = 1/16f;
+    static float damage = 1 / 16f;
     int counter;
 
     public override IEnumerator OnStart()

@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Linq;
+using UnityEngine;
 
 public class BattleUnit : MonoBehaviour
 {
@@ -131,7 +130,7 @@ public class BattleUnit : MonoBehaviour
         Status = StatusCondition.Create(id);
 
         Status.Unit = this;
-        Visual.HUD.SetStatusText();
+        Visual.HUD.SetStatusImage();
 
         yield return Status.OnStart();
     }
@@ -140,7 +139,7 @@ public class BattleUnit : MonoBehaviour
         yield return Status.OnEnd();
 
         Status = null;
-        Visual.HUD.SetStatusText();
+        Visual.HUD.SetStatusImage();
     }
 
     public IEnumerator AddVolatileCondition(VolatileCondition condition)
@@ -295,5 +294,23 @@ public class BattleUnit : MonoBehaviour
         return Moves[r];
     }
 
+    public IEnumerator GainEXP(Pokemon defeatedPokemon, bool isTrainerBattle)
+    {
+        int exp = defeatedPokemon.ExpReward;
+        float trainerBonus = isTrainerBattle ? 1.5f : 1f;
+        int expGain = Mathf.FloorToInt(exp * trainerBonus / 7);
+
+        Pokemon.EXP += expGain;
+       
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Name} gained {expGain} experience points!");
+        yield return Visual.HUD.UpdateEXP();
+    }
+
+    public IEnumerator LevelUp()
+    {
+        Pokemon.LevelUp();
+
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Name} grew to {Level}!");
+    }
 }
 

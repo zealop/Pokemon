@@ -12,7 +12,7 @@ public class MoveQueue
         list = new List<MoveNode>();
     }
 
-    public int Count {get => list.Count;}
+    public int Count { get => list.Count; }
 
     public void Enqueue(Move move, BattleUnit source, BattleUnit target)
     {
@@ -23,12 +23,12 @@ public class MoveQueue
     public MoveNode Dequeue()
     {
         MoveNode result = null;
-        
-        if(list.Count > 0)
+
+        if (list.Count > 0)
         {
             result = list.First();
 
-            foreach(var node in list)
+            foreach (var node in list)
             {
                 result = FindFaster(result, node);
             }
@@ -46,7 +46,7 @@ public class MoveQueue
         var t1 = node1.Target;
 
         var m2 = node2.Move.Base;
-        var s2= node2.Source;
+        var s2 = node2.Source;
         var t2 = node2.Target;
 
         if (m1.Priority(s1, t1) > m2.Priority(s1, t1))
@@ -71,7 +71,7 @@ public class MoveQueue
 
     public IEnumerator Prepare()
     {
-        foreach(var node in list)
+        foreach (var node in list)
         {
             var move = node.Move.Base;
             var source = node.Source;
