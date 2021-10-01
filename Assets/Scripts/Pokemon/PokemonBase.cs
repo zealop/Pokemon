@@ -7,12 +7,8 @@ public class PokemonBase : ScriptableObject
 {
     [SerializeField] new string name;
 
-    [HorizontalGroup("Sprites")]
-    [PreviewField(100)]
-    [SerializeField] Sprite frontSprite;
-    [HorizontalGroup("Sprites")]
-    [PreviewField(100)]
-    [SerializeField] Sprite backSprite;
+    [SerializeField] PokemonSprite sprite;
+
 
     [SerializeField] int catchRate;
 
@@ -48,8 +44,8 @@ public class PokemonBase : ScriptableObject
     [SerializeField] List<LearnableMove> learnableMoves;
 
     public string Name => name;
-    public Sprite FrontSprite => frontSprite;
-    public Sprite BackSprite => backSprite;
+    public PokemonSprite Sprite => sprite;
+
     public int CatchRate => catchRate;
     public PokemonType Type1 => type1;
     public PokemonType Type2 => type2;
@@ -78,3 +74,17 @@ public class LearnableMove
 }
 
 
+[System.Serializable]
+public class PokemonSprite
+{ 
+    [PreviewField(100)]
+    [SerializeField] Sprite front;
+    [PreviewField(100)]
+    [SerializeField] Sprite back;
+    [PreviewField(100)]
+    [SerializeField] Sprite box;
+
+    public Sprite Front => front;
+    public Sprite Back => back;
+    public Sprite Box => box;
+}

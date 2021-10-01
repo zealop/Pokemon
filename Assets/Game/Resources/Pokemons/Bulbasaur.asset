@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Bulbasaur
   m_EditorClassIdentifier: 
   name: Bulbasaur
-  frontSprite: {fileID: 21300000, guid: 0f37bf3cf5680a64d863b5f155b2a597, type: 3}
-  backSprite: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
+  sprite:
+    front: {fileID: 21300000, guid: 0f37bf3cf5680a64d863b5f155b2a597, type: 3}
+    back: {fileID: 21300000, guid: aacaae602a38f884ab9e02e43de3736d, type: 3}
+    box: {fileID: 21300000, guid: 75a29e79092501348aff32dbc68ae116, type: 3}
   catchRate: 45
   type1: 5
   type2: 8

@@ -24,9 +24,13 @@ public class BattleSystem : MonoBehaviour
 
     [SerializeField] GameObject pokeballSprite;
 
+    [SerializeField] ActionSelector actionSelector;
+    [SerializeField] MoveSelector moveSelector;
+
     public event System.Action<bool> OnBattleOver;
 
-    public BattleDialogBox DialogBox { get => dialogBox; }
+    public BattleDialogBox DialogBox => dialogBox;
+    public MoveSelector MoveSelector => moveSelector;
     public Queue<string> MessageQueue { get; } = new Queue<string>();
     public MoveQueue moveQueue = new MoveQueue();
 
@@ -78,7 +82,7 @@ public class BattleSystem : MonoBehaviour
         enemyUnit.Visual.Clear();
 
         playerUnit.Setup(playerParty.GetHealthyPokemon());
-        dialogBox.SetMoveName(playerUnit.Moves);
+
 
         if (isTrainerBattle)
         {
@@ -107,17 +111,18 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
+            escapeAttempts = 0;
             enemyUnit.Setup(wildPokemon);
 
             yield return dialogBox.TypeDialog($"A wild {enemyUnit.Pokemon.Base.Name} appeared.");
         }
 
-        escapeAttempts = 0;
+
 
         yield return dialogBox.TypeDialog($"Go {playerUnit.Name}!");
 
-        partyScreen.Init();
-      
+        //partyScreen.Init();
+
         ActionSelection();
     }
 
@@ -125,17 +130,18 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.ActionSelection;
         dialogBox.SetDialog("Choose an action");
-
-        dialogBox.EnableActionSelector(true);
+        actionSelector.gameObject.SetActive(true);
     }
 
     void MoveSelection()
     {
         state = BattleState.MoveSelection;
 
-        dialogBox.EnableActionSelector(false);
-        dialogBox.EnableDialogText(true);
-        dialogBox.EnableMoveSelector(true);
+        actionSelector.gameObject.SetActive(false);
+        moveSelector.gameObject.SetActive(true);
+        moveSelector.SetMoves(playerUnit.Moves);
+        //dialogBox.EnableDialogText(true);
+        //dialogBox.EnableMoveSelector(true);
     }
 
     public void BattleOver(bool won)
@@ -174,28 +180,22 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.PartyScreen;
 
-        partyScreen.SetPartyData(playerParty.Party);
 
         partyScreen.gameObject.SetActive(true);
+        partyScreen.SetPartyData(playerParty.Party);
     }
 
     void HandleActionSelection()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
             currentAction++;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
             currentAction--;
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-            currentAction += 2;
+        currentAction = (currentAction + 4) % 4;
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            currentAction -= 2;
-
-        currentAction = Mathf.Clamp(currentAction, 0, 3);
-
-        dialogBox.UpdateActionSelection(currentAction);
+        actionSelector.UpdateActionSelection(currentAction);
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -204,15 +204,11 @@ public class BattleSystem : MonoBehaviour
                 case 0://Fight
                     MoveSelection();
                     break;
-                case 1: //Bag
-                    {
-                        StartCoroutine(ThrowPokeball());
-                        break;
-                    }
-
-
-                case 2: //Party
+                case 1: //Party
                     OpenPartyScreen();
+                    break;
+                case 2: //Bag
+                    StartCoroutine(ThrowPokeball());
                     break;
                 case 3: //Run
                     StartCoroutine(TryToEscape());
@@ -224,25 +220,21 @@ public class BattleSystem : MonoBehaviour
 
     void HandleMoveSelection()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
-            currentMove++;
-
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
-            currentMove--;
+        int count = playerUnit.Moves.Count;
 
         if (Input.GetKeyDown(KeyCode.DownArrow))
-            currentMove += 2;
+            currentMove++;
 
         if (Input.GetKeyDown(KeyCode.UpArrow))
-            currentMove -= 2;
+            currentMove--;
 
-        currentMove = Mathf.Clamp(currentMove, 0, playerUnit.Moves.Count - 1);
+        currentMove = (currentMove + count) % count;
 
-        dialogBox.UpdateMoveSelection(currentMove, playerUnit.Moves[currentMove]);
+        moveSelector.UpdateMoveSelection(currentMove);
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            dialogBox.EnableMoveSelector(false);
+            moveSelector.gameObject.SetActive(false);
             dialogBox.EnableDialogText(true);
 
             var move = playerUnit.Moves[currentMove];
@@ -258,7 +250,7 @@ public class BattleSystem : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            dialogBox.EnableMoveSelector(false);
+            moveSelector.gameObject.SetActive(false);
 
             dialogBox.EnableDialogText(true);
             ActionSelection();
@@ -267,19 +259,13 @@ public class BattleSystem : MonoBehaviour
 
     void HandlePartySelection()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
             currentMember++;
 
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
             currentMember--;
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-            currentMember += 2;
-
-        if (Input.GetKeyDown(KeyCode.UpArrow))
-            currentMember -= 2;
-
-        currentMember = Mathf.Clamp(currentMember, 0, playerParty.Party.Count - 1);
+        currentMember = (currentMember + playerParty.Count) % playerParty.Count;
 
         partyScreen.UpdateMemberSelection(currentMember);
 
@@ -291,9 +277,6 @@ public class BattleSystem : MonoBehaviour
                 partyScreen.SetMessageText($"{playerUnit.Name} can't switch out!");
                 return;
             }
-
-
-
             var selectedMember = playerParty.Party[currentMember];
             if (selectedMember.HP <= 0)
             {
@@ -305,10 +288,6 @@ public class BattleSystem : MonoBehaviour
                 partyScreen.SetMessageText($"This Pokemon is already out!");
                 return;
             }
-
-
-
-
             partyScreen.gameObject.SetActive(false);
 
             state = BattleState.Busy;
@@ -341,7 +320,7 @@ public class BattleSystem : MonoBehaviour
 
         playerUnit.Setup(newPokemon);
 
-        dialogBox.SetMoveName(newPokemon.Moves);
+        moveSelector.SetMoves(newPokemon.Moves);
 
         yield return dialogBox.TypeDialog($"Go {newPokemon.Base.Name}");
 
@@ -349,7 +328,7 @@ public class BattleSystem : MonoBehaviour
             ActionSelection();
         else
         {
-            dialogBox.EnableActionSelector(false);
+            actionSelector.gameObject.SetActive(false);
             dialogBox.EnableDialogText(true);
             yield return RunTurn();
         }
@@ -475,7 +454,7 @@ public class BattleSystem : MonoBehaviour
     IEnumerator ThrowPokeball()
     {
         state = BattleState.Busy;
-        dialogBox.EnableActionSelector(false);
+        actionSelector.gameObject.SetActive(false);
 
         if (isTrainerBattle)
         {

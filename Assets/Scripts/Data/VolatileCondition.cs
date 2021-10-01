@@ -540,7 +540,6 @@ public class VolatileTransform : VolatileCondition
 
     public override IEnumerator OnStart()
     {
-        var dialogBox = BattleSystem.Instance.DialogBox;
         Unit.Transform(target.Pokemon);
         Unit.StatStage = target.StatStage;
 
@@ -551,9 +550,9 @@ public class VolatileTransform : VolatileCondition
             newMove.PP = 5;
             Unit.Moves.Add(newMove);
         }
-        dialogBox.SetMoveName(Unit.Moves);
+        BattleSystem.Instance.MoveSelector.SetMoves(Unit.Moves);
 
-        yield return dialogBox.TypeDialog($"{Unit.Name} transformed into {target.Name}");
+        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} transformed into {target.Name}");
     }
     public override IEnumerator OnEnd()
     {

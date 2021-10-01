@@ -1,0 +1,787 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e53edfb947fa3b40b71dac9194fdeee, type: 3}
+  m_Name: TypeSpriteDB
+  m_EditorClassIdentifier: Assembly-CSharp::TypeSpriteDatabase
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects:
+    - {fileID: 21300000, guid: 8509d7d142838904ea1107f8508d69b1, type: 3}
+    - {fileID: 1110241976660494742, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: e0017d8da01ba0f4c910c89774b0429b, type: 3}
+    - {fileID: -523833912235972235, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 6f72bdba74abc1d46a9f700c0ac8a374, type: 3}
+    - {fileID: 2843984773689067923, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 35a8f3f1b55ce4f4285bd7243b021775, type: 3}
+    - {fileID: 8339851129805296773, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: d99c7add389b94b40aec710df3083c5d, type: 3}
+    - {fileID: 330541299587713670, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 113904eca4b14fa47bdde3762cf2fb24, type: 3}
+    - {fileID: -3727645411263898923, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 26fb00bea4fff8f4fb3fe59c218899f3, type: 3}
+    - {fileID: -7239559400058424644, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 35d65d7a87487894bbbb16eb6ed8d2f1, type: 3}
+    - {fileID: 8387743026502795395, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 71438e94533748d44b408aeae78b467a, type: 3}
+    - {fileID: 7266292191402251112, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: e463b98caa162fe47856d540527f2116, type: 3}
+    - {fileID: -8525472861359297929, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: cb079fb6c59f54a439f570cb6af46453, type: 3}
+    - {fileID: 6991751380944182358, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 391f3dfa0e035d14f85a37f9bf64db1f, type: 3}
+    - {fileID: -5197303831126318117, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 467bdb26013aed24bb90c77a1ef4d085, type: 3}
+    - {fileID: -8188562038568238992, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 10ced3f75da563843bbe38ddaddf6bec, type: 3}
+    - {fileID: -7324968280469985419, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 5124e9558eef37f4f86c798deef8551d, type: 3}
+    - {fileID: -13502220573578737, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: b15fa3e889e72934d8493f4de6ff87b7, type: 3}
+    - {fileID: -2615875775387607097, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: 07fb621312a7fe54c97cdee3799afbcb, type: 3}
+    - {fileID: 2725711260451690405, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    - {fileID: 21300000, guid: c704c42f241f3e448bfd04294aebac30, type: 3}
+    - {fileID: 7164767358427036957, guid: 63cdb18b29aace44b8cb96835e0203e6, type: 3}
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: data
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[PokemonType, Assembly-CSharp],[TypeSprite,
+        Assembly-CSharp]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[PokemonType, Assembly-CSharp]],
+        mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 18
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 1
+    - Name: $v
+      Entry: 7
+      Data: 2|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 0
+    - Name: card
+      Entry: 10
+      Data: 1
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.5686275
+    - Name: 
+      Entry: 4
+      Data: 0.6039216
+    - Name: 
+      Entry: 4
+      Data: 0.635294139
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 2
+    - Name: $v
+      Entry: 7
+      Data: 3|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 2
+    - Name: card
+      Entry: 10
+      Data: 3
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 4
+      Data: 0.6156863
+    - Name: 
+      Entry: 4
+      Data: 0.333333343
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 3
+    - Name: $v
+      Entry: 7
+      Data: 4|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 4
+    - Name: card
+      Entry: 10
+      Data: 5
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.3019608
+    - Name: 
+      Entry: 4
+      Data: 0.5686275
+    - Name: 
+      Entry: 4
+      Data: 0.839215755
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 4
+    - Name: $v
+      Entry: 7
+      Data: 5|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 6
+    - Name: card
+      Entry: 10
+      Data: 7
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.952941239
+    - Name: 
+      Entry: 4
+      Data: 0.8235295
+    - Name: 
+      Entry: 4
+      Data: 0.231372565
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 5
+    - Name: $v
+      Entry: 7
+      Data: 6|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 8
+    - Name: card
+      Entry: 10
+      Data: 9
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.388235331
+    - Name: 
+      Entry: 4
+      Data: 0.733333349
+    - Name: 
+      Entry: 4
+      Data: 0.3529412
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 6
+    - Name: $v
+      Entry: 7
+      Data: 7|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 10
+    - Name: card
+      Entry: 10
+      Data: 11
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.450980425
+    - Name: 
+      Entry: 4
+      Data: 0.8117648
+    - Name: 
+      Entry: 4
+      Data: 0.752941251
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 7
+    - Name: $v
+      Entry: 7
+      Data: 8|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 12
+    - Name: card
+      Entry: 10
+      Data: 13
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.8078432
+    - Name: 
+      Entry: 4
+      Data: 0.254901975
+    - Name: 
+      Entry: 4
+      Data: 0.407843173
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 8
+    - Name: $v
+      Entry: 7
+      Data: 9|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 14
+    - Name: card
+      Entry: 10
+      Data: 15
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.6666667
+    - Name: 
+      Entry: 4
+      Data: 0.4156863
+    - Name: 
+      Entry: 4
+      Data: 0.788235366
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 9
+    - Name: $v
+      Entry: 7
+      Data: 10|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 16
+    - Name: card
+      Entry: 10
+      Data: 17
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.850980461
+    - Name: 
+      Entry: 4
+      Data: 0.470588267
+    - Name: 
+      Entry: 4
+      Data: 0.2784314
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 10
+    - Name: $v
+      Entry: 7
+      Data: 11|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 18
+    - Name: card
+      Entry: 10
+      Data: 19
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.56078434
+    - Name: 
+      Entry: 4
+      Data: 0.6627451
+    - Name: 
+      Entry: 4
+      Data: 0.8705883
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 11
+    - Name: $v
+      Entry: 7
+      Data: 12|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 20
+    - Name: card
+      Entry: 10
+      Data: 21
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.9803922
+    - Name: 
+      Entry: 4
+      Data: 0.4431373
+    - Name: 
+      Entry: 4
+      Data: 0.46274513
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 12
+    - Name: $v
+      Entry: 7
+      Data: 13|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 22
+    - Name: card
+      Entry: 10
+      Data: 23
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.5686275
+    - Name: 
+      Entry: 4
+      Data: 0.7568628
+    - Name: 
+      Entry: 4
+      Data: 0.172549024
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 13
+    - Name: $v
+      Entry: 7
+      Data: 14|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 24
+    - Name: card
+      Entry: 10
+      Data: 25
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.776470661
+    - Name: 
+      Entry: 4
+      Data: 0.7176471
+    - Name: 
+      Entry: 4
+      Data: 0.549019635
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 14
+    - Name: $v
+      Entry: 7
+      Data: 15|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 26
+    - Name: card
+      Entry: 10
+      Data: 27
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.321568638
+    - Name: 
+      Entry: 4
+      Data: 0.411764741
+    - Name: 
+      Entry: 4
+      Data: 0.6784314
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 15
+    - Name: $v
+      Entry: 7
+      Data: 16|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 28
+    - Name: card
+      Entry: 10
+      Data: 29
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.0431372561
+    - Name: 
+      Entry: 4
+      Data: 0.427451
+    - Name: 
+      Entry: 4
+      Data: 0.764705956
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 16
+    - Name: $v
+      Entry: 7
+      Data: 17|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 30
+    - Name: card
+      Entry: 10
+      Data: 31
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.3529412
+    - Name: 
+      Entry: 4
+      Data: 0.329411775
+    - Name: 
+      Entry: 4
+      Data: 0.400000036
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 17
+    - Name: $v
+      Entry: 7
+      Data: 18|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 32
+    - Name: card
+      Entry: 10
+      Data: 33
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.3529412
+    - Name: 
+      Entry: 4
+      Data: 0.5568628
+    - Name: 
+      Entry: 4
+      Data: 0.635294139
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 18
+    - Name: $v
+      Entry: 7
+      Data: 19|TypeSprite, Assembly-CSharp
+    - Name: icon
+      Entry: 10
+      Data: 34
+    - Name: card
+      Entry: 10
+      Data: 35
+    - Name: color
+      Entry: 7
+      Data: UnityEngine.Color, UnityEngine.CoreModule
+    - Name: 
+      Entry: 4
+      Data: 0.92549026
+    - Name: 
+      Entry: 4
+      Data: 0.56078434
+    - Name: 
+      Entry: 4
+      Data: 0.9058824
+    - Name: 
+      Entry: 4
+      Data: 1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 

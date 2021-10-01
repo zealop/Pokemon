@@ -42,7 +42,7 @@ public class BattleVisual : MonoBehaviour
 
     public void Transform(PokemonBase pokemon)
     {
-        image.sprite = unit.IsPlayerUnit ? pokemon.BackSprite : pokemon.FrontSprite;
+        image.sprite = unit.IsPlayerUnit ? pokemon.Sprite.Back : pokemon.Sprite.Front;
     }
     public void PlayEnterAnimation()
     {

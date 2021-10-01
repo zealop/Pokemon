@@ -4,22 +4,46 @@ using UnityEngine.UI;
 public class PartyMemberUI : MonoBehaviour
 {
     [SerializeField] Text nameText;
+    [SerializeField] Text hpText;
     [SerializeField] Text levelText;
-    //[SerializeField] HPBar hpBar;
+    [SerializeField] Image hpBar;
+    [SerializeField] Image icon;
 
-    [SerializeField] Color highlightedColor;
-    Pokemon _pokemon;
+    Pokemon pokemon;
+    Image image;
+
+    private void Awake()
+    {
+        image = GetComponent<Image>();
+    }
+    private float NormalizedHP => (float)pokemon.HP / pokemon.MaxHP;
     public void SetData(Pokemon pokemon)
     {
-        _pokemon = pokemon;
+        this.pokemon = pokemon;
 
-        nameText.text = pokemon.Base.Name;
-        levelText.text = $"Lvl {pokemon.Level}";
-        //hpBar.SetHP(pokemon.HP, pokemon.MaxHP);
+        icon.sprite = pokemon.Base.Sprite.Box;
+        nameText.text = pokemon.Name;
+        hpText.text = $"{pokemon.HP}/{pokemon.MaxHP}";
+        levelText.text = $"Lv. {pokemon.Level}";
+        hpBar.transform.localScale = new Vector3(NormalizedHP, 1);
     }
 
     public void SetSelected(bool selected)
     {
-        nameText.color = selected ? highlightedColor : Color.black;
+        if (selected)
+        {
+            image.color = Color.black;
+            nameText.color = Color.white;
+            hpText.color = Color.white;
+            levelText.color = Color.white;
+        }
+        else
+        {
+            image.color = Color.white;
+            nameText.color = Color.black;
+            hpText.color = Color.black;
+            levelText.color = Color.black;
+        }
+       
     }
 }

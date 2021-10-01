@@ -20,7 +20,7 @@ public class FoeSwitchEffect : MoveEffect
             var newPokemon = BattleSystem.Instance.PlayerParty.GetRandomPokemon(source.Pokemon);
 
             target.Setup(newPokemon);
-            BattleSystem.Instance.DialogBox.SetMoveName(newPokemon.Moves);
+            BattleSystem.Instance.MoveSelector.SetMoves(newPokemon.Moves);
 
             yield return BattleSystem.Instance.DialogBox.TypeDialog($"{target.Name} is dragged out!");
             yield break;
@@ -55,7 +55,7 @@ public class MimicEffect : MoveEffect
 
         source.Moves[mimicIndex] = new Move(move.Base);
         if (source.IsPlayerUnit)
-            BattleSystem.Instance.DialogBox.SetMoveName(source.Moves);
+            BattleSystem.Instance.MoveSelector.SetMoves(source.Moves);
 
         yield return BattleSystem.Instance.DialogBox.TypeDialog($"{source.Name} learned {move.Base.Name}");
 
