@@ -155,8 +155,6 @@ public class BattleSystem : MonoBehaviour
     }
     public void HandleUpdate()
     {
-        Debug.Log(state);
-
         if (state == BattleState.ActionSelection)
         {
             HandleActionSelection();

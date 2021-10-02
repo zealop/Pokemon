@@ -47,7 +47,7 @@ public class Character : MonoBehaviour
     {
         var diff = targetPos - transform.position;
         var direction = diff.normalized;
-        var layers = GameLayers.i.SolidLayer | GameLayers.i.InteractableLayer | GameLayers.i.PlayerLayer;
+        var layers = GameLayers.Instance.SolidLayer | GameLayers.Instance.InteractableLayer | GameLayers.Instance.PlayerLayer;
 
 
         if (Physics2D.BoxCast(transform.position + direction, new Vector2(0.2f, 0.2f), 0f, direction, diff.magnitude - 1, layers))
@@ -59,7 +59,7 @@ public class Character : MonoBehaviour
     }
     private bool IsWalkable(Vector3 targetPos)
     {
-        if (Physics2D.OverlapCircle(targetPos, 0.1f, GameLayers.i.SolidLayer | GameLayers.i.InteractableLayer) != null)
+        if (Physics2D.OverlapCircle(targetPos, 0.1f, GameLayers.Instance.SolidLayer | GameLayers.Instance.InteractableLayer) != null)
         {
             return false;
         }

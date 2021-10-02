@@ -9,9 +9,6 @@ public class PlayerController : MonoBehaviour
     public string Name { get => name; }
     public Sprite Sprite { get => sprite; }
 
-    public event Action OnEncountered;
-    public event Action<Collider2D> OnEnterTrainerView;
-
     private Vector2 input;
 
     private Character character;
@@ -24,8 +21,8 @@ public class PlayerController : MonoBehaviour
     public void HandleUpdate()
     {
         //test battle
-        character.Animator.IsMoving = false;
-        OnEncountered();
+        //character.Animator.IsMoving = false;
+        //OnEncountered();
 
         if (!character.IsMoving)
         {
@@ -57,7 +54,7 @@ public class PlayerController : MonoBehaviour
 
         //Debug.DrawLine(transform.position, interactPos, Color.green, 0.5f);
 
-        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, GameLayers.i.InteractableLayer);
+        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, GameLayers.Instance.InteractableLayer);
         if (collider is object)
         {
             collider.GetComponent<Interactable>()?.Interact(transform);
@@ -66,31 +63,17 @@ public class PlayerController : MonoBehaviour
     }
     private void OnMoveOver()
     {
+        var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, 0.3f), 0.1f, GameLayers.Instance.TriggerableLayers);
 
-        CheckForEncounters();
-        CheckIfInTrainersView();
-    }
-
-    private void CheckForEncounters()
-    {
-        if (Physics2D.OverlapCircle(transform.position - new Vector3(0, 0.3f), 0.1f, GameLayers.i.GrassLayer) != null)
+        foreach(var collider in colliders)
         {
-            if (UnityEngine.Random.Range(1, 101) <= 10)
+            var triggerable = collider.GetComponent<IPlayerTriggerable>();
+            if(triggerable is object)
             {
                 character.Animator.IsMoving = false;
-                OnEncountered();
+                triggerable.OnPlayerTriggered(this);
+                break;
             }
-        }
-    }
-
-    private void CheckIfInTrainersView()
-    {
-        var collider = Physics2D.OverlapCircle(transform.position, 0.1f, GameLayers.i.FOVLayer);
-
-        if (collider is object)
-        {
-            character.Animator.IsMoving = false;
-            OnEnterTrainerView?.Invoke(collider);
         }
     }
 }
