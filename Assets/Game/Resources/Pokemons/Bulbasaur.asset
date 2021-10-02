@@ -22,7 +22,7 @@ MonoBehaviour:
   type2: 8
   height: 69
   weight: 7
-  expYield: 2000
+  expYield: 500
   growthRate: 3
   hp: 45
   attack: 49

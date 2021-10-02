@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class Pokemon
@@ -84,6 +86,11 @@ public class Pokemon
     public void LevelUp()
     {
         level++;
+    }
+
+    public List<MoveBase> GetMovesToLearnOnLevelUp()
+    {
+        return Base.LearnableMoves.Where(m => m.Level == level).Select(m => m.Base).ToList();
     }
 }
 

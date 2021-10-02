@@ -10,10 +10,31 @@ public class MoveParty : MonoBehaviour
     [SerializeField] Text ppText;
     [SerializeField] TypeSpriteDB typeSprite;
 
+    Image image;
+
+    private void Awake()
+    {
+        image = GetComponent<Image>();
+    }
     public void SetData(Move move)
     {
         typeCard.sprite = typeSprite.Data[move.Base.Type].Card;
         moveName.text = move.Name;
         ppText.text = $"{move.PP}/{move.MaxPP}";
+    }
+
+    public void SetSelected(bool selected)
+    {
+        if(selected)
+        {
+            image.color = Color.black;
+            moveName.color = Color.white;
+        }
+        else
+        {
+            image.color = Color.white;
+            moveName.color = Color.black;
+        }
+        
     }
 }

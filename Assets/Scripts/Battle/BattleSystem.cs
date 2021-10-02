@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public enum BattleState
 {
-    Start, ActionSelection, MoveSelection, PerformMove, Busy, PartyScreen, BattleOver
+    Start, ActionSelection, MoveSelection, PerformMove, Busy, PartyScreen, LearnMoveScreen, BattleOver
 }
 
 public class BattleSystem : MonoBehaviour
@@ -18,6 +18,7 @@ public class BattleSystem : MonoBehaviour
 
     [SerializeField] BattleDialogBox dialogBox;
     [SerializeField] PartyScreen partyScreen;
+    [SerializeField] LearnMoveScreen learnMoveScreen;
 
     [SerializeField] Image playerImage;
     [SerializeField] Image trainerImage;
@@ -154,6 +155,8 @@ public class BattleSystem : MonoBehaviour
     }
     public void HandleUpdate()
     {
+        Debug.Log(state);
+
         if (state == BattleState.ActionSelection)
         {
             HandleActionSelection();
@@ -167,7 +170,10 @@ public class BattleSystem : MonoBehaviour
         {
             HandlePartySelection();
         }
-
+        else if (state == BattleState.LearnMoveScreen)
+        {
+            learnMoveScreen.HandleUpdate();
+        }
         //test button
         if (Input.GetKeyDown(KeyCode.T))
         {
@@ -183,6 +189,23 @@ public class BattleSystem : MonoBehaviour
 
         partyScreen.gameObject.SetActive(true);
         partyScreen.SetPartyData(playerParty.Party);
+    }
+
+    public void OpenLearnMoveScreen()
+    {
+        state = BattleState.LearnMoveScreen;
+
+
+        learnMoveScreen.gameObject.SetActive(true);
+        learnMoveScreen.SetMovesData(playerUnit);
+    }
+    public void CloseMoveScreen(MoveBase forgetmove, MoveBase newMove)
+    {
+        learnMoveScreen.gameObject.SetActive(false);
+
+        MessageQueue.Enqueue($"{playerUnit.Name} forgot {forgetmove.Name} and learned {newMove.Name}!");
+
+        state = BattleState.Busy;
     }
 
     void HandleActionSelection()
@@ -413,11 +436,17 @@ public class BattleSystem : MonoBehaviour
     }
     public IEnumerator CheckForBattleOver()
     {
+        state = BattleState.Busy;
         if (enemyUnit.HP <= 0)
         {
             //gain exp
             yield return playerUnit.GainEXP(enemyUnit.Pokemon, isTrainerBattle);
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
+
+            yield return new WaitUntil(() => state == BattleState.Busy);
+
+            yield return ShowMessages();
+
             if (isTrainerBattle)
             {
                 var nextPokemon = trainerParty.GetHealthyPokemon();
@@ -565,4 +594,6 @@ public class BattleSystem : MonoBehaviour
         }
 
     }
+
+
 }

@@ -311,6 +311,29 @@ public class BattleUnit : MonoBehaviour
         Pokemon.LevelUp();
 
         yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Name} grew to {Level}!");
+
+        yield return CheckForNewMoves();
+    }
+
+    private IEnumerator CheckForNewMoves()
+    {
+        var newMoves = Pokemon.GetMovesToLearnOnLevelUp();
+        
+        foreach(var move in newMoves)
+        {
+            var newMove = new Move(move);
+            Pokemon.Moves.Add(newMove);
+            Moves.Add(newMove);
+            if (Pokemon.Moves.Count < 4)
+            {
+                yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Name} learned {move.Name}!");
+            }
+            else
+            {
+                yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Name} wants to learn {move.Name}!");
+                BattleSystem.Instance.OpenLearnMoveScreen();
+            }
+        }
     }
 }
 
