@@ -6,8 +6,20 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Gameplay.unity
+    guid: 660edd8301b977b4081c46446f559177
+  - enabled: 1
     path: Assets/Scenes/PalletTown.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/Home1F.unity
+    guid: 04312d3a13674f94e822d1eec9e2f699
+  - enabled: 1
+    path: Assets/Scenes/Home2F.unity
+    guid: 872e72e27fbd82343adc4cea5eadafd9
+  - enabled: 1
+    path: Assets/Scenes/RivalHome.unity
+    guid: b6bb7d36ce7d35040b05db3623e49379
   - enabled: 1
     path: Assets/Scenes/Route1.unity
     guid: e52f7eecf6236b641a184cdd7c145ffd

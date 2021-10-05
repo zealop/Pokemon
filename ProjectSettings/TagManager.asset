@@ -8,7 +8,7 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Background
   - Water
   - UI
   - SolidObjects
@@ -41,14 +41,17 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Solid
+    uniqueID: 2672884701
+    locked: 0
   - name: Background
     uniqueID: 4057902039
     locked: 0
-  - name: Foreground
-    uniqueID: 2315397599
-    locked: 0
   - name: Player
     uniqueID: 1802189533
+    locked: 0
+  - name: ForeObject
+    uniqueID: 2315397599
     locked: 0
   - name: UI
     uniqueID: 3436528999

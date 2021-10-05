@@ -11,6 +11,9 @@ public class GameController : MonoBehaviour
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
 
+    public SceneDetails CurrentScene { get; private set; }
+    public SceneDetails PreviousScene { get; private set; }
+
     GameState beforePauseState;
     GameState state;
 
@@ -58,15 +61,13 @@ public class GameController : MonoBehaviour
             state = beforePauseState;
         }
     }
-    public void StartBattle()
+    public void StartWildBattle(Pokemon wildPokemon)
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
 
         var playerParty = playerController.GetComponent<PokemonParty>();
-        var wildPokemon = FindObjectOfType<MapArea>().GetComponent<MapArea>().GetRandomPokemon();
-
         battleSystem.StartBattle(playerParty, wildPokemon);
     }
     public void StartTrainerBattle(TrainerController trainerController)
@@ -100,4 +101,11 @@ public class GameController : MonoBehaviour
         state = GameState.Cutscene;
         StartCoroutine(trainer.TriggerTrainerBattle(playerController));
     }
+
+    public void SetCurrentScene(SceneDetails scene)
+    {
+        PreviousScene = CurrentScene;
+        CurrentScene = scene;
+    }
+
 }
