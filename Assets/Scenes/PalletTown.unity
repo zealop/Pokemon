@@ -416,12 +416,12 @@ TilemapRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 10, y: 10, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
   m_Mode: 0
-  m_DetectChunkCullingBounds: 0
+  m_DetectChunkCullingBounds: 1
   m_MaskInteraction: 0
 --- !u!1839735485 &289574097
 Tilemap:
@@ -3047,6 +3047,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1495202399}
   - component: {fileID: 1495202398}
+  - component: {fileID: 1495202401}
+  - component: {fileID: 1495202400}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -3085,6 +3087,71 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1495202400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495202397}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50b19e6f2083af54faede9e08a15fbf9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: connectedScenes
+      Entry: 7
+      Data: 0|System.Collections.Generic.HashSet`1[[System.String, mscorlib]], System.Core
+    - Name: 
+      Entry: 12
+      Data: 2
+    - Name: 
+      Entry: 1
+      Data: Route21
+    - Name: 
+      Entry: 1
+      Data: Route1
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+--- !u!61 &1495202401
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1495202397}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -2, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 24, y: 20}
+  m_EdgeRadius: 0
 --- !u!1 &1523005665
 GameObject:
   m_ObjectHideFlags: 0
@@ -3240,12 +3307,12 @@ TilemapRenderer:
   m_SortingLayer: 4
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 10, y: 10, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
   m_Mode: 0
-  m_DetectChunkCullingBounds: 0
+  m_DetectChunkCullingBounds: 1
   m_MaskInteraction: 0
 --- !u!1839735485 &1595394718
 Tilemap:
@@ -4276,12 +4343,12 @@ TilemapRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 1
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 10, y: 10, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
   m_Mode: 0
-  m_DetectChunkCullingBounds: 0
+  m_DetectChunkCullingBounds: 1
   m_MaskInteraction: 0
 --- !u!1839735485 &1600155637
 Tilemap:
@@ -6639,6 +6706,7 @@ GameObject:
   - component: {fileID: 1682604426}
   - component: {fileID: 1682604428}
   - component: {fileID: 1682604433}
+  - component: {fileID: 1682604434}
   m_Layer: 8
   m_Name: Trainer
   m_TagString: Untagged
@@ -6847,6 +6915,19 @@ MonoBehaviour:
   - _base: {fileID: 11400000, guid: 78295d1e9a4882e4db9f238805c4c5a1, type: 2}
     level: 6
     nickName: 
+--- !u!114 &1682604434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1682604425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uniqueId: 3fcc6238-a15d-4cff-93e1-7465b7a2ed6e
 --- !u!1 &1947597640
 GameObject:
   m_ObjectHideFlags: 0
@@ -7013,12 +7094,12 @@ TilemapRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 10, y: 10, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
   m_Mode: 0
-  m_DetectChunkCullingBounds: 0
+  m_DetectChunkCullingBounds: 1
   m_MaskInteraction: 0
 --- !u!1839735485 &1971048655
 Tilemap:
@@ -7116,6 +7197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9a82a24052c86d45aa5124ec17c56d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wildPokemons: []
 --- !u!1 &2072934583
 GameObject:
   m_ObjectHideFlags: 0
@@ -7189,12 +7271,12 @@ TilemapRenderer:
   m_SortingLayer: 2
   m_SortingOrder: 0
   m_ChunkSize: {x: 32, y: 32, z: 32}
-  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_ChunkCullingBounds: {x: 10, y: 10, z: 0}
   m_MaxChunkCount: 16
   m_MaxFrameAge: 16
   m_SortOrder: 0
   m_Mode: 0
-  m_DetectChunkCullingBounds: 0
+  m_DetectChunkCullingBounds: 1
   m_MaskInteraction: 0
 --- !u!1839735485 &2072934586
 Tilemap:
@@ -12426,7 +12508,6 @@ MonoBehaviour:
   sceneToLoad: Home1F
   destinationPortal: 0
   spawnPoint: {fileID: 1947597641}
-  goOutdoor: 0
 --- !u!1 &2127610897
 GameObject:
   m_ObjectHideFlags: 0
@@ -12497,63 +12578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dd5df0b78c88cb429bb8dd24d1cc604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1001 &433444267488546895
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_RootOrder
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018483, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 433444267994018484, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
-      propertyPath: m_Name
-      value: EssentialObjectLoader
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 7a9d2aa046b9e9e45a492984965653c0, type: 3}
 --- !u!4 &2847539432430679766
 Transform:
   m_ObjectHideFlags: 0
@@ -12599,7 +12623,6 @@ MonoBehaviour:
   sceneToLoad: OakLab
   destinationPortal: 2
   spawnPoint: {fileID: 2847539432430679766}
-  goOutdoor: 0
 --- !u!4 &2847539432565629766
 Transform:
   m_ObjectHideFlags: 0
@@ -12715,7 +12738,6 @@ MonoBehaviour:
   sceneToLoad: RivalHome
   destinationPortal: 1
   spawnPoint: {fileID: 2847539432886937156}
-  goOutdoor: 0
 --- !u!1 &2847539432753198042
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,20 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EssentialObjectsSpawner : MonoBehaviour
 {
-    [SerializeField] GameObject essentialObjectsPrefab;
+    [SerializeField] private GameObject essentialObjectsPrefab;
 
     private void Awake()
     {
         var existingObjects = FindObjectsOfType<EssentialObjects>();
-        if(existingObjects.Length == 0)
+        if (existingObjects.Length == 0)
         {
             //spawn at center of grid
             var spawnPos = new Vector3(0, 0, 0);
             var grid = FindObjectOfType<Grid>();
-            if(grid is object)
+            if (grid is object)
             {
                 spawnPos = grid.transform.position;
             }

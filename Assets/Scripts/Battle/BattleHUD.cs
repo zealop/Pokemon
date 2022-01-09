@@ -1,18 +1,20 @@
-using DG.Tweening;
 using System.Collections;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class BattleHUD : MonoBehaviour
 {
-    [SerializeField] Text nameText;
-    [SerializeField] Text levelText;
-    [SerializeField] Image hpBar;
-    [SerializeField] Text hpText;
-    [SerializeField] Image expBar;
-    [SerializeField] Image statusImage;
-    [SerializeField] StatusSprite statusSprite;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private Image hpBar;
+    [SerializeField] private TextMeshProUGUI hpText;
+    [SerializeField] private Image expBar;
+    [SerializeField] private Image statusImage;
+    [SerializeField] private StatusSprite statusSprite;
+    private float NormalizedHP => (float) unit.HP / unit.MaxHP;
 
-    private float NormalizedHP => (float)unit.HP / unit.MaxHP;
     private float NormalizedEXP
     {
         get
@@ -20,12 +22,13 @@ public class BattleHUD : MonoBehaviour
             int currentLevelEXP = EXPChart.GetEXPAtLevel(unit.Pokemon.Base.GrowthRate, unit.Level);
             int nextLevelEXP = EXPChart.GetEXPAtLevel(unit.Pokemon.Base.GrowthRate, unit.Level + 1);
 
-            return (float)(unit.Pokemon.EXP - currentLevelEXP) / (nextLevelEXP - currentLevelEXP);
+            return (float) (unit.Pokemon.EXP - currentLevelEXP) / (nextLevelEXP - currentLevelEXP);
         }
     }
 
-    BattleUnit unit;
-    Sequence statusSequence;
+    private BattleUnit unit;
+    private Sequence statusSequence;
+
     public void SetData(BattleUnit unit)
     {
         this.unit = unit;
@@ -41,6 +44,7 @@ public class BattleHUD : MonoBehaviour
         {
             hpText.text = $"{unit.HP}/{unit.MaxHP}";
         }
+
         if (expBar is object)
         {
             expBar.transform.localScale = new Vector3(NormalizedEXP, 1);
@@ -58,6 +62,7 @@ public class BattleHUD : MonoBehaviour
         {
             StartCoroutine(UpdateHPTextSmooth(1.5f));
         }
+
         yield return hpBar.transform.DOScaleX(NormalizedHP, 1.5f).WaitForCompletion();
     }
 
@@ -69,7 +74,6 @@ public class BattleHUD : MonoBehaviour
             timer -= Time.deltaTime;
 
             int hp = unit.HP + Mathf.FloorToInt((curHp - unit.HP) * timer / 1.5f);
-            Debug.Log(hp);
             hpText.text = $"{hp}/{unit.MaxHP}";
             yield return null;
         }
@@ -95,7 +99,7 @@ public class BattleHUD : MonoBehaviour
 
     public void SetStatusImage()
     {
-        StatusCondition status = unit.Status;
+        var status = unit.Status;
 
         if (status is object)
         {
@@ -113,5 +117,4 @@ public class BattleHUD : MonoBehaviour
             statusSequence.Kill();
         }
     }
-
 }

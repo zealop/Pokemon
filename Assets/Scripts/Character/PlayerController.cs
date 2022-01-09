@@ -1,22 +1,22 @@
-using System;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, ISavable
 {
-    [SerializeField] new string name;
-    [SerializeField] Sprite sprite;
+    [SerializeField] private new string name;
+    [SerializeField] private Sprite sprite;
 
-    public string Name { get => name; }
-    public Sprite Sprite { get => sprite; }
+    public string Name => name;
+    public Sprite Sprite => sprite;
 
     private Vector2 input;
 
-    private Character character;
+    public Character Character { get; private set; }
 
-    public Character Character => character;
     private void Awake()
     {
-        character = GetComponent<Character>();
+        Character = GetComponent<Character>();
     }
 
     public void HandleUpdate()
@@ -25,7 +25,7 @@ public class PlayerController : MonoBehaviour
         //character.Animator.IsMoving = false;
         //OnEncountered();
 
-        if (!character.IsMoving)
+        if (!Character.IsMoving)
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
@@ -36,11 +36,11 @@ public class PlayerController : MonoBehaviour
 
             if (input != Vector2.zero)
             {
-                StartCoroutine(character.Move(input, OnMoveOver));
+                StartCoroutine(Character.Move(input, OnMoveOver));
             }
         }
 
-        character.HandleUpdate();
+        Character.HandleUpdate();
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -48,9 +48,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void Interact()
+    private void Interact()
     {
-        var faceDirection = new Vector3(character.Animator.MoveX, character.Animator.MoveY);
+        var faceDirection = new Vector3(Character.Animator.MoveX, Character.Animator.MoveY);
         var interactPos = transform.position + faceDirection;
 
         //Debug.DrawLine(transform.position, interactPos, Color.green, 0.5f);
@@ -60,22 +60,48 @@ public class PlayerController : MonoBehaviour
         {
             collider.GetComponent<Interactable>()?.Interact(transform);
         }
-
     }
+
     private void OnMoveOver()
     {
-        var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, character.OffsetY), 0.1f, GameLayers.Instance.TriggerableLayers);
+        var colliders = Physics2D.OverlapCircleAll(transform.position - new Vector3(0, Character.OffsetY), 0.1f,
+            GameLayers.Instance.TriggerableLayers);
 
-        foreach(var collider in colliders)
+        foreach (var collider in colliders)
         {
             var triggerable = collider.GetComponent<IPlayerTriggerable>();
-            if(triggerable is object)
+            if (triggerable is object)
             {
-                Debug.Log("bug");
-                character.Animator.IsMoving = false;
+                Character.Animator.IsMoving = false;
                 triggerable.OnPlayerTriggered(this);
                 break;
             }
         }
     }
+
+    public object CaptureState()
+    {
+        var data = new PlayerSaveData()
+        {
+            position = transform.position,
+            party = GetComponent<PokemonParty>().Party.Select(p => p.GetSaveData()).ToList()
+        };
+
+
+        return data;
+    }
+
+    public void RestoreState(object state)
+    {
+        var data = (PlayerSaveData) state;
+        transform.position = data.position;
+
+        GetComponent<PokemonParty>().Party = data.party.Select(s => new Pokemon(s)).ToList();
+    }
+}
+
+public class PlayerSaveData
+{
+    public Vector3 position;
+    public List<PokemonSaveData> party;
 }

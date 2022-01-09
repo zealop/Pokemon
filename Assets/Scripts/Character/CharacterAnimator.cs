@@ -1,30 +1,31 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum FacingDirection { Up, Down, Left, Right }
 public class CharacterAnimator : MonoBehaviour
 {
-    [SerializeField] List<Sprite> walkDownSprites;
-    [SerializeField] List<Sprite> walkUpSprites;
-    [SerializeField] List<Sprite> walkLeftSprites;
-    [SerializeField] List<Sprite> walkRightSprites;
-    [SerializeField] FacingDirection defaultDirection = FacingDirection.Down;
+    [SerializeField] private List<Sprite> walkDownSprites;
+    [SerializeField] private List<Sprite> walkUpSprites;
+    [SerializeField] private List<Sprite> walkLeftSprites;
+    [SerializeField] private List<Sprite> walkRightSprites;
+    [SerializeField] private FacingDirection defaultDirection = FacingDirection.Down;
 
     public float MoveX { get; set; }
     public float MoveY { get; set; }
     public bool IsMoving { get; set; }
-    public FacingDirection DefaultDirection { get => defaultDirection; }
-    SpriteRenderer spriteRenderer;
+    public FacingDirection DefaultDirection => defaultDirection;
+    private SpriteRenderer spriteRenderer;
 
     //States
-    SpriteAnimator walkDownAnimation;
-    SpriteAnimator walkUpAnimation;
-    SpriteAnimator walkLeftAnimation;
-    SpriteAnimator walkRightAnimation;
+    private SpriteAnimator walkDownAnimation;
+    private SpriteAnimator walkUpAnimation;
+    private SpriteAnimator walkLeftAnimation;
+    private SpriteAnimator walkRightAnimation;
 
-    SpriteAnimator currentAnimation;
+    private SpriteAnimator currentAnimation;
 
-    bool wasMoving;
+    private bool wasMoving;
     private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -51,7 +52,7 @@ public class CharacterAnimator : MonoBehaviour
         else if (MoveY == -1)
             currentAnimation = walkDownAnimation;
 
-        if ((currentAnimation != previousAnimation) || (wasMoving ^ IsMoving))
+        if (currentAnimation != previousAnimation || wasMoving ^ IsMoving)
             currentAnimation.Start();
 
         if (IsMoving)
@@ -62,7 +63,7 @@ public class CharacterAnimator : MonoBehaviour
         wasMoving = IsMoving;
     }
 
-    public void SetFacingDirection(FacingDirection direction)
+    private void SetFacingDirection(FacingDirection direction)
     {
         switch (direction)
         {
@@ -78,6 +79,8 @@ public class CharacterAnimator : MonoBehaviour
             case FacingDirection.Right:
                 MoveX = 1;
                 break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
     }
 }

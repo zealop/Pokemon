@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EncounterTable : MonoBehaviour
 {
-    [SerializeField] List<Pokemon> wildPokemons;
+    [SerializeField] private List<Pokemon> wildPokemons;
 
     public Pokemon GetRandomPokemon()
     {

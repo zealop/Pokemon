@@ -1,22 +1,22 @@
 using System.Collections;
 using UnityEngine;
 
-public class TrainerController : MonoBehaviour, Interactable
+public class TrainerController : MonoBehaviour, Interactable, ISavable
 {
-    [SerializeField] new string name;
-    [SerializeField] Sprite sprite;
-    [SerializeField] Dialog dialog;
-    [SerializeField] Dialog dialogAfterBattle;
-    [SerializeField] GameObject exclamation;
-    [SerializeField] GameObject fov;
+    [SerializeField] private new string name;
+    [SerializeField] private Sprite sprite;
+    [SerializeField] private Dialog dialog;
+    [SerializeField] private Dialog dialogAfterBattle;
+    [SerializeField] private GameObject exclamation;
+    [SerializeField] private GameObject fov;
 
-    bool battleLost = false;
-    public string Name { get => name; }
-    public Sprite Sprite { get => sprite; }
+    private bool battleLost;
+    public string Name => name;
+    public Sprite Sprite => sprite;
 
 
+    private Character character;
 
-    Character character;
     private void Awake()
     {
         character = GetComponent<Character>();
@@ -26,6 +26,7 @@ public class TrainerController : MonoBehaviour, Interactable
     {
         SetFOVRotation(character.Animator.DefaultDirection);
     }
+
     public IEnumerator TriggerTrainerBattle(PlayerController player)
     {
         //exclamation appear
@@ -42,27 +43,19 @@ public class TrainerController : MonoBehaviour, Interactable
         yield return character.Move(moveVector);
 
         //show dialog
-        yield return DialogManager.Instance.ShowDialog(dialog, () =>
-        {
-            GameController.Instance.StartTrainerBattle(this);
-        });
+        yield return DialogManager.Instance.ShowDialog(dialog,
+            () => { GameController.Instance.StartTrainerBattle(this); });
     }
 
-    public void SetFOVRotation(FacingDirection direction)
+    private void SetFOVRotation(FacingDirection direction)
     {
-        float angle = 0;
-        switch (direction)
+        float angle = direction switch
         {
-            case FacingDirection.Up:
-                angle = 180;
-                break;
-            case FacingDirection.Left:
-                angle = 270;
-                break;
-            case FacingDirection.Right:
-                angle = 90;
-                break;
-        }
+            FacingDirection.Up => 180,
+            FacingDirection.Left => 270,
+            FacingDirection.Right => 90,
+            _ => 0
+        };
 
         fov.transform.eulerAngles = new Vector3(0, 0, angle);
     }
@@ -78,20 +71,24 @@ public class TrainerController : MonoBehaviour, Interactable
         else
         {
             //show dialog
-            StartCoroutine(DialogManager.Instance.ShowDialog(dialog, () =>
-            {
-                GameController.Instance.StartTrainerBattle(this);
-            }));
+            StartCoroutine(DialogManager.Instance.ShowDialog(dialog,
+                () => { GameController.Instance.StartTrainerBattle(this); }));
         }
-
-
     }
 
-    public void BatteLost()
+    public void BattleLost()
     {
         battleLost = true;
         fov.gameObject.SetActive(false);
     }
+
+    public object CaptureState()
+    {
+        return battleLost;
+    }
+
+    public void RestoreState(object state)
+    {
+        if ((bool) state) BattleLost();
+    }
 }
-
-

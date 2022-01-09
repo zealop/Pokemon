@@ -1,49 +1,62 @@
 using Sirenix.OdinInspector;
+using Sirenix.OdinInspector.Editor;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Pokemon", menuName = "New Pokemon ")]
 public class PokemonBase : ScriptableObject
 {
-    [SerializeField] new string name;
+    [SerializeField] private string _name;
 
-    [SerializeField] PokemonSprite sprite;
+    [SerializeField] private PokemonSprite sprite;
 
-
-    [SerializeField] int catchRate;
+    [SerializeField] private int catchRate;
 
     [BoxGroup("Types")]
-    [SerializeField] PokemonType type1;
+    [SerializeField]
+    private PokemonType type1;
     [BoxGroup("Types")]
-    [SerializeField] PokemonType type2;
+    [SerializeField]
+    private PokemonType type2;
 
     [BoxGroup("Size")]
-    [SerializeField] int height;
+    [SerializeField]
+    private int height;
     [BoxGroup("Size")]
-    [SerializeField] int weight;
+    [SerializeField]
+    private int weight;
 
     [BoxGroup("EXP")]
-    [SerializeField] int expYield;
+    [SerializeField]
+    private int expYield;
     [BoxGroup("EXP")]
-    [SerializeField] GrowthType growthRate;
+    [SerializeField]
+    private GrowthType growthRate;
 
 
     [BoxGroup("Base Stat")]
-    [SerializeField] int hp;
+    [SerializeField]
+    private int hp;
     [BoxGroup("Base Stat")]
-    [SerializeField] int attack;
+    [SerializeField]
+    private int attack;
     [BoxGroup("Base Stat")]
-    [SerializeField] int defense;
+    [SerializeField]
+    private int defense;
     [BoxGroup("Base Stat")]
-    [SerializeField] int spAttack;
+    [SerializeField]
+    private int spAttack;
     [BoxGroup("Base Stat")]
-    [SerializeField] int spDefense;
+    [SerializeField]
+    private int spDefense;
     [BoxGroup("Base Stat")]
-    [SerializeField] int speed;
+    [SerializeField]
+    private int speed;
 
-    [SerializeField] List<LearnableMove> learnableMoves;
+    [SerializeField] private List<LearnableMove> learnableMoves;
 
-    public string Name => name;
+    public string Name => _name;
     public PokemonSprite Sprite => sprite;
 
     public int CatchRate => catchRate;
@@ -66,25 +79,62 @@ public class PokemonBase : ScriptableObject
 [System.Serializable]
 public class LearnableMove
 {
-    [SerializeField] MoveBase moveBase;
-    [SerializeField] int level;
+    [SerializeField] private MoveBase moveBase;
+    [SerializeField] private int level;
 
     public MoveBase Base => moveBase;
     public int Level => level;
 }
 
-
 [System.Serializable]
 public class PokemonSprite
-{ 
+{
     [PreviewField(100)]
-    [SerializeField] Sprite front;
+    [SerializeField]
+    private Sprite front;
     [PreviewField(100)]
-    [SerializeField] Sprite back;
+    [SerializeField]
+    private Sprite back;
     [PreviewField(100)]
-    [SerializeField] Sprite box;
+    [SerializeField]
+    private Sprite box;
 
     public Sprite Front => front;
     public Sprite Back => back;
     public Sprite Box => box;
+}
+
+[CustomEditor(typeof(PokemonBase))]
+public class ExampleEditor : OdinEditor
+{
+    public override Texture2D RenderStaticPreview(string assetPath, Object[] subAssets, int width, int height)
+    {
+        PokemonBase example = (PokemonBase)target;
+
+        if (example == null || example.Sprite.Front == null)
+            return null;
+
+        // example.PreviewIcon must be a supported format: ARGB32, RGBA32, RGB24,
+        // Alpha8 or one of float formats
+        Texture2D tex = new Texture2D(width, height);
+        EditorUtility.CopySerialized(textureFromSprite(example.Sprite.Front), tex);
+
+        return tex;
+    }
+    public static Texture2D textureFromSprite(Sprite sprite)
+    {
+        if (sprite.rect.width != sprite.texture.width)
+        {
+            Texture2D newText = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
+            Color[] newColors = sprite.texture.GetPixels((int)sprite.textureRect.x,
+                                                         (int)sprite.textureRect.y,
+                                                         (int)sprite.textureRect.width,
+                                                         (int)sprite.textureRect.height);
+            newText.SetPixels(newColors);
+            newText.Apply();
+            return newText;
+        }
+        else
+            return sprite.texture;
+    }
 }

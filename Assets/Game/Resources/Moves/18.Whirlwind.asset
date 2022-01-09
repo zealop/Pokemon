@@ -21,54 +21,28 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: effects
+    - Name: moveDamage
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[MoveEffect, Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|FoeSwitchEffect, Assembly-CSharp
-    - Name: message
-      Entry: 1
-      Data: was blown away!
+      Data: 0|DefaultDamage, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: modifiers
+    - Name: moveAccuracy
       Entry: 7
-      Data: 2|System.Collections.Generic.List`1[[MoveModifier, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 3|Priority, Assembly-CSharp
-    - Name: priority
-      Entry: 3
-      Data: -6
+      Data: 1|DefaultAccuracy, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: 
-      Entry: 13
+    - Name: moveEffect
+      Entry: 6
       Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  name: Whirlwind
+  _name: Whirlwind
   description: 
-  type: 0
+  type: 1
   category: 2
   target: 0
   pp: 20
   power: 0
   accuracy: 0
+  priority: 0
+  critStage: 0

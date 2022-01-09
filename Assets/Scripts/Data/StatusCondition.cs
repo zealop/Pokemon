@@ -1,26 +1,43 @@
-using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum StatusID { PSN, BRN, SLP, PRZ, FRZ, TOX }
-public class StatusCondition
+public enum StatusID
 {
-    public virtual StatusID ID { get; }
-    public BattleUnit Unit { get; set; }
-    public static StatusCondition Create(StatusID id)
+    PSN,
+    BRN,
+    SLP,
+    PRZ,
+    FRZ,
+    TOX
+}
+
+public abstract class StatusCondition
+{
+    public abstract StatusID ID { get; }
+    protected readonly BattleUnit unit;
+    protected static Queue<IEnumerator> AnimationQueue => BattleManager.Instance.AnimationQueue;
+    protected static BattleDialogBox DialogBox => BattleManager.Instance.DialogBox;
+
+    protected StatusCondition(BattleUnit unit)
+    {
+        this.unit = unit;
+    }
+
+    public static StatusCondition Create(StatusID id, BattleUnit unit)
     {
         return id switch
         {
-            StatusID.PSN => new StatusPoison(),
-            StatusID.BRN => new StatusBurn(),
-            StatusID.SLP => new StatusSleep(),
-            StatusID.PRZ => new StatusParalyze(),
-            StatusID.FRZ => new StatusFreeze(),
-            StatusID.TOX => new StatusToxic(),
+            StatusID.PSN => new StatusPoison(unit),
+            StatusID.BRN => new StatusBurn(unit),
+            StatusID.SLP => new StatusSleep(unit),
+            StatusID.PRZ => new StatusParalyze(unit),
+            StatusID.FRZ => new StatusFreeze(unit),
+            StatusID.TOX => new StatusToxic(unit),
             _ => null,
         };
     }
+
     public static float CatchBonus(StatusCondition condition)
     {
         if (condition is null) return 1;
@@ -37,228 +54,264 @@ public class StatusCondition
         };
     }
 
-
-    public virtual IEnumerator OnStart()
-    {
-        yield return null;
-    }
-    public virtual IEnumerator OnEnd()
-    {
-        yield return null;
-    }
+    public abstract void OnStart();
+    public abstract void OnEnd();
 }
 
 public class StatusPoison : StatusCondition
 {
-    public override StatusID ID { get => StatusID.PSN; }
+    public override StatusID ID => StatusID.PSN;
+    private const float DamageModifier = 1 / 8f;
 
-    static float damage = 1 / 8f;
-
-
-    public override IEnumerator OnStart()
+    public StatusPoison(BattleUnit unit) : base(unit)
     {
-
-        Unit.OnTurnEndList.Add(PoisonDamage);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is poisoned!");
-    }
-    public override IEnumerator OnEnd()
-    {
-        Unit.OnTurnEndList.Remove(PoisonDamage);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is cured of its poison!");
     }
 
-    IEnumerator PoisonDamage()
+    public override void OnStart()
     {
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by poison!");
-        yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP * damage));
+        unit.OnTurnEndList.Add(PoisonDamage);
+
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is poisoned!"));
+    }
+
+    public override void OnEnd()
+    {
+        unit.OnTurnEndList.Remove(PoisonDamage);
+
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is cured of its poison!"));
+    }
+
+    private void PoisonDamage()
+    {
+        int damage = Mathf.FloorToInt(unit.MaxHP * DamageModifier);
+        unit.TakeDamage(damage, $"{unit.Name} is hurt by poison!");
     }
 }
 
 public class StatusBurn : StatusCondition
 {
-    public override StatusID ID { get => StatusID.BRN; }
+    public override StatusID ID => StatusID.BRN;
+    private const float DamageModifier = 1 / 16f;
+    private const float AttackModifier = 1 / 2f;
 
-    static float damage = 1 / 16f;
-
-    public override IEnumerator OnStart()
+    public StatusBurn(BattleUnit unit) : base(unit)
     {
-        Unit.AttackerModList.Add(BurnMod);
-        Unit.OnTurnEndList.Add(BurnDamage);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is burned!");
-    }
-    public override IEnumerator OnEnd()
-    {
-        Unit.AttackerModList.Remove(BurnMod);
-        Unit.OnTurnEndList.Remove(BurnDamage);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is cured of its burn!");
     }
 
-    IEnumerator BurnDamage()
+    public override void OnStart()
     {
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by its burn!");
-        yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP * damage));
+        Restart();
+
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is burned!"));
     }
 
-    float BurnMod(MoveBase move, BattleUnit target)
+    public override void OnEnd()
     {
-        if (move.Category == MoveCategory.Physical)
-            return 0.5f;
+        unit.AttackerModList.Remove(BurnMod);
+        unit.OnTurnEndList.Remove(BurnDamage);
 
-        return 1f;
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is cured of its burn!"));
+    }
+
+    private void BurnDamage()
+    {
+        int damage = Mathf.FloorToInt(unit.MaxHP * DamageModifier);
+        unit.TakeDamage(damage, $"{unit.Name} is hurt by its burn!");
+    }
+
+    private static float BurnMod(MoveBase move, BattleUnit target)
+    {
+        return move.Category == MoveCategory.Physical ? AttackModifier : 1f;
+    }
+
+    public virtual void Restart()
+    {
+        unit.AttackerModList.Add(BurnMod);
+        unit.OnTurnEndList.Add(BurnDamage);
     }
 }
+
 public class StatusSleep : StatusCondition
 {
-    public override StatusID ID { get => StatusID.SLP; }
+    public override StatusID ID => StatusID.SLP;
+    private int counter;
 
-
-    int counter;
-
-    public StatusSleep()
+    public StatusSleep(BattleUnit unit) : this(Random.Range(1, 4), unit)
     {
-        counter = Random.Range(1, 4);
     }
-    public StatusSleep(int value)
+
+    public StatusSleep(int value, BattleUnit unit) : base(unit)
     {
         counter = value;
     }
-    public override IEnumerator OnStart()
-    {
-        Unit.OnBeforeMoveList.Add(SleepCheck);
 
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} fell asleep!");
-    }
-    public override IEnumerator OnEnd()
+    public override void OnStart()
     {
-        Unit.OnBeforeMoveList.Remove(SleepCheck);
+        Restart();
 
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} woke up!");
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} fell asleep!"));
     }
 
-    IEnumerator SleepCheck()
+    public override void OnEnd()
+    {
+        unit.OnBeforeMoveList.Remove(SleepCheck);
+
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} woke up!"));
+    }
+
+    private void SleepCheck()
     {
         if (counter > 0)
         {
             counter--;
-            Unit.CanMove = false;
-            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is fast asleep!");
-            yield break;
+            unit.CanMove = false;
+
+            AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is fast asleep!"));
         }
+        else
+        {
+            unit.RemoveStatusCondition();
+        }
+    }
 
-        yield return Unit.RemoveStatusCondition();
-
+    public virtual void Restart()
+    {
+        unit.OnBeforeMoveList.Add(SleepCheck);
     }
 }
 
 public class StatusParalyze : StatusCondition
 {
-    public override StatusID ID { get => StatusID.PRZ; }
+    public override StatusID ID => StatusID.PRZ;
+    private const float SpeedModifier = 0.5f;
+    private const float ParalyzeChance = 0.25f;
 
-
-    static float speed = 0.5f;
-    static float chance = 0.25f;
-
-    public override IEnumerator OnStart()
+    public StatusParalyze(BattleUnit unit) : base(unit)
     {
-        Unit.OnBeforeMoveList.Add(ParalyzeCheck);
-        Unit.SpeedModList.Add(ParalyzeSlow);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is paralyzed!");
-    }
-    public override IEnumerator OnEnd()
-    {
-        Unit.OnBeforeMoveList.Remove(ParalyzeCheck);
-        Unit.SpeedModList.Remove(ParalyzeSlow);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is cured of its paralysis!");
     }
 
-    IEnumerator ParalyzeCheck()
+    public override void OnStart()
     {
-        if (Random.value < chance)
+        Restart();
+
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is paralyzed!"));
+    }
+
+    public override void OnEnd()
+    {
+        unit.OnBeforeMoveList.Remove(ParalyzeCheck);
+        unit.SpeedModList.Remove(ParalyzeSlow);
+
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is cured of its paralysis!"));
+    }
+
+    private void ParalyzeCheck()
+    {
+        if (Random.value <= ParalyzeChance)
         {
-            Unit.CanMove = false;
-            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is fully paralyzed!");
-            yield break;
+            unit.CanMove = false;
+
+            AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is fully paralyzed!"));
         }
     }
 
-    float ParalyzeSlow()
+    private float ParalyzeSlow()
     {
-        return speed;
+        return SpeedModifier;
+    }
+
+    public virtual void Restart()
+    {
+        unit.OnBeforeMoveList.Add(ParalyzeCheck);
+        unit.SpeedModList.Add(ParalyzeSlow);
     }
 }
 
 public class StatusFreeze : StatusCondition
 {
-    public override StatusID ID { get => StatusID.FRZ; }
+    public override StatusID ID => StatusID.FRZ;
+    private const float ThawChance = 0.2f;
 
-
-    static float thaw = 0.2f;
-
-    public override IEnumerator OnStart()
+    public StatusFreeze(BattleUnit unit) : base(unit)
     {
-        Unit.OnBeforeMoveList.Add(FreezeCheck);
-        Unit.OnHitList.Add(FireHit);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is frozen solid!");
-    }
-    public override IEnumerator OnEnd()
-    {
-        Unit.OnBeforeMoveList.Remove(FreezeCheck);
-        Unit.OnHitList.Remove(FireHit);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} thawed out!");
     }
 
-    IEnumerator FreezeCheck()
+    public override void OnStart()
     {
-        if (Random.value < thaw)
+        Restart();
+
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is frozen solid!"));
+    }
+
+    public override void OnEnd()
+    {
+        unit.OnBeforeMoveList.Remove(FreezeCheck);
+        unit.OnHitList.Remove(FireHit);
+
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} thawed out!"));
+    }
+
+    private void FreezeCheck()
+    {
+        if (Random.value <= ThawChance)
         {
-            yield return Unit.RemoveStatusCondition();
-            yield break;
+            unit.RemoveStatusCondition();
         }
-
-        Unit.CanMove = false;
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is frozen solid!");
+        else
+        {
+            unit.CanMove = false;
+            AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is frozen solid!"));
+        }
     }
 
-    IEnumerator FireHit(MoveBase move, BattleUnit source, int damage)
+    private void FireHit(MoveBase move, BattleUnit source, int damage)
     {
         if (move.Type == PokemonType.Fire)
-            yield return Unit.RemoveStatusCondition();
+        {
+            unit.RemoveStatusCondition();
+        }
+    }
+
+    public virtual void Restart()
+    {
+        unit.OnBeforeMoveList.Add(FreezeCheck);
+        unit.OnHitList.Add(FireHit);
     }
 }
 
 public class StatusToxic : StatusCondition
 {
-    public override StatusID ID { get => StatusID.TOX; }
+    public override StatusID ID => StatusID.TOX;
+    private const float DamageModifier = 1 / 16f;
+    private int counter;
 
+    public StatusToxic(BattleUnit unit) : base(unit)
+    {
+    }
 
-    static float damage = 1 / 16f;
-    int counter;
+    public override void OnStart()
+    {
+        Restart();
 
-    public override IEnumerator OnStart()
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is badly poisoned!"));
+    }
+
+    public override void OnEnd()
+    {
+        unit.OnTurnEndList.Add(ToxicDamage);
+
+        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is cured of its poison!"));
+    }
+
+    private void ToxicDamage()
+    {
+        int damage = Mathf.FloorToInt(unit.MaxHP * DamageModifier * counter);
+        unit.TakeDamage(damage, $"{unit.Name} is hurt by poison!");
+    }
+
+    public virtual void Restart()
     {
         counter = 1;
-        Unit.OnTurnEndList.Add(PoisonDamage);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is badly poisoned!");
-    }
-    public override IEnumerator OnEnd()
-    {
-        Unit.OnTurnEndList.Add(PoisonDamage);
-
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is cured of its poison!");
-    }
-
-    IEnumerator PoisonDamage()
-    {
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by poison!");
-        yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP * damage * counter));
+        unit.OnTurnEndList.Add(ToxicDamage);
     }
 }

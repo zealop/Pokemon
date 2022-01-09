@@ -1,67 +1,51 @@
-using System.Collections;
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class SceneDetails : MonoBehaviour
+public class SceneDetails : SerializedMonoBehaviour
 {
-    [SerializeField] List<SceneDetails> connectedScenes;
+    [SerializeField] private HashSet<string> connectedScenes = new HashSet<string>();
 
-    public List<SceneDetails> ConnectedScenes => connectedScenes;
-    public bool IsLoaded { get; private set; }
+    public HashSet<string> ConnectedScenes => connectedScenes;
+
+    public string Name => gameObject.scene.name;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.tag == "Player")
         {
-            Debug.Log($"Enter {gameObject.name}");
+            Debug.Log($"Enter {Name}");
 
-            LoadScene();
-
-            GameController.Instance.SetCurrentScene(this);
+            GameController.Instance.ActiveScenes.Add(Name);
 
             LoadConenctedScenes();
             UnloadUnconnectedScenes();
         }
     }
 
-    public void LoadScene()
-    {
-        if (!IsLoaded)
-        {
-            SceneManager.LoadSceneAsync(gameObject.name, LoadSceneMode.Additive);
-            IsLoaded = true;
-        }
-    }
-
-    public void UnloadScene()
-    {
-        if(IsLoaded)
-        {
-            SceneManager.UnloadSceneAsync(gameObject.name);
-            IsLoaded = false;
-        }
-    }
-
-    private void LoadConenctedScenes()
+    public void LoadConenctedScenes()
     {
         //load connectedd
         foreach (var scene in connectedScenes)
         {
-            scene.LoadScene();
+            //if(!SceneManager.GetSceneByName(scene).isLoaded)
+            //{
+            //    SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
+            //    GameController.Instance.ActiveScenes.Add(scene);
+            //}
+            StartCoroutine(GameController.Instance.LoadScene(scene));
         }
     }
 
     public void UnloadUnconnectedScenes()
     {
-        var previousScene = GameController.Instance.PreviousScene;
-        if (previousScene is object)
+        foreach (var scene in GameController.Instance.ActiveScenes.ToList())
         {
-            foreach (var scene in previousScene.connectedScenes)
+            if (scene != Name && !connectedScenes.Contains(scene))
             {
-                if(!connectedScenes.Contains(scene) && scene != this)
-                {
-                    scene.UnloadScene();
-                }
+                //SceneManager.UnloadSceneAsync(scene);
+                //GameController.Instance.ActiveScenes.Remove(scene);
+                GameController.Instance.UnloadScene(scene);
             }
         }
     }

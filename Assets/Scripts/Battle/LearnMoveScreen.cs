@@ -1,20 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using System.Linq;
+using UnityEngine;
 public class LearnMoveScreen : MonoBehaviour
 {
-    MoveParty[] moveSlots;
+    private MoveParty[] moveSlots;
 
-    BattleUnit unit;
-    int currentMove;
+    private BattleUnit unit;
+    private int currentMove;
     private void Awake()
     {
         moveSlots = GetComponentsInChildren<MoveParty>(true);
     }
 
-    public void SetMovesData(BattleUnit unit )
+    public void SetMovesData(BattleUnit unit)
     {
         this.unit = unit;
         currentMove = 0;
@@ -43,7 +40,7 @@ public class LearnMoveScreen : MonoBehaviour
             unit.Pokemon.Moves.RemoveAt(currentMove);
             unit.Moves.RemoveAt(currentMove);
 
-            BattleSystem.Instance.CloseMoveScreen(forgetMove, newMove);
+            StartCoroutine(BattleManager.Instance.CloseMoveScreen(forgetMove, newMove));
         }
     }
 
@@ -51,14 +48,7 @@ public class LearnMoveScreen : MonoBehaviour
     {
         for (int i = 0; i < moveSlots.Length; i++)
         {
-            if (i == currentMove)
-            {
-                moveSlots[i].SetSelected(true);
-            }
-            else
-            {
-                moveSlots[i].SetSelected(false);
-            }
+            moveSlots[i].SetSelected(i == currentMove);
         }
     }
 }

@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveSelector : MonoBehaviour
 {
-    MoveSelection[] moveSelections;
-    List<Move> moves;
+    private MoveSelection[] moveSelections;
+    private List<Move> moves;
     private void Awake()
     {
         moveSelections = GetComponentsInChildren<MoveSelection>(true);
@@ -15,7 +13,7 @@ public class MoveSelector : MonoBehaviour
     public void SetMoves(List<Move> moves)
     {
         this.moves = moves;
-        
+
         for (int i = 0; i < moveSelections.Length; i++)
         {
             if (i < moves.Count)
@@ -35,14 +33,7 @@ public class MoveSelector : MonoBehaviour
     {
         for (int i = 0; i < moves.Count; i++)
         {
-            if(i == currentMove)
-            {
-                moveSelections[i].SetSelected(true);
-            }
-            else
-            {
-                moveSelections[i].SetSelected(false);
-            }
+            moveSelections[i].SetSelected(i == currentMove);
         }
     }
 }

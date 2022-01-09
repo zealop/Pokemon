@@ -4,18 +4,20 @@ using UnityEngine;
 
 public class NPCController : MonoBehaviour, Interactable
 {
-    [SerializeField] Dialog dialog;
-    [SerializeField] List<Vector2> movementPattern;
-    [SerializeField] float timeBetweenPattern;
+    [SerializeField] private Dialog dialog;
+    [SerializeField] private List<Vector2> movementPattern;
+    [SerializeField] private float timeBetweenPattern;
 
-    NPCState state;
-    float idleTimer = 0;
-    int currentPattern = 0;
-    Character character;
+    private NPCState state;
+    private float idleTimer;
+    private int currentPattern;
+    private Character character;
+
     private void Awake()
     {
         character = GetComponent<Character>();
     }
+
     public void Interact(Transform initiator)
     {
         if (state == NPCState.Idle)
@@ -29,7 +31,6 @@ public class NPCController : MonoBehaviour, Interactable
                 state = NPCState.Idle;
             }));
         }
-
     }
 
     private void Update()
@@ -45,10 +46,11 @@ public class NPCController : MonoBehaviour, Interactable
                     StartCoroutine(Walk());
             }
         }
+
         character.HandleUpdate();
     }
 
-    IEnumerator Walk()
+    private IEnumerator Walk()
     {
         state = NPCState.Walking;
 
@@ -65,5 +67,9 @@ public class NPCController : MonoBehaviour, Interactable
     }
 }
 
-
-public enum NPCState { Idle, Walking, Dialog }
+public enum NPCState
+{
+    Idle,
+    Walking,
+    Dialog
+}

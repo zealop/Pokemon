@@ -70,3 +70,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50b19e6f2083af54faede9e08a15fbf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: connectedScenes
+      Entry: 6
+      Data: 

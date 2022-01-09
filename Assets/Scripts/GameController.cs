@@ -1,27 +1,38 @@
+using Sirenix.OdinInspector;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 
 public enum GameState
 {
-    FreeRoam, Battle, Dialog, Cutscene, Pause
+    FreeRoam, Battle, Dialog, Cutscene, Pause, Menu
 }
-public class GameController : MonoBehaviour
+public class GameController : SerializedMonoBehaviour
 {
-    [SerializeField] PlayerController playerController;
-    [SerializeField] BattleSystem battleSystem;
-    [SerializeField] Camera worldCamera;
+    [SerializeField] private PlayerController playerController;
+    [SerializeField] private BattleManager battleSystem;
+    [SerializeField] private Camera worldCamera;
+    [SerializeField] private HashSet<string> activeScenes = new HashSet<string>();
 
-    public SceneDetails CurrentScene { get; private set; }
-    public SceneDetails PreviousScene { get; private set; }
 
-    GameState beforePauseState;
-    GameState state;
 
-    TrainerController trainer;
+    [SerializeField] private Pokemon testPokemon;
+
+    public HashSet<string> ActiveScenes => activeScenes;
+
+    private GameState beforePauseState;
+    private GameState state;
+
+    private TrainerController trainer;
+
+    private MenuController menuController;
     public static GameController Instance { get; private set; }
     private void Awake()
     {
         Instance = this;
+        menuController = GetComponent<MenuController>();
     }
     private void Start()
     {
@@ -33,25 +44,44 @@ public class GameController : MonoBehaviour
             if (state == GameState.Dialog)
                 state = GameState.FreeRoam;
         };
+
+        menuController.onBack += () => state = GameState.FreeRoam;
+        menuController.onMenuSelected += OnMenuSelected;
     }
     private void Update()
     {
         if (state == GameState.FreeRoam)
         {
+            StartWildBattle(new Pokemon(testPokemon.Base, testPokemon.Level));
+
             playerController.HandleUpdate();
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                state = GameState.Menu;
+                menuController.OpenMenu();
+            }
+
+
+
         }
-        if (state == GameState.Battle)
+        else if (state == GameState.Battle)
         {
             battleSystem.HandleUpdate();
         }
-        if (state == GameState.Dialog)
+        else if (state == GameState.Dialog)
         {
             DialogManager.Instance.HandleUpdate();
         }
+        else if (state == GameState.Menu)
+        {
+            menuController.HandleUpdate();
+        }
+
+
     }
     public void PauseGame(bool pause)
     {
-        if(pause)
+        if (pause)
         {
             beforePauseState = state;
             state = GameState.Pause;
@@ -84,12 +114,12 @@ public class GameController : MonoBehaviour
         battleSystem.StartTrainerBattle(playerParty, trainerParty);
     }
 
-    void EndBattle(bool won)
+    private void EndBattle(bool won)
     {
         //if trainer battle
         if (trainer is object && won)
         {
-            trainer.BatteLost();
+            trainer.BattleLost();
             trainer = null;
         }
         state = GameState.FreeRoam;
@@ -102,10 +132,52 @@ public class GameController : MonoBehaviour
         StartCoroutine(trainer.TriggerTrainerBattle(playerController));
     }
 
-    public void SetCurrentScene(SceneDetails scene)
+    public IEnumerator LoadScene(string sceneName)
     {
-        PreviousScene = CurrentScene;
-        CurrentScene = scene;
+        if (!ActiveScenes.Contains(sceneName))
+        {
+            ActiveScenes.Add(sceneName);
+            yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+
+            var scene = SceneManager.GetSceneByName(sceneName);
+            var savables = scene.GetRootGameObjects().Select(o => o.GetComponent<SavableEntity>()).OfType<SavableEntity>().ToList();
+
+            SavingSystem.i.RestoreEntityStates(savables);
+        }
+    }
+    public void UnloadScene(string sceneName)
+    {
+        if (ActiveScenes.Contains(sceneName))
+        {
+            var scene = SceneManager.GetSceneByName(sceneName);
+            var savables = scene.GetRootGameObjects().Select(o => o.GetComponent<SavableEntity>()).OfType<SavableEntity>().ToList();
+
+            SavingSystem.i.CaptureEntityStates(savables);
+
+            ActiveScenes.Remove(sceneName);
+            SceneManager.UnloadSceneAsync(sceneName);
+        }
     }
 
+    private void OnMenuSelected(int selected)
+    {
+        switch (selected)
+        {
+            case 0: //Party
+                break;
+            case 1: //Bag
+                break;
+            case 2: //Save
+                SavingSystem.i.Save("saveSlot1");
+                break;
+            case 3: //Load
+                SavingSystem.i.Load("saveSlot1");
+                break;
+            default:
+                break;
+        }
+        state = GameState.FreeRoam;
+    }
 }
+
+

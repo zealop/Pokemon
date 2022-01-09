@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public class TypeChart
 {
-    static float[][] chart =
+    private static float[][] chart =
     {
         //                       Nor   Fir   Wat   Ele   Gra   Ice   Fig   Poi   Gro   Fly   Psy   Bug   Roc   Gho   Dra   Dar  Ste    Fai
         /*Normal*/  new float[] {1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   1f,   0.5f, 0,    1f,   1f,   0.5f, 1f},
@@ -42,7 +42,7 @@ public class TypeChart
 }
 public class EXPChart
 {
-    static int[][] chart =
+    private static int[][] chart =
     {
         new int[] {0,0,0,0,0,0,},
         new int[] {15,6,8,9,10,4,},

@@ -5,33 +5,22 @@ using UnityEngine;
 
 public class MoveQueue
 {
-    List<MoveNode> list;
-
-    public MoveQueue()
-    {
-        list = new List<MoveNode>();
-    }
-
-    public int Count { get => list.Count; }
+    private readonly List<MoveNode> list = new List<MoveNode>();
+    public int Count => list.Count;
 
     public void Enqueue(Move move, BattleUnit source, BattleUnit target)
     {
         list.Add(new MoveNode(move, source, target));
-
     }
 
     public MoveNode Dequeue()
     {
         MoveNode result = null;
-
         if (list.Count > 0)
         {
             result = list.First();
 
-            foreach (var node in list)
-            {
-                result = FindFaster(result, node);
-            }
+            result = list.Aggregate(result, FindFaster);
         }
 
         list.Remove(result);
@@ -39,7 +28,7 @@ public class MoveQueue
         return result;
     }
 
-    static MoveNode FindFaster(MoveNode node1, MoveNode node2)
+    private static MoveNode FindFaster(MoveNode node1, MoveNode node2)
     {
         var m1 = node1.Move.Base;
         var s1 = node1.Source;
@@ -49,44 +38,33 @@ public class MoveQueue
         var s2 = node2.Source;
         var t2 = node2.Target;
 
-        if (m1.Priority(s1, t1) > m2.Priority(s1, t1))
-        {
-            return node1;
-        }
-        if (m1.Priority(s1, t1) == m2.Priority(s1, t1))
-        {
-            if (s1.Speed > s2.Speed)
-                return node1;
-            if (s1.Speed == s2.Speed)
-                return Random.value < 0.5f ? node1 : node2;
-            else
-                return node2;
-        }
-        else
-        {
-            return node2;
-        }
-    }
-
-
-    public IEnumerator Prepare()
-    {
-        foreach (var node in list)
-        {
-            var move = node.Move.Base;
-            var source = node.Source;
-            var target = node.Target;
-            yield return move.Prepare?.Invoke(source, target);
-        }
+        //if (m1.Priority(s1, t1) > m2.Priority(s1, t1))
+        //{
+        //    return node1;
+        //}
+        //if (m1.Priority(s1, t1) == m2.Priority(s1, t1))
+        //{
+        //    if (s1.Speed > s2.Speed)
+        //        return node1;
+        //    if (s1.Speed == s2.Speed)
+        //        return Random.value < 0.5f ? node1 : node2;
+        //    else
+        //        return node2;
+        //}
+        //else
+        //{
+        //    return node2;
+        //}
+        return node1;
     }
 }
 
 
 public class MoveNode
 {
-    public Move Move { get; private set; }
-    public BattleUnit Source { get; private set; }
-    public BattleUnit Target { get; private set; }
+    public Move Move { get; }
+    public BattleUnit Source { get; }
+    public BattleUnit Target { get; }
 
     public MoveNode(Move move, BattleUnit source, BattleUnit target)
     {

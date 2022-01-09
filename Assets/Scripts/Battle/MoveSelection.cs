@@ -1,20 +1,18 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class MoveSelection : MonoBehaviour
 {
-    [SerializeField] Image typeIcon;
-    [SerializeField] Text moveName;
-    [SerializeField] Text ppText;
-    [SerializeField] TypeSpriteDB typeSprite;
+    [SerializeField] private Image typeIcon;
+    [SerializeField] private TextMeshProUGUI moveText;
+    [SerializeField] private TextMeshProUGUI ppText;
+    [SerializeField] private TypeSpriteDB typeSprite;
 
-    [SerializeField] Sprite outlined;
-    [SerializeField] Sprite normal;
+    [SerializeField] private Sprite outlined;
+    [SerializeField] private Sprite normal;
 
-    Image image;
+    private Image image;
 
     private void Awake()
     {
@@ -23,9 +21,9 @@ public class MoveSelection : MonoBehaviour
     public void SetMove(Move move)
     {
         typeIcon.sprite = typeSprite.Data[move.Base.Type].Icon;
-        moveName.text = move.Name;
+        moveText.text = move.Name;
         ppText.text = $"{move.PP}/{move.MaxPP}";
- 
+
         image.color = typeSprite.Data[move.Base.Type].Color;
     }
     public void SetSelected(bool select)

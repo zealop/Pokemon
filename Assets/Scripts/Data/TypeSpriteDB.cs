@@ -1,12 +1,12 @@
 using Sirenix.OdinInspector;
-using System.Collections;
 using System.Collections.Generic;
+using Sirenix.Serialization;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Pokemon", menuName = "New statusPokemon ")]
 public class TypeSpriteDB : SerializedScriptableObject
 {
-    [SerializeField] Dictionary<PokemonType, TypeSprite> data;
+    [OdinSerialize] private Dictionary<PokemonType, TypeSprite> data;
     public Dictionary<PokemonType, TypeSprite> Data => data;
 }
 
@@ -15,12 +15,15 @@ public class TypeSprite
 {
     [LabelWidth(50)]
     [PreviewField(100)]
-    [SerializeField] Sprite icon;
+    [SerializeField]
+    private Sprite icon;
     [LabelWidth(50)]
     [PreviewField(100)]
-    [SerializeField] Sprite card;
+    [SerializeField]
+    private Sprite card;
     [LabelWidth(50)]
-    [SerializeField] Color color;
+    [SerializeField]
+    private Color color;
 
 
     public Sprite Icon => icon;

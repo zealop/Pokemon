@@ -1,16 +1,17 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PartyMemberUI : MonoBehaviour
 {
-    [SerializeField] Text nameText;
-    [SerializeField] Text hpText;
-    [SerializeField] Text levelText;
-    [SerializeField] Image hpBar;
-    [SerializeField] Image icon;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI hpText;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] private Image hpBar;
+    [SerializeField] private Image icon;
 
-    Pokemon pokemon;
-    Image image;
+    private Pokemon pokemon;
+    private Image image;
 
     private void Awake()
     {
@@ -44,6 +45,6 @@ public class PartyMemberUI : MonoBehaviour
             hpText.color = Color.black;
             levelText.color = Color.black;
         }
-       
+
     }
 }

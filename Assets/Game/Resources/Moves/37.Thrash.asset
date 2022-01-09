@@ -21,48 +21,28 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: effects
+    - Name: moveDamage
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[MoveEffect, Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 1|LockedMoveEffect, Assembly-CSharp
+      Data: 0|DefaultDamage, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: modifiers
+    - Name: moveAccuracy
       Entry: 7
-      Data: 2|System.Collections.Generic.List`1[[MoveModifier, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 3|LockedMoveModifier, Assembly-CSharp
+      Data: 1|DefaultAccuracy, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: 
-      Entry: 13
+    - Name: moveEffect
+      Entry: 6
       Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  name: Thrash
+  _name: Thrash
   description: 
   type: 1
   category: 0
   target: 0
   pp: 10
-  power: 12
+  power: 120
   accuracy: 100
+  priority: 0
+  critStage: 0

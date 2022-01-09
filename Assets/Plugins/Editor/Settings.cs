@@ -1,12 +1,14 @@
-using UnityEngine;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using UnityEngine;
 
-namespace MultiBuild {
+namespace MultiBuild
+{
 
     // Our own enumeration of targets so we can serialize with confidence
     // in case Unity changes the values of their internal targets
-    public enum Target {
+    public enum Target
+    {
         Win32 = 0,
         Win64 = 1,
         Mac32 = 2,
@@ -20,7 +22,8 @@ namespace MultiBuild {
         WebGL = 9,
     }
 
-    public class Settings : ScriptableObject {
+    public class Settings : ScriptableObject
+    {
 
         public string outputFolder;
         public bool useProductName;
@@ -28,7 +31,8 @@ namespace MultiBuild {
         public bool developmentBuild;
         public List<Target> targets;
 
-        public void Reset() {
+        public void Reset()
+        {
             outputFolder = Directory.GetParent(Application.dataPath).FullName;
             useProductName = true;
             overrideName = string.Empty;

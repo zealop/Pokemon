@@ -1,17 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LongGrass : MonoBehaviour, IPlayerTriggerable
 {
-    [SerializeField] List<Pokemon> wildPokemons;
+    [SerializeField] private List<Pokemon> wildPokemons;
 
-    
+
     public void OnPlayerTriggered(PlayerController player)
     {
         if (Random.Range(1, 101) <= 10)
         {
-            //GameController.Instance.StartWildBattle(GetRandomPokemon());
+            GameController.Instance.StartWildBattle(GetRandomPokemon());
         }
     }
 

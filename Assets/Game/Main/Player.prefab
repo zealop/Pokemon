@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 5480201899368563355}
   - component: {fileID: 5480201899368563359}
   - component: {fileID: 5480201899368563356}
+  - component: {fileID: 7979935708360294216}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -117,19 +118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   party:
   - _base: {fileID: 11400000, guid: d7d402caf8f44fe47942ce5541fa2599, type: 2}
-    level: 7
-    nickName: 
-  - _base: {fileID: 11400000, guid: ba623d4667d02a940be74e126fefec63, type: 2}
-    level: 3
-    nickName: 
-  - _base: {fileID: 11400000, guid: ba623d4667d02a940be74e126fefec63, type: 2}
-    level: 2
-    nickName: 
-  - _base: {fileID: 11400000, guid: ba623d4667d02a940be74e126fefec63, type: 2}
     level: 5
-    nickName: 
-  - _base: {fileID: 11400000, guid: ba623d4667d02a940be74e126fefec63, type: 2}
-    level: 6
     nickName: 
 --- !u!114 &5480201899368563357
 MonoBehaviour:
@@ -224,6 +213,19 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.8155556, y: 1.1783838}
   m_EdgeRadius: 0
+--- !u!114 &7979935708360294216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5480201899368563351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4881f89f8b930e34489bbb86116ccd4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uniqueId: 
 --- !u!1 &5480201900263521757
 GameObject:
   m_ObjectHideFlags: 0

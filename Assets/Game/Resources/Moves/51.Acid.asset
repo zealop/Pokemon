@@ -21,88 +21,22 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: effects
+    - Name: moveDamage
       Entry: 7
-      Data: 0|System.Collections.Generic.List`1[[MoveEffect, Assembly-CSharp]], mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
+      Data: 0|DefaultDamage, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: modifiers
+    - Name: moveAccuracy
       Entry: 7
-      Data: 1|System.Collections.Generic.List`1[[MoveModifier, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
-      Data: 2|SecondaryEffect, Assembly-CSharp
-    - Name: chance
-      Entry: 4
-      Data: 0.1
-    - Name: effect
-      Entry: 7
-      Data: 3|BoostEffect, Assembly-CSharp
-    - Name: self
-      Entry: 5
-      Data: false
-    - Name: boosts
-      Entry: 7
-      Data: 4|System.Collections.Generic.Dictionary`2[[BoostableStat, Assembly-CSharp],[System.Int32,
-        mscorlib]], mscorlib
-    - Name: comparer
-      Entry: 7
-      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[BoostableStat, Assembly-CSharp]],
-        mscorlib
-    - Name: 
-      Entry: 12
-      Data: 0
-    - Name: 
-      Entry: 13
-      Data: 
+      Data: 1|DefaultAccuracy, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: 
-      Entry: 12
-      Data: 1
-    - Name: 
-      Entry: 7
+    - Name: moveEffect
+      Entry: 6
       Data: 
-    - Name: $k
-      Entry: 3
-      Data: 3
-    - Name: $v
-      Entry: 3
-      Data: -1
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-    - Name: 
-      Entry: 13
-      Data: 
-    - Name: 
-      Entry: 8
-      Data: 
-  name: Acid
+  _name: Acid
   description: 
   type: 8
   category: 1
@@ -110,3 +44,5 @@ MonoBehaviour:
   pp: 30
   power: 40
   accuracy: 100
+  priority: 0
+  critStage: 0

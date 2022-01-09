@@ -4,22 +4,22 @@ using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
-    [SerializeField] GameObject dialogBox;
-    [SerializeField] Text dialogText;
-    [SerializeField] int lettersPerSecond;
+    [SerializeField] private GameObject dialogBox;
+    [SerializeField] private Text dialogText;
+    [SerializeField] private int lettersPerSecond;
 
     public event System.Action OnShowDialog;
     public event System.Action OnCloseDialog;
 
     public static DialogManager Instance { get; private set; }
 
-    public bool IsShowing { get; private set; }
+    private bool IsShowing { get; set; }
 
-    int currentLine = 0;
-    Dialog dialog;
-    System.Action onDialogFinished;
+    private int currentLine;
+    private Dialog dialog;
+    private System.Action onDialogFinished;
 
-    bool isTyping;
+    private bool isTyping;
     private void Awake()
     {
         Instance = this;
@@ -58,11 +58,11 @@ public class DialogManager : MonoBehaviour
         }
     }
 
-    public IEnumerator TypeDialog(string line)
+    private IEnumerator TypeDialog(string line)
     {
         isTyping = true;
         dialogText.text = "";
-        foreach (var letter in line.ToCharArray())
+        foreach (char letter in line)
         {
             dialogText.text += letter;
             yield return new WaitForSeconds(1f / lettersPerSecond);

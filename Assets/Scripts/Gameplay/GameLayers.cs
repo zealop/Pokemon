@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class GameLayers : MonoBehaviour
 {
-    [SerializeField] LayerMask solidObjectsLayer;
-    [SerializeField] LayerMask interactableLayer;
-    [SerializeField] LayerMask grassLayer;
-    [SerializeField] LayerMask playerLayer;
-    [SerializeField] LayerMask fovLayer;
-    [SerializeField] LayerMask portalLayer;
+    [SerializeField] private LayerMask solidObjectsLayer;
+    [SerializeField] private LayerMask interactableLayer;
+    [SerializeField] private LayerMask grassLayer;
+    [SerializeField] private LayerMask playerLayer;
+    [SerializeField] private LayerMask fovLayer;
+    [SerializeField] private LayerMask portalLayer;
 
-    public LayerMask SolidLayer { get => solidObjectsLayer; }
-    public LayerMask InteractableLayer { get => interactableLayer; }
-    public LayerMask GrassLayer { get => grassLayer; }
-    public LayerMask PlayerLayer { get => playerLayer; }
-    public LayerMask FOVLayer { get => fovLayer; }
-    public LayerMask PortalLayer { get => portalLayer; }
-    public LayerMask TriggerableLayers { get => grassLayer | fovLayer | portalLayer; }
+    public LayerMask SolidLayer => solidObjectsLayer;
+    public LayerMask InteractableLayer => interactableLayer;
+    public LayerMask GrassLayer => grassLayer;
+    public LayerMask PlayerLayer => playerLayer;
+    public LayerMask FOVLayer => fovLayer;
+    public LayerMask PortalLayer => portalLayer;
+    public LayerMask TriggerableLayers => grassLayer | fovLayer | portalLayer;
     public static GameLayers Instance { get; private set; }
 
     private void Awake()

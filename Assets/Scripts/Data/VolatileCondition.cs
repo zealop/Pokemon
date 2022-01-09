@@ -30,7 +30,8 @@ public class VolatileCondition
 
 public class VolatileCharging : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Charging; }
+    public override VolatileID ID => VolatileID.Charging;
+
     public override IEnumerator OnStart()
     {
         Unit.LockedAction = true;
@@ -45,15 +46,15 @@ public class VolatileCharging : VolatileCondition
 
 public class VolatileRecharge : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Recharge; }
+    public override VolatileID ID => VolatileID.Recharge;
 
-    int counter;
+    private int counter;
     public override IEnumerator OnStart()
     {
         Unit.LockedAction = true;
         counter = 2;
 
-        Unit.OnTurnEndList.Add(Recharge);
+        //Unit.OnTurnEndList.Add(Recharge);
 
         yield return null;
     }
@@ -61,12 +62,12 @@ public class VolatileRecharge : VolatileCondition
     {
         Unit.LockedAction = false;
 
-        Unit.OnTurnEndList.Remove(Recharge);
+        //Unit.OnTurnEndList.Remove(Recharge);
 
         yield return null;
     }
 
-    IEnumerator Recharge()
+    private IEnumerator Recharge()
     {
         counter--;
         if (counter == 0)
@@ -75,16 +76,16 @@ public class VolatileRecharge : VolatileCondition
         }
         else
         {
-            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} must recharge!");
+            yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} must recharge!");
         }
     }
 }
 public class VolatileFly : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Fly; }
+    public override VolatileID ID => VolatileID.Fly;
 
-    static readonly string[] normal = { "Hurricane", "Sky Uppercut", "Smack Down", "Thousand Arrows", "Thunder" };
-    static readonly string[] doubled = { "Gust", "Twister" };
+    private static readonly string[] normal = { "Hurricane", "Sky Uppercut", "Smack Down", "Thousand Arrows", "Thunder" };
+    private static readonly string[] doubled = { "Gust", "Twister" };
     public override IEnumerator OnStart()
     {
         Unit.LockedAction = true;
@@ -104,7 +105,7 @@ public class VolatileFly : VolatileCondition
         yield return null;
     }
 
-    bool SemiInvulnerable(MoveBase move, BattleUnit source)
+    private bool SemiInvulnerable(MoveBase move, BattleUnit source)
     {
         if (normal.Concat(doubled).Contains(move.Name))
             return false;
@@ -112,7 +113,7 @@ public class VolatileFly : VolatileCondition
         return true;
     }
 
-    float WindyFlight(MoveBase move, BattleUnit source)
+    private float WindyFlight(MoveBase move, BattleUnit source)
     {
         if (doubled.Contains(move.Name))
             return 2f;
@@ -123,7 +124,7 @@ public class VolatileFly : VolatileCondition
 
 public class VolatileBide : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Bide; }
+    public override VolatileID ID => VolatileID.Bide;
 
     public int Counter;
     public int StoredDamage;
@@ -132,7 +133,7 @@ public class VolatileBide : VolatileCondition
         Counter = 2;
         Unit.LockedAction = true;
 
-        Unit.OnHitList.Add(StoreDamage);
+        //Unit.OnHitList.Add(StoreDamage);
 
         yield return null;
     }
@@ -140,12 +141,12 @@ public class VolatileBide : VolatileCondition
     {
         Unit.LockedAction = false;
 
-        Unit.OnHitList.Remove(StoreDamage);
+        //Unit.OnHitList.Remove(StoreDamage);
 
         yield return null;
     }
 
-    IEnumerator StoreDamage(MoveBase move, BattleUnit source, int damage)
+    private IEnumerator StoreDamage(MoveBase move, BattleUnit source, int damage)
     {
         StoredDamage += damage;
 
@@ -155,9 +156,9 @@ public class VolatileBide : VolatileCondition
 }
 public class VolatileDig : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Dig; }
+    public override VolatileID ID => VolatileID.Dig;
 
-    static readonly string[] doubled = { "Magnitude", "Earthquake", "Fissure" };
+    private static readonly string[] doubled = { "Magnitude", "Earthquake", "Fissure" };
     public override IEnumerator OnStart()
     {
         Unit.LockedAction = true;
@@ -177,7 +178,7 @@ public class VolatileDig : VolatileCondition
         yield return null;
     }
 
-    bool SemiInvulnerable(MoveBase move, BattleUnit source)
+    private bool SemiInvulnerable(MoveBase move, BattleUnit source)
     {
         if (doubled.Contains(move.Name))
             return false;
@@ -185,7 +186,7 @@ public class VolatileDig : VolatileCondition
         return true;
     }
 
-    float Underground(MoveBase move, BattleUnit source)
+    private float Underground(MoveBase move, BattleUnit source)
     {
         if (doubled.Contains(move.Name))
             return 2f;
@@ -197,13 +198,13 @@ public class VolatileDig : VolatileCondition
 //Bind,Clamp, FireSpin,....
 public class VolatileBound : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Bound; }
+    public override VolatileID ID => VolatileID.Bound;
 
-    int counter;
-    static float damage = 1 / 8f;
+    private int counter;
+    private static float damage = 1 / 8f;
 
-    BattleUnit source;
-    MoveBase move;
+    private BattleUnit source;
+    private MoveBase move;
 
     public VolatileBound(MoveBase move, BattleUnit source)
     {
@@ -214,31 +215,31 @@ public class VolatileBound : VolatileCondition
     }
     public override IEnumerator OnStart()
     {
-        Unit.OnTurnEndList.Add(ResidualDamage);
+        //Unit.OnTurnEndList.Add(ResidualDamage);
         Unit.CanSwitch += Trapped;
         yield return null;
     }
     public override IEnumerator OnEnd()
     {
-        Unit.OnTurnEndList.Remove(ResidualDamage);
+        //Unit.OnTurnEndList.Remove(ResidualDamage);
         Unit.CanSwitch -= Trapped;
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is freed from {move.Name}!");
+        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} is freed from {move.Name}!");
     }
 
-    IEnumerator ResidualDamage()
+    private IEnumerator ResidualDamage()
     {
         if (counter > 0)
         {
             counter--;
-            yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by {move.Name}!");
-            yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP * damage));
+            yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} is hurt by {move.Name}!");
+            //yield return Unit.TakeDamage(Mathf.FloorToInt(Unit.MaxHP * damage));
             yield break;
         }
 
         yield return Unit.RemoveVolatileCondition(ID);
     }
 
-    bool Trapped()
+    private bool Trapped()
     {
         if (Unit.Types.Contains(PokemonType.Ghost))
             return true;
@@ -249,28 +250,30 @@ public class VolatileBound : VolatileCondition
 
 public class VolatileFlinch : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Flinch; }
+    public override VolatileID ID => VolatileID.Flinch;
+
     public override IEnumerator OnStart()
     {
-        Unit.OnBeforeMoveList.Add(Flinched);
-        Unit.OnTurnEndList.Add(Unflinch);
+        //Unit.OnBeforeMoveList.Add(Flinched);
+        //Unit.OnTurnEndList.Add(Unflinch);
 
         yield return null;
     }
     public override IEnumerator OnEnd()
     {
-        Unit.OnBeforeMoveList.Remove(Flinched);
-        Unit.OnTurnEndList.Remove(Unflinch);
+        //Unit.OnBeforeMoveList.Remove(Flinched);
+        //Unit.OnTurnEndList.Remove(Unflinch);
 
         yield return null;
     }
 
-    IEnumerator Flinched()
+    private IEnumerator Flinched()
     {
         Unit.CanMove = false;
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} flinched!");
+        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} flinched!");
     }
-    IEnumerator Unflinch()
+
+    private IEnumerator Unflinch()
     {
         yield return Unit.RemoveVolatileCondition(ID);
     }
@@ -278,9 +281,9 @@ public class VolatileFlinch : VolatileCondition
 
 public class VolatileLockedMove : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.LockedMove; }
+    public override VolatileID ID => VolatileID.LockedMove;
 
-    int counter;
+    private int counter;
 
     public override IEnumerator OnStart()
     {
@@ -289,18 +292,18 @@ public class VolatileLockedMove : VolatileCondition
         Unit.LockedAction = true;
 
 
-        Unit.OnTurnEndList.Add(Rampage);
+        //Unit.OnTurnEndList.Add(Rampage);
         yield return null;
     }
     public override IEnumerator OnEnd()
     {
         Unit.LockedAction = false;
 
-        Unit.OnTurnEndList.Remove(Rampage);
+        //Unit.OnTurnEndList.Remove(Rampage);
         yield return null;
     }
 
-    IEnumerator Rampage()
+    private IEnumerator Rampage()
     {
         if (!Unit.CanMove)
         {
@@ -320,40 +323,40 @@ public class VolatileLockedMove : VolatileCondition
 
 public class VolatileConfused : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.LockedMove; }
+    public override VolatileID ID => VolatileID.LockedMove;
 
-    readonly static int power = 40;
+    private readonly static int power = 40;
 
-    int counter;
+    private int counter;
 
     public override IEnumerator OnStart()
     {
         counter = Random.Range(2, 6);
 
-        Unit.OnBeforeMoveList.Add(Confusion);
+        //Unit.OnBeforeMoveList.Add(Confusion);
 
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} became confused due to fatigue!");
+        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} became confused due to fatigue!");
     }
     public override IEnumerator OnEnd()
     {
 
-        Unit.OnBeforeMoveList.Remove(Confusion);
+        //Unit.OnBeforeMoveList.Remove(Confusion);
 
         yield return null;
     }
 
-    IEnumerator Confusion()
+    private IEnumerator Confusion()
     {
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} is confused!");
+        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} is confused!");
         if (Random.value < 0.33f)
         {
-            yield return BattleSystem.Instance.DialogBox.TypeDialog("It hurt it self in its confusion!");
+            yield return BattleManager.Instance.DialogBox.TypeDialog("It hurt it self in its confusion!");
             Unit.CanMove = false;
-            yield return Unit.TakeDamage(damage());
+            //yield return Unit.TakeDamage(damage());
         }
     }
 
-    int damage()
+    private int damage()
     {
         int damage = 0;
 
@@ -373,42 +376,42 @@ public class VolatileConfused : VolatileCondition
 
 public class VolatileDisabled : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Disabled; }
+    public override VolatileID ID => VolatileID.Disabled;
 
-    Move disabled;
+    private Move disabled;
     public override IEnumerator OnStart()
     {
-        Unit.LastUsedMove.Disabled = true;
+        Unit.LastUsedMove.IsDisabled = true;
         yield return null;
     }
     public override IEnumerator OnEnd()
     {
-        Unit.LastUsedMove.Disabled = false; ;
+        Unit.LastUsedMove.IsDisabled = false; ;
         yield return null;
     }
 }
 
 public class VolatileCounter : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Counter; }
+    public override VolatileID ID => VolatileID.Counter;
 
     public int StoredDamage;
     public override IEnumerator OnStart()
     {
-        Unit.OnHitList.Add(StoreDamage);
-        Unit.OnTurnEndList.Add(Clear);
+        //Unit.OnHitList.Add(StoreDamage);
+        //Unit.OnTurnEndList.Add(Clear);
 
         yield return null;
     }
     public override IEnumerator OnEnd()
     {
-        Unit.OnHitList.Remove(StoreDamage);
-        Unit.OnTurnEndList.Remove(Clear);
+        //Unit.OnHitList.Remove(StoreDamage);
+        //Unit.OnTurnEndList.Remove(Clear);
 
         yield return null;
     }
 
-    IEnumerator StoreDamage(MoveBase move, BattleUnit source, int damage)
+    private IEnumerator StoreDamage(MoveBase move, BattleUnit source, int damage)
     {
         if (move.Category == MoveCategory.Physical)
             StoredDamage += damage;
@@ -416,7 +419,7 @@ public class VolatileCounter : VolatileCondition
         yield return null;
     }
 
-    IEnumerator Clear()
+    private IEnumerator Clear()
     {
         yield return Unit.RemoveVolatileCondition(ID);
     }
@@ -424,65 +427,66 @@ public class VolatileCounter : VolatileCondition
 
 public class VolatileSeeded : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Seeded; }
+    public override VolatileID ID => VolatileID.Seeded;
 
-    readonly static float ratio = 1 / 8f;
+    private readonly static float ratio = 1 / 8f;
 
-    BattleUnit source;
+    private BattleUnit source;
     public override IEnumerator OnStart()
     {
-        Unit.OnTurnEndList.Add(Drain);
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} was seeded!");
+        //Unit.OnTurnEndList.Add(Drain);
+        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} was seeded!");
     }
     public override IEnumerator OnEnd()
     {
-        Unit.OnTurnEndList.Remove(Drain);
+        //Unit.OnTurnEndList.Remove(Drain);
         yield return null;
     }
 
-    IEnumerator Drain()
+    private IEnumerator Drain()
     {
         int damage = Mathf.FloorToInt(Unit.MaxHP * ratio);
 
-        yield return Unit.TakeDamage(damage);
-        yield return source.TakeDamage(-damage);
+        //yield return Unit.TakeDamage(damage);
+        //yield return source.TakeDamage(-damage);
 
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} was seeded!");
+        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} was seeded!");
     }
 }
 
 public class VolatileRage : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Rage; }
+    public override VolatileID ID => VolatileID.Rage;
 
     public int StoredDamage;
 
-    static readonly Dictionary<BoostableStat, int> boost = new Dictionary<BoostableStat, int>()
-    {
-        {BoostableStat.Attack, 1 }
-    };
+    //static readonly Dictionary<BoostableStat, int> boost = new Dictionary<BoostableStat, int>()
+    //{
+    //    {BoostableStat.Attack, 1 }
+    //};
 
     public override IEnumerator OnStart()
     {
-        Unit.OnHitList.Add(Rage);
-        Unit.OnTurnEndList.Add(Clear);
+        //Unit.OnHitList.Add(Rage);
+        //Unit.OnTurnEndList.Add(Clear);
 
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} started building its rage!");
+        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} started building its rage!");
     }
     public override IEnumerator OnEnd()
     {
-        Unit.OnHitList.Remove(Rage);
-        Unit.OnTurnEndList.Remove(Clear);
+        //Unit.OnHitList.Remove(Rage);
+        //Unit.OnTurnEndList.Remove(Clear);
 
         yield return null;
     }
 
-    IEnumerator Rage(MoveBase move, BattleUnit source, int damage)
+    private IEnumerator Rage(MoveBase move, BattleUnit source, int damage)
     {
-        yield return Unit.ApplyStatBoost(boost);
+        //yield return Unit.ApplyStatBoost(boost);
+        yield return null;
     }
 
-    IEnumerator Clear()
+    private IEnumerator Clear()
     {
         if (Unit.LastUsedMove.Base.Name != "Rage")
             yield return Unit.RemoveVolatileCondition(ID);
@@ -493,9 +497,9 @@ public class VolatileRage : VolatileCondition
 
 public class VolatileMinimize : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Minimize; }
+    public override VolatileID ID => VolatileID.Minimize;
 
-    static readonly string[] big = { "Body Slam", "Stomp", "Dragon Rush", "Steamroller", "Heat Crash", "Heavy Slam", "Flying Press", "Malicious Moonsault" };
+    private static readonly string[] big = { "Body Slam", "Stomp", "Dragon Rush", "Steamroller", "Heat Crash", "Heavy Slam", "Flying Press", "Malicious Moonsault" };
     public override IEnumerator OnStart()
     {
         Unit.DefenderModList.Add(Small);
@@ -511,7 +515,7 @@ public class VolatileMinimize : VolatileCondition
         yield return null;
     }
 
-    float Small(MoveBase move, BattleUnit source)
+    private float Small(MoveBase move, BattleUnit source)
     {
         if (big.Contains(move.Name))
             return 2;
@@ -519,7 +523,7 @@ public class VolatileMinimize : VolatileCondition
         return 1;
     }
 
-    bool Tiny(MoveBase move, BattleUnit source)
+    private bool Tiny(MoveBase move, BattleUnit source)
     {
         if (big.Contains(move.Name))
             return true;
@@ -530,9 +534,9 @@ public class VolatileMinimize : VolatileCondition
 
 public class VolatileTransform : VolatileCondition
 {
-    public override VolatileID ID { get => VolatileID.Transform; }
+    public override VolatileID ID => VolatileID.Transform;
 
-    BattleUnit target;
+    private BattleUnit target;
     public VolatileTransform(BattleUnit unit)
     {
         target = unit;
@@ -550,9 +554,9 @@ public class VolatileTransform : VolatileCondition
             newMove.PP = 5;
             Unit.Moves.Add(newMove);
         }
-        BattleSystem.Instance.MoveSelector.SetMoves(Unit.Moves);
+        BattleManager.Instance.MoveSelector.SetMoves(Unit.Moves);
 
-        yield return BattleSystem.Instance.DialogBox.TypeDialog($"{Unit.Name} transformed into {target.Name}");
+        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Unit.Name} transformed into {target.Name}");
     }
     public override IEnumerator OnEnd()
     {

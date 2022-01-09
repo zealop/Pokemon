@@ -5,15 +5,15 @@ using UnityEngine.UI;
 public class BattleVisual : MonoBehaviour
 {
 
-    [SerializeField] BattleHUD hud;
+    [SerializeField] private BattleHUD hud;
 
-    BattleUnit unit;
+    private BattleUnit unit;
 
-    public BattleHUD HUD { get => hud; }
+    public BattleHUD HUD => hud;
 
-    Image image;
-    Vector3 originalPos;
-    Color originalColor;
+    private Image image;
+    private Vector3 originalPos;
+    private Color originalColor;
     private void Awake()
     {
         image = GetComponent<Image>();
@@ -44,7 +44,8 @@ public class BattleVisual : MonoBehaviour
     {
         image.sprite = unit.IsPlayerUnit ? pokemon.Sprite.Back : pokemon.Sprite.Front;
     }
-    public void PlayEnterAnimation()
+
+    private void PlayEnterAnimation()
     {
         float x = unit.IsPlayerUnit ? -500f : 500f;
 
@@ -53,7 +54,7 @@ public class BattleVisual : MonoBehaviour
         image.transform.DOLocalMoveX(originalPos.x, 1f);
     }
 
-    public void PlayAttackAnimation()
+    public IEnumerator PlayAttackAnimation()
     {
         var sequence = DOTween.Sequence();
 
@@ -61,22 +62,28 @@ public class BattleVisual : MonoBehaviour
 
         sequence.Append(image.transform.DOLocalMoveX(originalPos.x + x, 0.25f));
         sequence.Append(image.transform.DOLocalMoveX(originalPos.x, 0.25f));
+
+        yield return sequence.WaitForCompletion();
     }
 
-    public void PlayHitAnimation()
+    public IEnumerator PlayHitAnimation()
     {
         var sequence = DOTween.Sequence();
 
         sequence.Append(image.DOColor(Color.gray, 0.1f));
         sequence.Append(image.DOColor(originalColor, 0.1f));
+
+        yield return sequence.WaitForCompletion();
     }
 
-    public void PlayFaintAnimation()
+    public IEnumerator PlayFaintAnimation()
     {
         var sequence = DOTween.Sequence();
 
         sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
         sequence.Join(image.DOFade(0f, 0.5f));
+
+        yield return sequence.WaitForCompletion();
     }
     public IEnumerator PlayCaptureAnimation()
     {

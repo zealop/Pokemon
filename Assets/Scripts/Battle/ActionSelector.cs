@@ -1,12 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ActionSelector : MonoBehaviour
 {
-    Image[] actions;
+    private Image[] actions;
     private void Awake()
     {
         actions = GetComponentsInChildren<Image>();
@@ -14,10 +12,10 @@ public class ActionSelector : MonoBehaviour
 
     public void UpdateActionSelection(int currentAction)
     {
-        for(int i = 0; i< 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             actions[i].color = i == currentAction ? Color.black : Color.white;
-            actions[i].GetComponentInChildren<Text>().color = i == currentAction ? Color.white : Color.black;
+            actions[i].GetComponentInChildren<TextMeshProUGUI>().color = i == currentAction ? Color.white : Color.black;
         }
     }
 }

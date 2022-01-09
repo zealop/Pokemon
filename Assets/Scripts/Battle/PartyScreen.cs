@@ -1,19 +1,20 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PartyScreen : MonoBehaviour
 {
-    [SerializeField] Text messageText;
-    [SerializeField] TypeSpriteDB typeSprite;
-    [SerializeField] Image typeCards1;
-    [SerializeField] Image typeCards2;
+    [SerializeField] private TextMeshProUGUI messageText;
+    [SerializeField] private TypeSpriteDB typeSprite;
+    [SerializeField] private Image typeCards1;
+    [SerializeField] private Image typeCards2;
 
-    PartyMemberUI[] memberSlots;
-    MoveParty[] moveSlots;
+    private PartyMemberUI[] memberSlots;
+    private MoveParty[] moveSlots;
 
 
-    List<Pokemon> party;
+    private List<Pokemon> party;
     private void Awake()
     {
         memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
@@ -44,14 +45,7 @@ public class PartyScreen : MonoBehaviour
     {
         for (int i = 0; i < party.Count; i++)
         {
-            if (i == selected)
-            {
-                memberSlots[i].SetSelected(true);
-            }
-            else
-            {
-                memberSlots[i].SetSelected(false);
-            }
+            memberSlots[i].SetSelected(i == selected);
         }
 
         SetTypeCards(selected);
