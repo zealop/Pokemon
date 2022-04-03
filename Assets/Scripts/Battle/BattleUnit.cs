@@ -1,264 +1,197 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
+using Data;
+using Move;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-public class BattleUnit : MonoBehaviour
+namespace Battle
 {
-    [SerializeField] private bool isPlayerUnit;
-    public Pokemon Pokemon { get; private set; }
-    public bool IsPlayerUnit => isPlayerUnit;
-    public string Name => Pokemon.Name;
-    public int Level => Pokemon.Level;
-    public List<Move> Moves { get; private set; }
-
-    public StatusCondition Status
+    public class BattleUnit
     {
-        get => Pokemon.Status;
-        private set => Pokemon.Status = value;
-    }
+        [SerializeField] private bool isPlayerUnit;
+        public Pokemon Pokemon { get; private set; }
+        public string Name => Pokemon.Name;
+        public int Level => Pokemon.Level;
+        public List<Move.Move> Moves { get; private set; }
 
-    public BattleVisual Visual { get; private set; }
-
-    public bool LockedAction;
-    public bool LockedMove;
-    public bool EndTurn;
-
-    public System.Func<MoveBase, BattleUnit, bool> Invulnerability = (m, s) => false;
-    public System.Func<bool> CanSwitch = () => true;
-
-    public StatStage StatStage { get; set; }
-    public Dictionary<VolatileID, VolatileCondition> Volatiles;
-
-    private Dictionary<BattleUnit, MoveBase> MirrorMoves;
-    public int Weight => Pokemon.Base.Weight;
-    public int Height => Pokemon.Base.Height;
-
-    private int _attack;
-    private int _defense;
-    private int _spAttack;
-    private int _spDefense;
-    private int _speed;
-    public int Attack => Mathf.FloorToInt(_attack * StatStage[BoostableStat.Attack]);
-
-    public int Defense => Mathf.FloorToInt(_defense * StatStage[BoostableStat.Defense]);
-
-    public int SpAttack => Mathf.FloorToInt(_spAttack * StatStage[BoostableStat.SpAttack]);
-
-    public int SpDefense => Mathf.FloorToInt(_spDefense * StatStage[BoostableStat.SpDefense]);
-
-    public int Speed => Mathf.FloorToInt(_speed * StatStage[BoostableStat.Speed] * SpeedMod());
-    public int HP => Pokemon.HP;
-    public int MaxHP => Pokemon.MaxHP;
-
-    public float Accuracy => StatStage[BoostableStat.Accuracy];
-    public float Evasion => StatStage[BoostableStat.Evasion];
-
-    public List<PokemonType> Types { get; private set; }
-    public int CritStage => StatStage.CritStage;
-    public bool IsFainted => HP <= 0;
-    private static BattleManager BattleManager => BattleManager.Instance;
-    private static Queue<IEnumerator> AnimationQueue => BattleManager.AnimationQueue;
-    private static BattleDialogBox DialogBox => BattleManager.DialogBox;
-
-    private void Awake()
-    {
-        Visual = GetComponent<BattleVisual>();
-    }
-
-    public void Setup(Pokemon pokemon)
-    {
-        Pokemon = pokemon;
-        Types = new List<PokemonType> {pokemon.Base.Type1, pokemon.Base.Type2};
-
-        Moves = new List<Move>(Pokemon.Moves);
-
-        StatStage = new StatStage();
-
-        Volatiles = new Dictionary<VolatileID, VolatileCondition>();
-        MirrorMoves = new Dictionary<BattleUnit, MoveBase>();
-
-        Visual.Setup();
-
-        Transform(Pokemon);
-    }
-
-    public void Transform(Pokemon pokemon)
-    {
-        _attack = pokemon.Attack;
-        _defense = pokemon.Defense;
-        _spAttack = pokemon.SpAttack;
-        _spDefense = pokemon.SpDefense;
-        _speed = pokemon.Speed;
-        Visual.Transform(pokemon.Base);
-    }
-
-    public Move LastUsedMove;
-
-    public void UseMove(Move move, BattleUnit target)
-    {
-        LastUsedMove = move;
-
-        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{Name} used {move.Name}!"));
-        AnimationQueue.Enqueue(Visual.PlayAttackAnimation());
-
-        move.Base.Run(this, target);
-    }
-
-    public void TakeDamage(DamageDetail damage)
-    {
-        Pokemon.UpdateHP(HP - damage.Value);
-
-        AnimationQueue.Enqueue(Visual.PlayHitAnimation());
-        AnimationQueue.Enqueue(Visual.HUD.UpdateHP());
-        AnimationQueue.Enqueue(DialogBox.TypeDialog(damage.Messages));
-
-        CheckFaint();
-    }
-
-    public void TakeDamage(int damage, string message)
-    {
-        Pokemon.UpdateHP(HP - damage);
-
-        AnimationQueue.Enqueue(Visual.PlayHitAnimation());
-        AnimationQueue.Enqueue(Visual.HUD.UpdateHP());
-        AnimationQueue.Enqueue(DialogBox.TypeDialog(message));
-    }
-
-    private void CheckFaint()
-    {
-        if (IsFainted)
+        public StatusCondition Status
         {
-            AnimationQueue.Enqueue(Visual.PlayFaintAnimation());
-            AnimationQueue.Enqueue(DialogBox.TypeDialog($"{Name} fainted!"));
-        }
-    }
-
-    public void SetStatusCondition(StatusID id)
-    {
-        if (Status is object)
-        {
-            AnimationQueue.Enqueue(DialogBox.TypeDialog($"It doesn't affect {Name}"));
-        }
-        else
-        {
-            Status = StatusCondition.Create(id, this);
-            Visual.HUD.SetStatusImage();
-            Status.OnStart();
-        }
-    }
-
-    public void RemoveStatusCondition()
-    {
-        Status.OnEnd();
-        Status = null;
-        Visual.HUD.SetStatusImage();
-    }
-
-    public IEnumerator AddVolatileCondition(VolatileCondition condition)
-    {
-        condition.Unit = this;
-        Volatiles[condition.ID] = condition;
-        yield return condition.OnStart();
-    }
-
-    public IEnumerator RemoveVolatileCondition(VolatileID ID)
-    {
-        yield return Volatiles[ID].OnEnd();
-        Volatiles.Remove(ID);
-    }
-
-    public void OnMiss()
-    {
-        AnimationQueue.Enqueue(DialogBox.TypeDialog($"{Name}'s attack missed"));
-    }
-
-    public int LastHitDamage;
-
-    public List<System.Action<MoveBase, BattleUnit, int>> OnHitList =
-        new List<System.Action<MoveBase, BattleUnit, int>>();
-
-    public void OnHit(MoveBase move, BattleUnit source, int damage)
-    {
-        OnHitList.ForEach(a => a(move, source, damage));
-
-        LastHitDamage = damage;
-    }
-
-
-    public List<System.Func<MoveBase, BattleUnit, float>> AttackerModList =
-        new List<System.Func<MoveBase, BattleUnit, float>>();
-
-    public float AttackerMod(MoveBase move, BattleUnit target)
-    {
-        return AttackerModList.ToList().Aggregate(1f, (current, mod) => current * mod(move, target));
-    }
-
-    public List<System.Func<MoveBase, BattleUnit, float>> DefenderModList =
-        new List<System.Func<MoveBase, BattleUnit, float>>();
-
-    public float DefenderMod(MoveBase move, BattleUnit source)
-    {
-        return DefenderModList.ToList().Aggregate(1f, (current, mod) => current * mod(move, source));
-    }
-
-    public List<System.Func<float>> SpeedModList = new List<System.Func<float>>();
-
-    public float SpeedMod()
-    {
-        return SpeedModList.ToList().Aggregate(1f, (current, mod) => current * mod());
-    }
-
-    //true means can pass the move
-    public bool CanMove = true;
-
-    public List<System.Action> OnBeforeMoveList = new List<System.Action>();
-
-    public void OnBeforeMove()
-    {
-        OnBeforeMoveList.ForEach(a => a());
-    }
-
-    public List<System.Func<MoveBase, BattleUnit, bool>> ByPassAccuracyCheckList =
-        new List<System.Func<MoveBase, BattleUnit, bool>>();
-
-    //true if pass (hit)
-    public bool ByPassAccuracyCheck(MoveBase move, BattleUnit source)
-    {
-        bool result = false;
-        foreach (var e in ByPassAccuracyCheckList)
-        {
-            result = e(move, source);
+            get => Pokemon.Status;
+            private set => Pokemon.Status = value;
         }
 
-        return result;
-    }
+        public PokemonParty Party => isPlayerUnit ? BattleManager.PlayerParty : BattleManager.TrainerParty;
+        public Modifier Modifier { get; private set; }
+        
+        public bool LockedAction;
+        public bool LockedMove;
+        public bool EndTurn;
 
-    public List<System.Action> OnTurnEndList = new List<System.Action>();
+        public Func<bool> CanSwitch = () => true;
 
-    public void OnTurnEnd()
-    {
-        OnTurnEndList.ForEach(a => a());
-    }
+        public StatStage StatStage { get; set; }
+        public Dictionary<VolatileID, VolatileCondition> Volatiles;
 
-    public IEnumerator ApplyStatBoost(Dictionary<BoostableStat, int> boosts)
-    {
-        foreach (var kvp in boosts)
+        private Dictionary<BattleUnit, MoveBase> MirrorMoves;
+        public int Weight => Pokemon.Base.Weight;
+        public int Height => Pokemon.Base.Height;
+        
+        private int attack;
+        private int defense;
+        private int spAttack;
+        private int spDefense;
+        private int speed;
+        public int Attack => Mathf.FloorToInt(attack * StatStage[BoostableStat.Attack]);
+        public int Defense => Mathf.FloorToInt(defense * StatStage[BoostableStat.Defense]);
+        public int SpAttack => Mathf.FloorToInt(spAttack * StatStage[BoostableStat.SpAttack]);
+        public int SpDefense => Mathf.FloorToInt(spDefense * StatStage[BoostableStat.SpDefense]);
+        public int Speed => Mathf.FloorToInt(speed * StatStage[BoostableStat.Speed] * Modifier.SpeedMod());
+        public int Hp => Pokemon.HP;
+        public int MaxHp => Pokemon.MaxHP;
+        public float Accuracy => StatStage[BoostableStat.Accuracy];
+        public float Evasion => StatStage[BoostableStat.Evasion];
+
+        public List<PokemonType> Types { get; private set; }
+        public int CritStage => StatStage.CritStage;
+        public bool IsFainted => Hp <= 0;
+        private static BattleManager BattleManager => BattleManager.I;
+        
+        public int AttacksThisTurn;
+        public bool CanMove;
+
+        public void Setup(Pokemon pokemon)
         {
-            var stat = kvp.Key;
-            int boost = kvp.Value;
-            string message = "changed";
+            Pokemon = pokemon;
+            Types = new List<PokemonType> {pokemon.Base.Type1, pokemon.Base.Type2};
 
-            switch (StatStage.Value[stat])
+            Moves = new List<Move.Move>(Pokemon.Moves);
+
+            StatStage = new StatStage();
+
+            Volatiles = new Dictionary<VolatileID, VolatileCondition>();
+            MirrorMoves = new Dictionary<BattleUnit, MoveBase>();
+            Modifier = new Modifier(this);
+            
+            attack = pokemon.Attack;
+            defense = pokemon.Defense;
+            spAttack = pokemon.SpAttack;
+            spDefense = pokemon.SpDefense;
+            speed = pokemon.Speed;
+        }
+
+        public void Transform(Pokemon pokemon)
+        {
+            attack = pokemon.Attack;
+            defense = pokemon.Defense;
+            spAttack = pokemon.SpAttack;
+            spDefense = pokemon.SpDefense;
+            speed = pokemon.Speed;
+            // OnTransform?.Invoke()
+        }
+
+        public MoveBase LastUsedMove { get; set; }
+        public int LastSelectedMoveSlot { get; set; }
+
+        public void UseMove(Move.Move move, BattleUnit target)
+        {
+            move.Execute(this, target);
+
+            if (AttacksThisTurn > 1)
             {
-                case 6:
-                    message = "can't go any higher";
-                    break;
-                case -6:
-                    message = "can't go any lower";
-                    break;
-                default:
-                    message = boost switch
+                BattleManager.Log($"Hit {AttacksThisTurn} times!");
+            }
+        }
+        
+        #region event to interact with UI elements
+        public event Action OnHealthChanged;
+        public event Action OnHit;
+        public event Action OnFaint;
+        public event Action OnStatusChanged;
+        public event Action OnAttack;
+        #endregion
+        
+        public void TakeDamage(DamageDetail damage)
+        {
+            Pokemon.UpdateHP(Hp - damage.Value);
+
+            OnHit?.Invoke();
+            OnHealthChanged?.Invoke();
+            
+            BattleManager.Log(damage.Messages);
+
+            CheckFaint();
+        }
+        public void ApplyDamage(BattleUnit target, DamageDetail damage)
+        {
+            OnAttack?.Invoke();
+            
+            target.TakeDamage(damage);
+            AttacksThisTurn++;
+            
+            Modifier.OnApplyDamage?.Invoke(this, damage.Value);
+        }
+        public void TakeDamage(int damage, string message)
+        {
+            TakeDamage(new DamageDetail(damage, message));
+        }
+
+        private void CheckFaint()
+        {
+            if (IsFainted)
+            {
+                OnFaint?.Invoke();
+                BattleManager.Log($"{Name} fainted!");
+            }
+        }
+
+        public void SetStatusCondition(StatusID id)
+        {
+            if (Status is object)
+            {
+                BattleManager.Log($"It doesn't affect {Name}");
+            }
+            else
+            {
+                Status = StatusCondition.Create(id, this);
+                Status.OnStart();
+                
+                OnStatusChanged?.Invoke();
+            }
+        }
+
+        public void RemoveStatusCondition()
+        {
+            Status.OnEnd();
+            Status = null;
+            OnStatusChanged?.Invoke();
+        }
+
+        public void AddVolatileCondition(VolatileCondition condition)
+        {
+            Volatiles[condition.ID] = condition;
+            condition.OnStart();
+        }
+
+        public void RemoveVolatileCondition(VolatileID id)
+        {
+            Volatiles[id].OnEnd();
+            Volatiles.Remove(id);
+        }
+
+        public void ApplyStatBoost(Dictionary<BoostableStat, int> boosts)
+        {
+            foreach (var kvp in boosts)
+            {
+                var stat = kvp.Key;
+                int boost = kvp.Value;
+
+                string message = StatStage.Value[stat] switch
+                {
+                    6 => "can't go any higher",
+                    -6 => "can't go any lower",
+                    _ => boost switch
                     {
                         -3 => "severely fell",
                         -2 => "harshly fell",
@@ -266,60 +199,61 @@ public class BattleUnit : MonoBehaviour
                         1 => "rose",
                         2 => "rose sharply",
                         3 => "rose drastically",
-                        _ => message
-                    };
-                    break;
-            }
-            StatStage.Value[stat] = Mathf.Clamp(StatStage.Value[stat] + boost, -6, 6);
+                        _ => ""
+                    }
+                };
 
-            yield return BattleManager.Instance.DialogBox.TypeDialog($"{Name}'s {stat} {message}!");
+                StatStage.Value[stat] = Mathf.Clamp(StatStage.Value[stat] + boost, -6, 6);
+
+                BattleManager.Log($"{Name}'s {stat} {message}!");
+            }
         }
-    }
-
-    public Move GetRandomMove()
-    {
-        int r = Random.Range(0, Moves.Count);
-        return Moves[r];
-    }
-
-    public IEnumerator GainEXP(Pokemon defeatedPokemon, bool isTrainerBattle)
-    {
-        int exp = defeatedPokemon.ExpReward;
-        float trainerBonus = isTrainerBattle ? 1.5f : 1f;
-        int expGain = Mathf.FloorToInt(exp * trainerBonus / 7);
-
-        Pokemon.EXP += expGain;
-
-        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Name} gained {expGain} experience points!");
-        yield return Visual.HUD.UpdateEXP();
-    }
-
-    public IEnumerator LevelUp()
-    {
-        Pokemon.LevelUp();
-
-        yield return BattleManager.Instance.DialogBox.TypeDialog($"{Name} grew to level {Level}!");
-
-        yield return CheckForNewMoves();
-    }
-
-    private IEnumerator CheckForNewMoves()
-    {
-        var newMoves = Pokemon.GetMovesToLearnOnLevelUp();
-
-        foreach (var move in newMoves)
+        
+        public Move.Move GetRandomMove()
         {
-            var newMove = new Move(move);
-            Pokemon.Moves.Add(newMove);
-            Moves.Add(newMove);
-            if (Pokemon.Moves.Count < 4)
+            int r = Random.Range(0, Moves.Count);
+            return Moves[r];
+        }
+
+        public IEnumerator GainEXP(Pokemon defeatedPokemon, bool isTrainerBattle)
+        {
+            int exp = defeatedPokemon.ExpReward;
+            float trainerBonus = isTrainerBattle ? 1.5f : 1f;
+            int expGain = Mathf.FloorToInt(exp * trainerBonus / 7);
+
+            Pokemon.EXP += expGain;
+
+            yield return BattleManager.I.DialogBox.TypeDialog($"{Name} gained {expGain} experience points!");
+            // yield return Visual.HUD.UpdateExp();
+        }
+
+        public IEnumerator LevelUp()
+        {
+            Pokemon.LevelUp();
+
+            yield return BattleManager.I.DialogBox.TypeDialog($"{Name} grew to level {Level}!");
+
+            yield return CheckForNewMoves();
+        }
+
+        private IEnumerator CheckForNewMoves()
+        {
+            var newMoves = Pokemon.GetMovesToLearnOnLevelUp();
+
+            foreach (var move in newMoves)
             {
-                yield return BattleManager.Instance.DialogBox.TypeDialog($"{Name} learned {move.Name}!");
-            }
-            else
-            {
-                yield return BattleManager.Instance.DialogBox.TypeDialog($"{Name} wants to learn {move.Name}!");
-                BattleManager.Instance.OpenLearnMoveScreen();
+                var newMove = new Move.Move(move);
+                Pokemon.Moves.Add(newMove);
+                Moves.Add(newMove);
+                if (Pokemon.Moves.Count < 4)
+                {
+                    yield return BattleManager.I.DialogBox.TypeDialog($"{Name} learned {move.Name}!");
+                }
+                else
+                {
+                    yield return BattleManager.I.DialogBox.TypeDialog($"{Name} wants to learn {move.Name}!");
+                    BattleManager.I.OpenLearnMoveScreen();
+                }
             }
         }
     }

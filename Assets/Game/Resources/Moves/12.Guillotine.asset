@@ -21,20 +21,29 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: moveDamage
+    - Name: damage
       Entry: 7
-      Data: 0|DefaultDamage, Assembly-CSharp
+      Data: 0|Move.Damage.OHKO, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: moveAccuracy
+    - Name: accuracyCheck
       Entry: 7
-      Data: 1|DefaultAccuracy, Assembly-CSharp
+      Data: 1|Move.Accuracy.OHKO, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: moveEffect
+    - Name: effect
       Entry: 6
+      Data: 
+    - Name: secondaryEffect
+      Entry: 6
+      Data: 
+    - Name: behavior
+      Entry: 7
+      Data: 2|Move.Behaviour.Default, Assembly-CSharp
+    - Name: 
+      Entry: 8
       Data: 
   _name: Guillotine
   description: 

@@ -2,9 +2,10 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using Sirenix.Serialization;
 using UnityEngine;
+using Util;
 
 [CreateAssetMenu(fileName = "Pokemon", menuName = "New statusPokemon ")]
-public class TypeSpriteDB : SerializedScriptableObject
+public class TypeSpriteDB : SerializedSingletonScriptableObject<TypeSpriteDB>
 {
     [OdinSerialize] private Dictionary<PokemonType, TypeSprite> data;
     public Dictionary<PokemonType, TypeSprite> Data => data;

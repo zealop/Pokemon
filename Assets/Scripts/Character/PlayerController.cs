@@ -13,10 +13,11 @@ public class PlayerController : MonoBehaviour, ISavable
     private Vector2 input;
 
     public Character Character { get; private set; }
-
+    public PokemonParty Party { get; private set; }
     private void Awake()
     {
         Character = GetComponent<Character>();
+        Party = GetComponent<PokemonParty>();
     }
 
     public void HandleUpdate()
@@ -96,7 +97,7 @@ public class PlayerController : MonoBehaviour, ISavable
         var data = (PlayerSaveData) state;
         transform.position = data.position;
 
-        GetComponent<PokemonParty>().Party = data.party.Select(s => new Pokemon(s)).ToList();
+        Party.RestorePartyState(data.party.Select(s => new Pokemon(s)).ToList());
     }
 }
 

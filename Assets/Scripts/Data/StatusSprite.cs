@@ -1,11 +1,14 @@
-using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using Sirenix.Serialization;
 using UnityEngine;
+using Util;
 
-//[CreateAssetMenu(fileName = "Pokemon", menuName = "New statusPokemon ")]
-public class StatusSprite : SerializedScriptableObject
+//[CreateAssetMenu(fileName = "Pokemon", menuName = "New status sprite ")]
+namespace Data
 {
-    [OdinSerialize] private Dictionary<StatusID, Sprite> sprites;
-    public Dictionary<StatusID, Sprite> Sprites => sprites;
+    public class StatusSprite : SerializedSingletonScriptableObject<StatusSprite>
+    {
+        [OdinSerialize] private Dictionary<StatusID, Sprite> sprites;
+        public Dictionary<StatusID, Sprite> Sprites => sprites;
+    }
 }

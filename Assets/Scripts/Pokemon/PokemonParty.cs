@@ -4,15 +4,11 @@ using UnityEngine;
 
 public class PokemonParty : MonoBehaviour
 {
+    private const int MaxPartySize = 6;
     [SerializeField] private List<Pokemon> party;
 
-    public List<Pokemon> Party { get => party; set => party = value; }
-    public int Count => party.Count;
+    public List<Pokemon> Party => party;
 
-    public void SetParty(List<Pokemon> party)
-    {
-        this.party = party;
-    }
     private void Start()
     {
         foreach (var pokemon in party)
@@ -23,18 +19,12 @@ public class PokemonParty : MonoBehaviour
 
     public Pokemon GetHealthyPokemon()
     {
-        return party.Where(x => x.HP > 0).FirstOrDefault();
+        return party.FirstOrDefault(x => x.HP > 0);
     }
-
-    public Pokemon GetRandomPokemon(Pokemon current)
-    {
-        var candidates = party.Where(x => x.HP > 0 && x != current);
-        return candidates.ElementAt(Random.Range(0, candidates.Count()));
-    }
-
+    
     public void AddPokemon(Pokemon newPokemon)
     {
-        if (party.Count < 6)
+        if (party.Count < MaxPartySize)
         {
             party.Add(newPokemon);
         }
@@ -42,5 +32,10 @@ public class PokemonParty : MonoBehaviour
         {
             //TODO: transfer to PC
         }
+    }
+
+    public void RestorePartyState(List<Pokemon> pokemons)
+    {
+        party = pokemons;
     }
 }

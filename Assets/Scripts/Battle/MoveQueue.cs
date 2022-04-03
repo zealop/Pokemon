@@ -1,75 +1,87 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class MoveQueue
+namespace Battle
 {
-    private readonly List<MoveNode> list = new List<MoveNode>();
-    public int Count => list.Count;
-
-    public void Enqueue(Move move, BattleUnit source, BattleUnit target)
+    public class MoveQueue
     {
-        list.Add(new MoveNode(move, source, target));
-    }
+        private readonly List<MoveNode> list = new List<MoveNode>();
+        public int Count => list.Count;
 
-    public MoveNode Dequeue()
-    {
-        MoveNode result = null;
-        if (list.Count > 0)
+        public void Enqueue(Move.Move move, BattleUnit source, BattleUnit target)
         {
-            result = list.First();
-
-            result = list.Aggregate(result, FindFaster);
+            list.Add(new MoveNode(move, source, target));
         }
 
-        list.Remove(result);
+        public MoveNode Dequeue()
+        {
+            MoveNode result = null;
+            if (list.Count > 0)
+            {
+                result = list.First();
 
-        return result;
+                result = list.Aggregate(result, FindFaster);
+            }
+
+            list.Remove(result);
+
+            return result;
+        }
+
+        public void Clear()
+        {
+            list.Clear();
+        }
+
+        public void Cancel(BattleUnit unit)
+        {
+            var deletedNode = list.FirstOrDefault(node => node.Source.Equals(unit));
+            list.Remove(deletedNode);
+        }
+
+        private static MoveNode FindFaster(MoveNode node1, MoveNode node2)
+        {
+            MoveNode result;
+
+            var m1 = node1.Move.Base;
+            var s1 = node1.Source;
+
+            var m2 = node2.Move.Base;
+            var s2 = node2.Source;
+
+            if (m1.Priority == m2.Priority)
+            {
+                if (s1.Speed == s2.Speed)
+                {
+                    result = Random.value > 0.5f ? node1 : node2;
+                }
+                else
+                {
+                    result = s1.Speed > s2.Speed ? node1 : node2;
+                }
+            }
+            else
+            {
+                result = m1.Priority > m2.Priority ? node1 : node2;
+            }
+
+            return result;
+        }
     }
 
-    private static MoveNode FindFaster(MoveNode node1, MoveNode node2)
+
+    public class MoveNode
     {
-        var m1 = node1.Move.Base;
-        var s1 = node1.Source;
-        var t1 = node1.Target;
+        public Move.Move Move { get; }
+        public BattleUnit Source { get; }
+        public BattleUnit Target { get; }
 
-        var m2 = node2.Move.Base;
-        var s2 = node2.Source;
-        var t2 = node2.Target;
-
-        //if (m1.Priority(s1, t1) > m2.Priority(s1, t1))
-        //{
-        //    return node1;
-        //}
-        //if (m1.Priority(s1, t1) == m2.Priority(s1, t1))
-        //{
-        //    if (s1.Speed > s2.Speed)
-        //        return node1;
-        //    if (s1.Speed == s2.Speed)
-        //        return Random.value < 0.5f ? node1 : node2;
-        //    else
-        //        return node2;
-        //}
-        //else
-        //{
-        //    return node2;
-        //}
-        return node1;
-    }
-}
-
-
-public class MoveNode
-{
-    public Move Move { get; }
-    public BattleUnit Source { get; }
-    public BattleUnit Target { get; }
-
-    public MoveNode(Move move, BattleUnit source, BattleUnit target)
-    {
-        Move = move;
-        Source = source;
-        Target = target;
+        public MoveNode(Move.Move move, BattleUnit source, BattleUnit target)
+        {
+            Move = move;
+            Source = source;
+            Target = target;
+        }
     }
 }

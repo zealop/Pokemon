@@ -1,101 +1,147 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PartyScreen : MonoBehaviour
+namespace Battle
 {
-    [SerializeField] private TextMeshProUGUI messageText;
-    [SerializeField] private TypeSpriteDB typeSprite;
-    [SerializeField] private Image typeCards1;
-    [SerializeField] private Image typeCards2;
-
-    private PartyMemberUI[] memberSlots;
-    private MoveParty[] moveSlots;
-
-
-    private List<Pokemon> party;
-    private void Awake()
+    public class PartyScreen : MonoBehaviour
     {
-        memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
-        moveSlots = GetComponentsInChildren<MoveParty>(true);
-    }
+        [SerializeField] private TextMeshProUGUI messageText;
+        [SerializeField] private TypeSpriteDB typeSprite;
+        [SerializeField] private Image typeCards1;
+        [SerializeField] private Image typeCards2;
 
-    public void SetPartyData(List<Pokemon> party)
-    {
-        this.party = party;
-
-        for (int i = 0; i < memberSlots.Length; i++)
+        private PartyMemberUI[] memberSlots;
+        private MoveParty[] moveSlots;
+        private static List<Pokemon> party => BattleManager.I.PlayerParty.Party;
+        private static BattleUnit PlayerUnit => BattleManager.I.PlayerUnit;
+        private static int MemberCount => party.Count;
+        
+        private int currentIndex;
+        
+        public Action<Pokemon> OnSelectMember;
+        public Action OnBack;
+        
+        private void Awake()
         {
-            if (i < party.Count)
+            memberSlots = GetComponentsInChildren<PartyMemberUI>(true);
+            moveSlots = GetComponentsInChildren<MoveParty>(true);
+        }
+
+        public void Init()
+        {
+            for (int i = 0; i < memberSlots.Length; i++)
             {
-                memberSlots[i].gameObject.SetActive(true);
-                memberSlots[i].SetData(party[i]);
+                if (i < party.Count)
+                {
+                    memberSlots[i].gameObject.SetActive(true);
+                    memberSlots[i].SetData(party[i]);
+                }
+                else
+                {
+                    memberSlots[i].gameObject.SetActive(false);
+                }
+            }
+
+            messageText.text = "Choose a Pokemon";
+        }
+
+        private void UpdateMemberSelection(int previousIndex)
+        {
+            memberSlots[currentIndex].SetSelected();
+            memberSlots[previousIndex].SetUnselected();
+
+            SetTypeCards();
+            SetMoveList();
+        }
+
+        private void SetTypeCards()
+        {
+            var type1 = party[currentIndex].Base.Type1;
+            var type2 = party[currentIndex].Base.Type2;
+
+            typeCards1.sprite = typeSprite.Data[type1].Card;
+
+            if (type2 != PokemonType.None)
+            {
+                typeCards2.gameObject.SetActive(true);
+                typeCards2.sprite = typeSprite.Data[type2].Card;
             }
             else
             {
-                memberSlots[i].gameObject.SetActive(false);
+                typeCards2.gameObject.SetActive(false);
             }
         }
 
-        messageText.text = "Choose a Pokemon";
-    }
-
-    public void UpdateMemberSelection(int selected)
-    {
-        for (int i = 0; i < party.Count; i++)
+        private void SetMoveList()
         {
-            memberSlots[i].SetSelected(i == selected);
-        }
+            var moves = party[currentIndex].Moves;
 
-        SetTypeCards(selected);
-        SetMoveList(selected);
-    }
-
-    private void SetBattleStateText(int selected)
-    {
-        //TODO
-    }
-
-    private void SetTypeCards(int selected)
-    {
-        var type1 = party[selected].Base.Type1;
-        var type2 = party[selected].Base.Type2;
-
-        typeCards1.sprite = typeSprite.Data[type1].Card;
-
-        if (type2 != PokemonType.None)
-        {
-            typeCards2.gameObject.SetActive(true);
-            typeCards2.sprite = typeSprite.Data[type2].Card;
-        }
-        else
-        {
-            typeCards2.gameObject.SetActive(false);
-        }
-
-    }
-
-    private void SetMoveList(int selected)
-    {
-        var moves = party[selected].Moves;
-
-        for (int i = 0; i < moveSlots.Length; i++)
-        {
-            if (i < moves.Count)
+            for (int i = 0; i < moveSlots.Length; i++)
             {
-                moveSlots[i].gameObject.SetActive(true);
-                moveSlots[i].SetData(moves[i]);
+                if (i < moves.Count)
+                {
+                    moveSlots[i].gameObject.SetActive(true);
+                    moveSlots[i].SetData(moves[i]);
+                }
+                else
+                {
+                    moveSlots[i].gameObject.SetActive(false);
+                }
+            }
+        }
+
+        private void SetMessageText(string message)
+        {
+            messageText.text = message;
+        }
+
+        public void HandleUpdate()
+        {
+            int previousIndex = currentIndex;
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                currentIndex++;
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                currentIndex--;
+            }
+            else if (Input.GetKeyDown(KeyCode.Z))
+            {
+                ValidateMember();
+            }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                OnBack?.Invoke();
+            }
+
+            currentIndex = (currentIndex + MemberCount) % MemberCount;
+            if (currentIndex != previousIndex) UpdateMemberSelection(previousIndex);
+        }
+
+        private void ValidateMember()
+        {
+            var pokemon = party[currentIndex];
+            
+            if (!PlayerUnit.CanSwitch())
+            {
+                SetMessageText($"{PlayerUnit.Name} can't switch out!");
+            }
+            else if (pokemon.HP <= 0)
+            {
+                SetMessageText("You can't send out a fainted Pokemon!");
+            }
+            else if (pokemon == PlayerUnit.Pokemon)
+            {
+                SetMessageText($"This Pokemon is already out!");
             }
             else
             {
-                moveSlots[i].gameObject.SetActive(false);
+                OnSelectMember(pokemon);
             }
         }
     }
-    public void SetMessageText(string message)
-    {
-        messageText.text = message;
-    }
-
 }

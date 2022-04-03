@@ -1,39 +1,72 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveSelector : MonoBehaviour
+namespace Battle
 {
-    private MoveSelection[] moveSelections;
-    private List<Move> moves;
-    private void Awake()
+    public class MoveSelector : MonoBehaviour
     {
-        moveSelections = GetComponentsInChildren<MoveSelection>(true);
-    }
+        private MoveSelection[] moveSelections;
+        private List<Move.Move> moves;
 
-    public void SetMoves(List<Move> moves)
-    {
-        this.moves = moves;
-
-        for (int i = 0; i < moveSelections.Length; i++)
+        private int currentIndex;
+        private int MoveCount => moves.Count;
+    
+        public Action<int> OnSelectMove;
+        public Action OnBack;
+        private void Awake()
         {
-            if (i < moves.Count)
+            moveSelections = GetComponentsInChildren<MoveSelection>(true);
+        }
+
+        public void SetMoves(List<Move.Move> moves)
+        {
+            this.moves = moves;
+
+            for (int i = 0; i < moveSelections.Length; i++)
             {
-                moveSelections[i].gameObject.SetActive(true);
-                moveSelections[i].SetMove(moves[i]);
-            }
-            else
-            {
-                moveSelections[i].gameObject.SetActive(false);
+                if (i < moves.Count)
+                {
+                    moveSelections[i].gameObject.SetActive(true);
+                    moveSelections[i].SetMove(moves[i]);
+                }
+                else
+                {
+                    moveSelections[i].gameObject.SetActive(false);
+                }
             }
         }
 
-    }
-
-    public void UpdateMoveSelection(int currentMove)
-    {
-        for (int i = 0; i < moves.Count; i++)
+        private void UpdateMoveSelection(int previousIndex)
         {
-            moveSelections[i].SetSelected(i == currentMove);
+            moveSelections[currentIndex].SetSelected();
+            moveSelections[previousIndex].SetUnselected();
+        }
+
+        public void HandleUpdate()
+        {
+            int previousIndex = currentIndex;
+            
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                currentIndex++;
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                currentIndex--;
+            }
+            else if (Input.GetKeyDown(KeyCode.Z))
+            {
+                OnSelectMove(currentIndex);
+            }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                OnBack();
+            }
+        
+            currentIndex = (currentIndex + MoveCount) % MoveCount;
+            
+            if(previousIndex != currentIndex) UpdateMoveSelection(previousIndex);
         }
     }
 }

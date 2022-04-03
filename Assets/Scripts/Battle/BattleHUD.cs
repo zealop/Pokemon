@@ -1,120 +1,147 @@
 using System.Collections;
+using System.Collections.Generic;
+using Data;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleHUD : MonoBehaviour
+namespace Battle
 {
-    [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI levelText;
-    [SerializeField] private Image hpBar;
-    [SerializeField] private TextMeshProUGUI hpText;
-    [SerializeField] private Image expBar;
-    [SerializeField] private Image statusImage;
-    [SerializeField] private StatusSprite statusSprite;
-    private float NormalizedHP => (float) unit.HP / unit.MaxHP;
-
-    private float NormalizedEXP
+    public class BattleHUD : MonoBehaviour
     {
-        get
+        private const float AnimationDuration = 1.5f;
+
+        [SerializeField] private TextMeshProUGUI nameText;
+        [SerializeField] private TextMeshProUGUI levelText;
+        [SerializeField] private Image hpBar;
+        [SerializeField] private TextMeshProUGUI hpText;
+        [SerializeField] private Image expBar;
+        [SerializeField] private Image statusImage;
+
+        private int curHp;
+        private int maxHp;
+
+        private int CurHp
         {
-            int currentLevelEXP = EXPChart.GetEXPAtLevel(unit.Pokemon.Base.GrowthRate, unit.Level);
-            int nextLevelEXP = EXPChart.GetEXPAtLevel(unit.Pokemon.Base.GrowthRate, unit.Level + 1);
-
-            return (float) (unit.Pokemon.EXP - currentLevelEXP) / (nextLevelEXP - currentLevelEXP);
-        }
-    }
-
-    private BattleUnit unit;
-    private Sequence statusSequence;
-
-    public void SetData(BattleUnit unit)
-    {
-        this.unit = unit;
-
-        nameText.text = unit.Name;
-        SetLevelText();
-
-        hpBar.transform.localScale = new Vector3(NormalizedHP, 1);
-
-        SetStatusImage();
-
-        if (hpText is object)
-        {
-            hpText.text = $"{unit.HP}/{unit.MaxHP}";
+            set
+            {
+                curHp = value;
+                SetHpInfo();
+            }
         }
 
-        if (expBar is object)
+        private float NormalizedHp => (float) curHp / maxHp;
+
+        private static readonly Color HpGreen = Color.green;
+        private static readonly Color HpYellow = Color.yellow;
+        private static readonly Color HpRed = Color.red;
+
+        private static Queue<IEnumerator> AnimationQueue => BattleManager.I.AnimationQueue;
+        
+        public void Setup(BattleUnit unit)
         {
-            expBar.transform.localScale = new Vector3(NormalizedEXP, 1);
+            maxHp = unit.MaxHp;
+            CurHp = unit.Hp;
+            unit.OnHealthChanged += () => AnimationQueue.Enqueue(UpdateHp(unit.Hp));
+            unit.OnStatusChanged += () => AnimationQueue.Enqueue(SetStatusImageCoroutine(unit.Status));
+            
+            nameText.text = unit.Name;
+            levelText.text = $"Lvl {unit.Level}";
+
+            SetStatusImage(unit.Status);
+            
+            // if (expBar is object)
+            // {
+            //     expBar.transform.localScale = new Vector3(normalizedExp, 1);
+            // }
+            
+            gameObject.SetActive(true);
         }
-    }
 
-    private void SetLevelText()
-    {
-        levelText.text = $"Lvl {unit.Level}";
-    }
-
-    public IEnumerator UpdateHP()
-    {
-        if (hpText is object)
+        private IEnumerator UpdateHp(int newHp, float duration = AnimationDuration)
         {
-            StartCoroutine(UpdateHPTextSmooth(1.5f));
+            float timer = duration;
+            int hpDiff = curHp - newHp;
+            
+            while (timer > 0)
+            {
+                timer = Mathf.Max(0, timer - Time.deltaTime);
+
+                CurHp = newHp + Mathf.FloorToInt(hpDiff * timer / duration);
+
+                yield return null;
+            }
         }
 
-        yield return hpBar.transform.DOScaleX(NormalizedHP, 1.5f).WaitForCompletion();
-    }
+        // public IEnumerator UpdateExp()
+        // {
+        //     if (NormalizedExp > 1f)
+        //     {
+        //         var transform1 = expBar.transform;
+        //         yield return transform1.DOScaleX(1f, 1.5f).WaitForCompletion();
+        //         transform1.localScale = new Vector3(0, 1);
+        //
+        //         yield return unit.LevelUp();
+        //         levelText.text = $"Lvl {unit.Level}";
+        //
+        //         yield return UpdateExp();
+        //     }
+        //     else
+        //     {
+        //         yield return expBar.transform.DOScaleX(NormalizedExp, 1.5f).WaitForCompletion();
+        //     }
+        // }
 
-    private IEnumerator UpdateHPTextSmooth(float timer)
-    {
-        int curHp = int.Parse(hpText.text.Split('/')[0]);
-        while (timer > 0)
+        private void SetStatusImage(StatusCondition status)
         {
-            timer -= Time.deltaTime;
+            if (status is object)
+            {
+                statusImage.gameObject.SetActive(true);
+                statusImage.sprite = StatusSprite.I.Sprites[status.ID];
 
-            int hp = unit.HP + Mathf.FloorToInt((curHp - unit.HP) * timer / 1.5f);
-            hpText.text = $"{hp}/{unit.MaxHP}";
+                statusImage.DOFade(0, AnimationDuration).SetLoops(-1, LoopType.Yoyo);
+            }
+            else
+            {
+                statusImage.gameObject.SetActive(false);
+            }
+        }
+
+        private IEnumerator SetStatusImageCoroutine(StatusCondition status)
+        {
+            SetStatusImage(status);
             yield return null;
         }
-    }
-
-    public IEnumerator UpdateEXP()
-    {
-        if (NormalizedEXP > 1f)
+        private void SetHpInfo()
         {
-            yield return expBar.transform.DOScaleX(1f, 1.5f).WaitForCompletion();
-            expBar.transform.localScale = new Vector3(0, 1);
+            hpBar.transform.localScale = new Vector3(NormalizedHp, 1);
+            SetHpColor(NormalizedHp);
 
-            yield return unit.LevelUp();
-            SetLevelText();
-
-            yield return UpdateEXP();
+            if (hpText is object)
+            {
+                SetHpText(curHp, maxHp);
+            }
         }
-        else
+
+        private void SetHpColor(float normalizedHp)
         {
-            yield return expBar.transform.DOScaleX(NormalizedEXP, 1.5f).WaitForCompletion();
+            var hpColor = HpGreen;
+            if (normalizedHp < 0.25f)
+            {
+                hpColor = HpRed;
+            }
+            else if (normalizedHp < 0.5f)
+            {
+                hpColor = HpYellow;
+            }
+
+            hpBar.color = hpColor;
         }
-    }
 
-    public void SetStatusImage()
-    {
-        var status = unit.Status;
-
-        if (status is object)
+        private void SetHpText(int curHp, int maxHp)
         {
-            statusImage.gameObject.SetActive(true);
-            statusImage.sprite = statusSprite.Sprites[status.ID];
-
-            statusSequence = DOTween.Sequence();
-            statusSequence.Append(statusImage.DOFade(0, 1));
-            statusSequence.Append(statusImage.DOFade(1, 1));
-            statusSequence.SetLoops(-1);
-        }
-        else
-        {
-            statusImage.gameObject.SetActive(false);
-            statusSequence.Kill();
+            hpText.text = $"{curHp}/{maxHp}";
         }
     }
 }

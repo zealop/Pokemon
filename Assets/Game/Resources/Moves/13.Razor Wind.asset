@@ -21,20 +21,38 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: moveDamage
+    - Name: damage
       Entry: 7
-      Data: 0|DefaultDamage, Assembly-CSharp
+      Data: 0|Move.Damage.Default, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: moveAccuracy
+    - Name: accuracyCheck
       Entry: 7
-      Data: 1|DefaultAccuracy, Assembly-CSharp
+      Data: 1|Move.Accuracy.Default, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: moveEffect
+    - Name: effect
       Entry: 6
+      Data: 
+    - Name: secondaryEffect
+      Entry: 6
+      Data: 
+    - Name: behavior
+      Entry: 7
+      Data: 2|Move.Behaviour.TwoTurn, Assembly-CSharp
+    - Name: message
+      Entry: 1
+      Data: '{0} whipped up a whirlwind!'
+    - Name: condition
+      Entry: 7
+      Data: 3|Data.Volatile.TwoTurnMove, Assembly-CSharp
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
       Data: 
   _name: Razor Wind
   description: 
@@ -45,4 +63,4 @@ MonoBehaviour:
   power: 80
   accuracy: 100
   priority: 0
-  critStage: 0
+  critStage: 1

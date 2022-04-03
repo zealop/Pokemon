@@ -1,22 +1,28 @@
+using System;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Battle;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public enum GameState
 {
-    FreeRoam, Battle, Dialog, Cutscene, Pause, Menu
+    FreeRoam,
+    Battle,
+    Dialog,
+    Cutscene,
+    Pause,
+    Menu
 }
+
 public class GameController : SerializedMonoBehaviour
 {
     [SerializeField] private PlayerController playerController;
     [SerializeField] private BattleManager battleSystem;
     [SerializeField] private Camera worldCamera;
     [SerializeField] private HashSet<string> activeScenes = new HashSet<string>();
-
-
 
     [SerializeField] private Pokemon testPokemon;
 
@@ -29,14 +35,16 @@ public class GameController : SerializedMonoBehaviour
 
     private MenuController menuController;
     public static GameController Instance { get; private set; }
+
     private void Awake()
     {
         Instance = this;
         menuController = GetComponent<MenuController>();
     }
+
     private void Start()
     {
-        battleSystem.OnBattleOver += EndBattle;
+        battleSystem.OnBattleEnd += EndBattle;
 
         DialogManager.Instance.OnShowDialog += () => state = GameState.Dialog;
         DialogManager.Instance.OnCloseDialog += () =>
@@ -48,37 +56,42 @@ public class GameController : SerializedMonoBehaviour
         menuController.onBack += () => state = GameState.FreeRoam;
         menuController.onMenuSelected += OnMenuSelected;
     }
+
     private void Update()
     {
-        if (state == GameState.FreeRoam)
+        switch (state)
         {
-            StartWildBattle(new Pokemon(testPokemon.Base, testPokemon.Level));
-
-            playerController.HandleUpdate();
-            if (Input.GetKeyDown(KeyCode.Return))
+            case GameState.FreeRoam:
             {
-                state = GameState.Menu;
-                menuController.OpenMenu();
+                StartWildBattle(new Pokemon(testPokemon.Base, testPokemon.Level));
+
+                playerController.HandleUpdate();
+                if (Input.GetKeyDown(KeyCode.Return))
+                {
+                    state = GameState.Menu;
+                    menuController.OpenMenu();
+                }
+
+                break;
             }
-
-
-
+            case GameState.Battle:
+                battleSystem.HandleUpdate();
+                break;
+            case GameState.Dialog:
+                DialogManager.Instance.HandleUpdate();
+                break;
+            case GameState.Menu:
+                menuController.HandleUpdate();
+                break;
+            case GameState.Cutscene:
+                break;
+            case GameState.Pause:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
-        else if (state == GameState.Battle)
-        {
-            battleSystem.HandleUpdate();
-        }
-        else if (state == GameState.Dialog)
-        {
-            DialogManager.Instance.HandleUpdate();
-        }
-        else if (state == GameState.Menu)
-        {
-            menuController.HandleUpdate();
-        }
-
-
     }
+
     public void PauseGame(bool pause)
     {
         if (pause)
@@ -91,6 +104,7 @@ public class GameController : SerializedMonoBehaviour
             state = beforePauseState;
         }
     }
+
     public void StartWildBattle(Pokemon wildPokemon)
     {
         state = GameState.Battle;
@@ -98,15 +112,16 @@ public class GameController : SerializedMonoBehaviour
         worldCamera.gameObject.SetActive(false);
 
         var playerParty = playerController.GetComponent<PokemonParty>();
-        battleSystem.StartBattle(playerParty, wildPokemon);
+        battleSystem.StartWildBattle(playerParty, wildPokemon);
     }
+
     public void StartTrainerBattle(TrainerController trainerController)
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
 
-        this.trainer = trainerController;
+        trainer = trainerController;
 
         var playerParty = playerController.GetComponent<PokemonParty>();
         var trainerParty = trainerController.GetComponent<PokemonParty>();
@@ -122,10 +137,12 @@ public class GameController : SerializedMonoBehaviour
             trainer.BattleLost();
             trainer = null;
         }
+
         state = GameState.FreeRoam;
         battleSystem.gameObject.SetActive(false);
         worldCamera.gameObject.SetActive(true);
     }
+
     public void OnEnterTrainerFOV(TrainerController trainer)
     {
         state = GameState.Cutscene;
@@ -140,19 +157,22 @@ public class GameController : SerializedMonoBehaviour
             yield return SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
             var scene = SceneManager.GetSceneByName(sceneName);
-            var savables = scene.GetRootGameObjects().Select(o => o.GetComponent<SavableEntity>()).OfType<SavableEntity>().ToList();
+            var savable = scene.GetRootGameObjects().Select(o => o.GetComponent<SavableEntity>())
+                .Where(o => o is object).ToList();
 
-            SavingSystem.i.RestoreEntityStates(savables);
+            SavingSystem.i.RestoreEntityStates(savable);
         }
     }
+
     public void UnloadScene(string sceneName)
     {
         if (ActiveScenes.Contains(sceneName))
         {
             var scene = SceneManager.GetSceneByName(sceneName);
-            var savables = scene.GetRootGameObjects().Select(o => o.GetComponent<SavableEntity>()).OfType<SavableEntity>().ToList();
+            var savable = scene.GetRootGameObjects().Select(o => o.GetComponent<SavableEntity>())
+                .Where(o => o is object).ToList();
 
-            SavingSystem.i.CaptureEntityStates(savables);
+            SavingSystem.i.CaptureEntityStates(savable);
 
             ActiveScenes.Remove(sceneName);
             SceneManager.UnloadSceneAsync(sceneName);
@@ -173,11 +193,8 @@ public class GameController : SerializedMonoBehaviour
             case 3: //Load
                 SavingSystem.i.Load("saveSlot1");
                 break;
-            default:
-                break;
         }
+
         state = GameState.FreeRoam;
     }
 }
-
-

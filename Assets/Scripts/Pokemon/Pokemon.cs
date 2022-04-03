@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using Data;
+using Move;
 using UnityEngine;
 
 [System.Serializable]
@@ -16,7 +18,7 @@ public class Pokemon
     public int Level => level;
     public StatusCondition Status { get; set; }
     public string Name => string.IsNullOrEmpty(nickName) ? Base.Name : nickName; //if no nickname, use specie name instead
-    public List<Move> Moves { get; set; }
+    public List<Move.Move> Moves { get; set; }
     public int Attack { get; private set; }
     public int Defense { get; private set; }
     public int SpAttack { get; private set; }
@@ -28,11 +30,11 @@ public class Pokemon
 
     public void Init()
     {
-        Moves = new List<Move>();
+        Moves = new List<Move.Move>();
         foreach (var move in Base.LearnableMoves)
         {
             if (move.Level <= Level)
-                Moves.Add(new Move(move.Base));
+                Moves.Add(new Move.Move(move.Base));
 
             if (Moves.Count >= 4)
                 break;
@@ -59,7 +61,7 @@ public class Pokemon
         EXP = data.exp;
         Status = data.status;
         _base = Resources.Load<PokemonBase>($"Pokemons/{data.specie}");
-        Moves = data.moves.Select(m => new Move(m)).ToList();
+        Moves = data.moves.Select(m => new Move.Move(m)).ToList();
 
         CalculateStats();
     }

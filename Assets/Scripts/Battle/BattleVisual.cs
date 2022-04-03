@@ -1,109 +1,115 @@
-using DG.Tweening;
 using System.Collections;
+using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
-public class BattleVisual : MonoBehaviour
+
+namespace Battle
 {
-
-    [SerializeField] private BattleHUD hud;
-
-    private BattleUnit unit;
-
-    public BattleHUD HUD => hud;
-
-    private Image image;
-    private Vector3 originalPos;
-    private Color originalColor;
-    private void Awake()
+    public class BattleVisual : MonoBehaviour
     {
-        image = GetComponent<Image>();
+        [SerializeField] private bool isPlayerSprite;
+        
+        private static Queue<IEnumerator> AnimationQueue => BattleManager.I.AnimationQueue;
 
-        originalPos = image.transform.localPosition;
-        originalColor = image.color;
+        private Image image;
+        private Vector3 originalPos;
+        private Color originalColor;
+        private void Awake()
+        {
+            image = GetComponent<Image>();
 
-        unit = GetComponent<BattleUnit>();
-    }
+            originalPos = image.transform.localPosition;
+            originalColor = image.color;
+        }
 
-    public void Setup()
-    {
-        hud.gameObject.SetActive(true);
-        hud.SetData(unit);
+        public void Setup(BattleUnit unit)
+        {
+            unit.OnHit += () => AnimationQueue.Enqueue(PlayHitAnimation());
+            unit.OnFaint += () => AnimationQueue.Enqueue(PlayFaintAnimation());
+            unit.OnAttack += () => AnimationQueue.Enqueue(PlayAttackAnimation());
+            
+            image.color = originalColor;
 
-        image.color = originalColor;
+            transform.localScale = new Vector3(1, 1, 1);
 
-        transform.localScale = new Vector3(1, 1, 1);
+            SetSprite(unit.Pokemon.Base);
+        }
+        
+        public IEnumerator Transform(PokemonBase pokemon)
+        {
+            SetSprite(pokemon);
+            yield return null;
+        }
 
-        PlayEnterAnimation();
-    }
-    public void Clear()
-    {
-        hud.gameObject.SetActive(false);
-    }
+        private void SetSprite(PokemonBase pokemon)
+        {
+            image.sprite = isPlayerSprite ? pokemon.Sprite.Back : pokemon.Sprite.Front;
+        }
+        
+        
+        public IEnumerator PlayEnterAnimation()
+        {
+            float x = isPlayerSprite ? -500f : 500f;
 
-    public void Transform(PokemonBase pokemon)
-    {
-        image.sprite = unit.IsPlayerUnit ? pokemon.Sprite.Back : pokemon.Sprite.Front;
-    }
+            image.transform.localPosition = new Vector3(x, originalPos.y);
+            
+            gameObject.SetActive(true);
+            
+            yield return image.transform.DOLocalMoveX(originalPos.x, 1f).WaitForCompletion();
+        }
 
-    private void PlayEnterAnimation()
-    {
-        float x = unit.IsPlayerUnit ? -500f : 500f;
+        public IEnumerator PlayAttackAnimation()
+        {
+            var sequence = DOTween.Sequence();
 
-        image.transform.localPosition = new Vector3(x, originalPos.y);
+            float x = isPlayerSprite ? 50f : -50f;
 
-        image.transform.DOLocalMoveX(originalPos.x, 1f);
-    }
+            sequence.Append(image.transform.DOLocalMoveX(originalPos.x + x, 0.25f));
+            sequence.Append(image.transform.DOLocalMoveX(originalPos.x, 0.25f));
 
-    public IEnumerator PlayAttackAnimation()
-    {
-        var sequence = DOTween.Sequence();
+            yield return sequence.WaitForCompletion();
+        }
 
-        float x = unit.IsPlayerUnit ? 50f : -50f;
+        private IEnumerator PlayHitAnimation()
+        {
+            var sequence = DOTween.Sequence();
 
-        sequence.Append(image.transform.DOLocalMoveX(originalPos.x + x, 0.25f));
-        sequence.Append(image.transform.DOLocalMoveX(originalPos.x, 0.25f));
+            sequence.Append(image.DOColor(Color.gray, 0.1f));
+            sequence.Append(image.DOColor(originalColor, 0.1f));
 
-        yield return sequence.WaitForCompletion();
-    }
+            yield return sequence.WaitForCompletion();
+        }
 
-    public IEnumerator PlayHitAnimation()
-    {
-        var sequence = DOTween.Sequence();
+        public IEnumerator PlayFaintAnimation()
+        {
+            var sequence = DOTween.Sequence();
 
-        sequence.Append(image.DOColor(Color.gray, 0.1f));
-        sequence.Append(image.DOColor(originalColor, 0.1f));
+            sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
+            sequence.Join(image.DOFade(0f, 0.5f));
 
-        yield return sequence.WaitForCompletion();
-    }
+            yield return sequence.WaitForCompletion();
+        }
+        public IEnumerator PlayCaptureAnimation()
+        {
+            var sequence = DOTween.Sequence();
 
-    public IEnumerator PlayFaintAnimation()
-    {
-        var sequence = DOTween.Sequence();
+            sequence.Join(image.DOFade(0, 0.5f));
+            sequence.Join(transform.DOLocalMoveY(originalPos.y + 50f, 0.5f));
+            sequence.Join(transform.DOScale(new Vector3(0.3f, 0.3f, 1f), 0.5f));
 
-        sequence.Append(image.transform.DOLocalMoveY(originalPos.y - 150f, 0.5f));
-        sequence.Join(image.DOFade(0f, 0.5f));
+            yield return sequence.WaitForCompletion();
+        }
 
-        yield return sequence.WaitForCompletion();
-    }
-    public IEnumerator PlayCaptureAnimation()
-    {
-        var sequence = DOTween.Sequence();
+        public IEnumerator PlayBreakoutAnimation()
+        {
+            var sequence = DOTween.Sequence();
 
-        sequence.Join(image.DOFade(0, 0.5f));
-        sequence.Join(transform.DOLocalMoveY(originalPos.y + 50f, 0.5f));
-        sequence.Join(transform.DOScale(new Vector3(0.3f, 0.3f, 1f), 0.5f));
+            sequence.Join(image.DOFade(1, 0.5f));
+            sequence.Join(transform.DOLocalMoveY(originalPos.y, 0.5f));
+            sequence.Join(transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f));
 
-        yield return sequence.WaitForCompletion();
-    }
-
-    public IEnumerator PlayBreakoutAnimation()
-    {
-        var sequence = DOTween.Sequence();
-
-        sequence.Join(image.DOFade(1, 0.5f));
-        sequence.Join(transform.DOLocalMoveY(originalPos.y, 0.5f));
-        sequence.Join(transform.DOScale(new Vector3(1f, 1f, 1f), 0.5f));
-
-        yield return sequence.WaitForCompletion();
+            yield return sequence.WaitForCompletion();
+        }
     }
 }

@@ -21,26 +21,76 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: moveDamage
+    - Name: damage
       Entry: 7
-      Data: 0|DefaultDamage, Assembly-CSharp
+      Data: 0|Move.Damage.Default, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: moveAccuracy
+    - Name: accuracyCheck
       Entry: 7
-      Data: 1|DefaultAccuracy, Assembly-CSharp
+      Data: 1|Move.Accuracy.Default, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 
-    - Name: moveEffect
+    - Name: effect
+      Entry: 7
+      Data: 2|Move.Effect.Boost, Assembly-CSharp
+    - Name: boosts
+      Entry: 7
+      Data: 3|System.Collections.Generic.Dictionary`2[[Battle.BoostableStat, Assembly-CSharp],[System.Int32,
+        mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 4|System.Collections.Generic.EnumEqualityComparer`1[[Battle.BoostableStat,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: 2
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: secondaryEffect
       Entry: 6
+      Data: 
+    - Name: behavior
+      Entry: 7
+      Data: 5|Move.Behaviour.Default, Assembly-CSharp
+    - Name: 
+      Entry: 8
       Data: 
   _name: Swords Dance
   description: 
   type: 1
   category: 2
-  target: 0
+  target: 1
   pp: 20
   power: 0
   accuracy: 0

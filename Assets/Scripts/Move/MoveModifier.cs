@@ -1,3 +1,5 @@
+using Move;
+
 [System.Serializable]
 public class MoveModifier
 {

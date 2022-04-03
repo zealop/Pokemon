@@ -1,117 +1,119 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Battle;
+using Move.Component;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
-using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Move", menuName = "New move")]
-public class MoveBase : SerializedScriptableObject
+namespace Move
 {
-    [SerializeField] public string _name;
-
-    [TextArea] [SerializeField] public string description;
-
-    [SerializeField] public PokemonType type;
-    [SerializeField] public MoveCategory category;
-    [SerializeField] public MoveTarget target;
-
-    [SerializeField] public int pp;
-    [SerializeField] public int power;
-    [SerializeField] public int accuracy;
-
-    [FoldoutGroup("A")] [SerializeField] private int priority;
-    [FoldoutGroup("A")] [SerializeField] private int critStage;
-
-    [FoldoutGroup("B")] [OdinSerialize] private MoveDamage moveDamage;
-    [FoldoutGroup("B")] [OdinSerialize] private MoveAccuracy moveAccuracy;
-    [FoldoutGroup("B")] [OdinSerialize] private MoveEffect moveEffect;
-    [FoldoutGroup("B")] [OdinSerialize] private SecondaryEffect secondaryEffect;
-
-    public MoveDamage MoveDamage
+    [CreateAssetMenu(fileName = "Move", menuName = "New move")]
+    public class MoveBase : SerializedScriptableObject
     {
-        get => moveDamage;
-        set => moveDamage = value;
-    }
+        // ReSharper disable once InconsistentNaming
+        [SerializeField] public string _name;
 
-    public MoveAccuracy MoveAccuracy
-    {
-        get => moveAccuracy;
-        set => moveAccuracy = value;
-    }
+        [TextArea] [SerializeField] public string description;
 
-    public MoveEffect MoveEffect
-    {
-        get => moveEffect;
-        set => moveEffect = value;
-    }
+        [SerializeField] public PokemonType type;
+        [SerializeField] public MoveCategory category;
+        [SerializeField] public MoveTarget target;
 
-    public string Name => _name;
-    public string Description => description;
-    public PokemonType Type => type;
-    public MoveCategory Category => category;
-    public MoveTarget Target => target;
-    public int Accuracy => accuracy;
-    public int PP => pp;
-    public int Power => power;
-    public int Priority => priority;
-    public int CritStage => critStage;
+        [SerializeField] public int pp;
+        [SerializeField] public int power;
+        [SerializeField] public int accuracy;
 
-    private void OnEnable()
-    {
-        Debug.Log("enabled");
-        moveDamage.Init(this);
-        moveAccuracy.Init(this);
-    }
+        [FoldoutGroup("A")] [SerializeField] private int priority;
+        [FoldoutGroup("A")] [SerializeField] private int critStage;
 
-    public void Run(BattleUnit source, BattleUnit target)
-    {
-        if (Category != MoveCategory.Status)
+        [FoldoutGroup("B")] [OdinSerialize] private MoveDamage damage;
+        [FoldoutGroup("B")] [OdinSerialize] private MoveAccuracy accuracyCheck;
+        [FoldoutGroup("B")] [OdinSerialize] private MoveEffect effect;
+        [FoldoutGroup("B")] [OdinSerialize] private SecondaryEffect secondaryEffect;
+        [FoldoutGroup("B")] [OdinSerialize] private MoveBehavior behavior;
+
+        public string Name => _name;
+        public string Description => description;
+        public PokemonType Type => type;
+        public MoveCategory Category => category;
+        public MoveTarget Target => target;
+        public int Accuracy => accuracy;
+        public int Pp => pp;
+        public int Power => power;
+        public MoveDamage Damage => damage;
+        public MoveAccuracy AccuracyCheck => accuracyCheck;
+        public MoveEffect Effect => effect;
+        public SecondaryEffect SecondaryEffect => secondaryEffect;
+        public MoveBehavior Behavior => behavior;
+        public int Priority => priority;
+        public int CritStage => critStage;
+
+        private void Init()
         {
-            bool isHit = moveAccuracy.Apply(source, target);
-            if (!isHit)
-            {
-                source.OnMiss();
-                return;
-            }
-            
-            var damage = moveDamage.Apply(source, target);
-            target.TakeDamage(damage);
+            damage.Init(this);
+            accuracyCheck.Init(this);
+            effect?.Init(this);
+            secondaryEffect?.Init(this);
+            behavior.Init(this);
         }
-        else
+
+        public void Execute(BattleUnit source, BattleUnit target, Action consumePp)
         {
+            Init();
+            behavior?.Apply(source, target, consumePp);
         }
     }
-}
 
-public class DamageDetail
-{
-    public readonly int Value;
-    public readonly List<string> Messages = new List<string>();
-
-    public DamageDetail(int value)
+    public class DamageDetail
     {
-        Value = value;
+        public readonly int Value;
+        public readonly List<string> Messages = new List<string>();
+
+        public DamageDetail(int value)
+        {
+            Value = value;
+        }
+
+        public DamageDetail(int value, string message) : this(value)
+        {
+            Messages.Add(message);
+        }
     }
-}
 
-public enum MoveCategory
-{
-    Physical,
-    Special,
-    Status
-}
-
-public enum MoveTarget
-{
-    Foe,
-    Self
-}
-
-public abstract class MoveComponent
-{
-    protected MoveBase move;
-
-    public void Init(MoveBase move)
+    public enum MoveCategory
     {
-        this.move = move;
+        Physical,
+        Special,
+        Status
+    }
+
+    public enum MoveTarget
+    {
+        Foe,
+        Self
+    }
+
+    public abstract class MoveComponent
+    {
+        protected MoveBase move;
+    
+        protected static BattleManager BattleManager => BattleManager.I;
+
+        public void Init(MoveBase move)
+        {
+            this.move = move;
+        }
+        
+        protected static void Log(string message, BattleUnit source = null, BattleUnit target = null)
+        {
+            BattleManager.Log(Format(message, source, target));
+        }
+
+        protected static string Format(string message, BattleUnit source = null, BattleUnit target = null)
+        {
+            return string.Format(message, source?.Name, target?.Name);
+        }
     }
 }

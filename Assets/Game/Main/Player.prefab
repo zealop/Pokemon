@@ -118,6 +118,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   party:
   - _base: {fileID: 11400000, guid: d7d402caf8f44fe47942ce5541fa2599, type: 2}
+    level: 6
+    nickName: 
+  - _base: {fileID: 11400000, guid: 78295d1e9a4882e4db9f238805c4c5a1, type: 2}
     level: 5
     nickName: 
 --- !u!114 &5480201899368563357
