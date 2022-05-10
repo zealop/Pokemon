@@ -6,7 +6,7 @@ namespace Data.Volatile
     {
         public override VolatileID ID => VolatileID.TwoTurnMove;
 
-        public void BindToUnit(BattleUnit unit)
+        public void BindToUnit(Unit unit)
         {
             this.unit = unit;
         }

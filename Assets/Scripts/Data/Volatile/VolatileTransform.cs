@@ -6,9 +6,9 @@ public class VolatileTransform : VolatileCondition
 {
     public override VolatileID ID => VolatileID.Transform;
 
-    private BattleUnit target;
+    private Unit target;
 
-    public VolatileTransform(BattleUnit unit)
+    public VolatileTransform(Unit unit)
     {
         target = unit;
     }

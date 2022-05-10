@@ -1,23 +1,22 @@
 ﻿using System;
 using Battle;
-using Move.Component;
 using UnityEngine;
 
 namespace Move.Behaviour
 {
     public class Default : MoveBehavior
     {
-        protected void RegisterMove(BattleUnit source, Action consumePp)
+        protected void RegisterMove(Unit source, Action consumePp)
         {
             Log($"{source.Name} used {move.Name}!");
             source.LastUsedMove = move;
             consumePp();
         }
-        public override void Apply(BattleUnit source, BattleUnit target, Action consumePp = null)
+        public override void Apply(Unit source, Unit target, Action consumePp = null)
         {
             RegisterMove(source, consumePp);
-        
-            bool isHit = move.AccuracyCheck.Apply(source, target);
+
+            bool isHit = move.accuracyCheck(source, target);
             if (!isHit)
             {
                 source.Modifier.OnMiss();
@@ -34,7 +33,7 @@ namespace Move.Behaviour
                 move.SecondaryEffect?.Apply(source, target);
             }
         }
-        protected void ApplyDamage(BattleUnit source, BattleUnit target)
+        protected void ApplyDamage(Unit source, Unit target)
         {
             var damage = move.Damage.Apply(source, target);
             

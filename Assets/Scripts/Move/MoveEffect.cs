@@ -4,7 +4,7 @@ namespace Move
 {
     public abstract class MoveEffect : MoveComponent
     {
-        public abstract void Apply(BattleUnit source, BattleUnit target);
+        public abstract void Apply(Unit source, Unit target);
 
         protected static void OnFail()
         {

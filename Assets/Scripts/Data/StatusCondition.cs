@@ -19,11 +19,11 @@ namespace Data
     public abstract class StatusCondition
     {
         public abstract StatusID ID { get; }
-        protected BattleUnit Unit { get; private set; }
+        protected Unit Unit { get; private set; }
         protected static Queue<IEnumerator> AnimationQueue => BattleManager.I.AnimationQueue;
         protected static DialogBox DialogBox => BattleManager.I.DialogBox;
 
-        private static T GetChild<T>(BattleUnit unit) where T:StatusCondition, new()
+        private static T GetChild<T>(Unit unit) where T:StatusCondition, new()
         {
             var condition = new T
             {
@@ -32,7 +32,7 @@ namespace Data
             return condition;
         }
 
-        public static StatusCondition Create(StatusID id, BattleUnit unit)
+        public static StatusCondition Create(StatusID id, Unit unit)
         {
             return id switch
             {
@@ -119,7 +119,7 @@ namespace Data
             Unit.TakeDamage(damage, $"{Unit.Name} is hurt by its burn!");
         }
 
-        private static float BurnMod(MoveBase move, BattleUnit target)
+        private static float BurnMod(MoveBase move, Unit target)
         {
             return move.Category == MoveCategory.Physical ? AttackModifier : 1f;
         }
@@ -251,7 +251,7 @@ namespace Data
             }
         }
 
-        private void FireHit(MoveBase move, BattleUnit source, int damage)
+        private void FireHit(MoveBase move, Unit source, int damage)
         {
             if (move.Type == PokemonType.Fire)
             {

@@ -16,7 +16,7 @@ namespace Battle
         private PartyMemberUI[] memberSlots;
         private MoveParty[] moveSlots;
         private static List<Pokemon> party => BattleManager.I.PlayerParty.Party;
-        private static BattleUnit PlayerUnit => BattleManager.I.PlayerUnit;
+        private static Unit PlayerUnit => BattleManager.I.PlayerUnit;
         private static int MemberCount => party.Count;
         
         private int currentIndex;

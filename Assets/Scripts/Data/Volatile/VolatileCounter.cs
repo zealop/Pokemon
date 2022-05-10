@@ -22,7 +22,7 @@ public class VolatileCounter : VolatileCondition
         //Unit.OnTurnEndList.Remove(Clear);
     }
 
-    private void StoreDamage(MoveBase move, BattleUnit source, int damage)
+    private void StoreDamage(MoveBase move, Unit source, int damage)
     {
         if (move.Category == MoveCategory.Physical)
             StoredDamage += damage;

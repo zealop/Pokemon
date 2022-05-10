@@ -11,10 +11,10 @@ namespace Data.Volatile
         private int counter;
         private const float Damage = 1 / 8f;
 
-        private readonly BattleUnit source;
+        private readonly Unit source;
         private readonly MoveBase move;
 
-        public Bound(MoveBase move, BattleUnit source)
+        public Bound(MoveBase move, Unit source)
         {
             counter = Random.Range(4, 6);
 

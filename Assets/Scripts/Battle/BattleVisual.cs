@@ -23,7 +23,7 @@ namespace Battle
             originalColor = image.color;
         }
 
-        public void Setup(BattleUnit unit)
+        public void Setup(Unit unit)
         {
             unit.OnHit += () => AnimationQueue.Enqueue(PlayHitAnimation());
             unit.OnFaint += () => AnimationQueue.Enqueue(PlayFaintAnimation());

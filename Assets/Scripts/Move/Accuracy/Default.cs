@@ -14,7 +14,7 @@ namespace Move.Accuracy
         /// <param name="source"></param>
         /// <param name="target"></param>
         /// <returns>true if the move hits</returns>
-        public override bool Apply(BattleUnit source, BattleUnit target)
+        public override bool Apply(Unit source, Unit target)
         {
             bool result;
             //TODO implement sure shot
@@ -30,17 +30,17 @@ namespace Move.Accuracy
             return result;
         }
 
-        private bool IsBypassAccuracyCheck(BattleUnit target)
+        private bool IsBypassAccuracyCheck(Unit target)
         {
             return move.Accuracy == 0 || target.Modifier.Vulnerable(move);
         }
 
-        private bool IsDefenderSemiInvulnerable(BattleUnit target)
+        private bool IsDefenderSemiInvulnerable(Unit target)
         {
             return target.Modifier.SemiInvulnerable(move);
         }
 
-        private bool HitChanceCheck(BattleUnit source, BattleUnit target)
+        private bool HitChanceCheck(Unit source, Unit target)
         {
             return Random.value <= move.Accuracy * source.Accuracy * target.Evasion / 100f;
         }

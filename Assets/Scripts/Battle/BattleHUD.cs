@@ -39,7 +39,7 @@ namespace Battle
 
         private static Queue<IEnumerator> AnimationQueue => BattleManager.I.AnimationQueue;
         
-        public void Setup(BattleUnit unit)
+        public void Setup(Unit unit)
         {
             maxHp = unit.MaxHp;
             CurHp = unit.Hp;

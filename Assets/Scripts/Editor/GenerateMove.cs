@@ -8,7 +8,6 @@ using Data.Volatile;
 using JetBrains.Annotations;
 using Move;
 using Move.Behaviour;
-using Move.Component;
 using Move.Effect;
 using UnityEditor;
 using UnityEngine;
@@ -16,13 +15,13 @@ using Flinch = Move.Effect.Flinch;
 
 namespace Editor
 {
-    public class GenerateMove : MonoBehaviour
+    public class  GenerateMove : MonoBehaviour
     {
         private static readonly Type Type = typeof(MoveBase);
 
         private static readonly MoveDamage Damage = new Move.Damage.Default();
         private static readonly MoveAccuracy Accuracy = new Move.Accuracy.Default();
-        private static readonly MoveBehavior Behavior = new Move.Behaviour.Default();
+        private static readonly MoveBehavior Behavior = new Default();
 
         private const BindingFlags Flags = BindingFlags.NonPublic | BindingFlags.Instance;
 
@@ -180,15 +179,15 @@ namespace Editor
         private static void GenerateMoveFromText(IReadOnlyList<string> fields)
         {
             var example = ScriptableObject.CreateInstance<MoveBase>();
-            string path = $"Assets/Game/Resources/Moves/{fields[0]}.{fields[1]}.asset";
+            var path = $"Assets/Game/Resources/Moves/{fields[0]}.{fields[1]}.asset";
 
-            example._name = fields[1];
-            Enum.TryParse(fields[2], out example.type);
-            Enum.TryParse(fields[3], out example.category);
-
-            int.TryParse(fields[5], out example.pp);
-            int.TryParse(fields[6], out example.power);
-            int.TryParse(fields[7], out example.accuracy);
+            // example._name = fields[1];
+            // Enum.TryParse(fields[2], out example.type);
+            // Enum.TryParse(fields[3], out example.category);
+            //
+            // int.TryParse(fields[5], out example.pp);
+            // int.TryParse(fields[6], out example.power);
+            // int.TryParse(fields[7], out example.accuracy);
 
             // example.MoveDamage = new DefaultDamage();
             // example.MoveAccuracy = new DefaultAccuracy();
@@ -205,11 +204,9 @@ namespace Editor
             while (!reader.EndOfStream)
             {
                 string line = reader.ReadLine();
-                if (line != null)
-                {
-                    string[] fields = line.Split(',');
-                    list.Add(fields);
-                }
+                if (line == null) continue;
+                string[] fields = line.Split(',');
+                list.Add(fields);
             }
 
             return list;

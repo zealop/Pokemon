@@ -17,7 +17,7 @@ namespace Move.Effect
         {
             boosts.Add(stat, stage);
         }
-        public override void Apply(BattleUnit source, BattleUnit target)
+        public override void Apply(Unit source, Unit target)
         {
             target.ApplyStatBoost(boosts);
         }

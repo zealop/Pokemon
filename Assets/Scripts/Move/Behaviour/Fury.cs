@@ -18,7 +18,7 @@ namespace Move.Behaviour
             }
         }
 
-        public override void Apply(BattleUnit source, BattleUnit target, Action consumePp)
+        public override void Apply(Unit source, Unit target, Action consumePp)
         {
             RegisterMove(source, consumePp);
 

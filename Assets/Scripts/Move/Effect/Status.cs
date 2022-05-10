@@ -13,7 +13,7 @@ namespace Move.Effect
             this.condition = condition;
         }
 
-        public override void Apply(BattleUnit source, BattleUnit target)
+        public override void Apply(Unit source, Unit target)
         {
             target.SetStatusCondition(condition);
         }

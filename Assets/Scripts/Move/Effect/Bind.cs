@@ -13,14 +13,14 @@ namespace Move.Effect
             this.message = message;
         }
 
-        public override void Apply(BattleUnit source, BattleUnit target)
+        public override void Apply(Unit source, Unit target)
         {
             var condition = new Bound(move, source);
             target.AddVolatileCondition(condition);
             QueueMessage(source, target);
         }
 
-        private void QueueMessage(BattleUnit source, BattleUnit target)
+        private void QueueMessage(Unit source, Unit target)
         {
             Log(message, source, target);
         }

@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Battle;
-using Move.Component;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
@@ -13,17 +10,17 @@ namespace Move
     public class MoveBase : SerializedScriptableObject
     {
         // ReSharper disable once InconsistentNaming
-        [SerializeField] public string _name;
+        [SerializeField] private string _name;
 
-        [TextArea] [SerializeField] public string description;
+        [TextArea] [SerializeField] private string description;
 
-        [SerializeField] public PokemonType type;
-        [SerializeField] public MoveCategory category;
-        [SerializeField] public MoveTarget target;
+        [SerializeField] private PokemonType type;
+        [SerializeField] private MoveCategory category;
+        [SerializeField] private MoveTarget target;
 
-        [SerializeField] public int pp;
-        [SerializeField] public int power;
-        [SerializeField] public int accuracy;
+        [SerializeField] private int pp;
+        [SerializeField] private int power;
+        [SerializeField] private int accuracy;
 
         [FoldoutGroup("A")] [SerializeField] private int priority;
         [FoldoutGroup("A")] [SerializeField] private int critStage;
@@ -59,59 +56,37 @@ namespace Move
             behavior.Init(this);
         }
 
-        public void Execute(BattleUnit source, BattleUnit target, Action consumePp)
+        public void Execute(Unit source, Unit target, Move move)
         {
             Init();
-            behavior?.Apply(source, target, consumePp);
+            behavior?.Apply(source, target);
         }
-    }
 
-    public class DamageDetail
-    {
-        public readonly int Value;
-        public readonly List<string> Messages = new List<string>();
-
-        public DamageDetail(int value)
+        public MoveBuilder Builder()
         {
-            Value = value;
+            return new MoveBuilder()
+                .Name(_name)
+                .Description(description);
         }
-
-        public DamageDetail(int value, string message) : this(value)
-        {
-            Messages.Add(message);
-        }
-    }
-
-    public enum MoveCategory
-    {
-        Physical,
-        Special,
-        Status
-    }
-
-    public enum MoveTarget
-    {
-        Foe,
-        Self
     }
 
     public abstract class MoveComponent
     {
-        protected MoveBase move;
-    
+        protected MoveBuilder move;
+
         protected static BattleManager BattleManager => BattleManager.I;
 
-        public void Init(MoveBase move)
+        public void Init(MoveBuilder move)
         {
             this.move = move;
         }
-        
-        protected static void Log(string message, BattleUnit source = null, BattleUnit target = null)
+
+        protected static void Log(string message, Unit source = null, Unit target = null)
         {
             BattleManager.Log(Format(message, source, target));
         }
 
-        protected static string Format(string message, BattleUnit source = null, BattleUnit target = null)
+        protected static string Format(string message, Unit source = null, Unit target = null)
         {
             return string.Format(message, source?.Name, target?.Name);
         }

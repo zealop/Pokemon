@@ -30,7 +30,7 @@ namespace Data.Volatile
             return !Normal.Concat(Doubled).Contains(move.Name);
         }
 
-        private static float WindyFlight(MoveBase move, BattleUnit source)
+        private static float WindyFlight(MoveBase move, Unit source)
         {
             return Doubled.Contains(move.Name) ? 2f : 1f;
         }

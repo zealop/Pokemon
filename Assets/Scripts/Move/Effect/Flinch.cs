@@ -4,7 +4,7 @@ namespace Move.Effect
 {
     public class Flinch : MoveEffect
     {
-        public override void Apply(BattleUnit source, BattleUnit target)
+        public override void Apply(Unit source, Unit target)
         {
             target.AddVolatileCondition(new Data.Volatile.Flinch());
         }

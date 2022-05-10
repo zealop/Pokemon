@@ -8,7 +8,7 @@ public class VolatileSeeded : VolatileCondition
 
     private const float ratio = 1 / 8f;
 
-    private BattleUnit source;
+    private Unit source;
 
     public override void OnStart()
     {

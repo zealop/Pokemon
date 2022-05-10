@@ -31,8 +31,8 @@ namespace Battle
         [SerializeField] private BattleHUD playerHud;
         [SerializeField] private BattleHUD enemyHud;
         
-        private BattleUnit playerUnit = new BattleUnit();
-        private BattleUnit enemyUnit = new BattleUnit();
+        private Unit playerUnit = new Unit();
+        private Unit enemyUnit = new Unit();
 
         [SerializeField] private DialogBox dialogBox;
         [SerializeField] private PartyScreen partyScreen;
@@ -46,7 +46,7 @@ namespace Battle
         public event Action<bool> OnBattleEnd;
 
         public Queue<IEnumerator> AnimationQueue { get; } = new Queue<IEnumerator>();
-        public BattleUnit PlayerUnit => playerUnit;
+        public Unit PlayerUnit => playerUnit;
         public DialogBox DialogBox => dialogBox;
         public MoveSelector MoveSelector => moveSelector;
 
@@ -276,13 +276,13 @@ namespace Battle
             OpenActionSelector();
         }
 
-        public void SwitchTrainerPokemon(Pokemon nextPokemon, BattleUnit unit)
+        public void SwitchTrainerPokemon(Pokemon nextPokemon, Unit unit)
         {
             MoveQueue.Cancel(unit);
             unit.Setup(nextPokemon);
         }
 
-        private static BattleUnit GetMoveTarget(Move.Move move, BattleUnit self, BattleUnit foe)
+        private static Unit GetMoveTarget(Move.Move move, Unit self, Unit foe)
         {
             return move.Base.Target == MoveTarget.Foe ? foe : self;
         }

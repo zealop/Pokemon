@@ -29,7 +29,7 @@ namespace Data.Volatile
             return !Doubled.Contains(move.Name);
         }
 
-        private static float Underground(MoveBase move, BattleUnit source)
+        private static float Underground(MoveBase move, Unit source)
         {
             return Doubled.Contains(move.Name) ? 2f : 1f;
         }

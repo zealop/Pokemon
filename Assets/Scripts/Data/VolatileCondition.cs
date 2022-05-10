@@ -7,10 +7,10 @@ namespace Data
     public abstract class VolatileCondition
     {
         public abstract VolatileID ID { get; }
-        protected BattleUnit unit;
+        protected Unit unit;
         protected static Queue<IEnumerator> AnimationQueue => BattleManager.I.AnimationQueue;
         protected static DialogBox DialogBox => BattleManager.I.DialogBox;
-        public static T Create<T>(BattleUnit unit) where T : VolatileCondition, new()
+        public static T Create<T>(Unit unit) where T : VolatileCondition, new()
         {
             var condition = new T
             {

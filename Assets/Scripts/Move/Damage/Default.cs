@@ -10,7 +10,7 @@ namespace Move.Damage
         private const string SuperEffectiveMessage = "It's not very effective!";
         private const float CritMod = 1.5f;
 
-        public override DamageDetail Apply(BattleUnit source, BattleUnit target)
+        public override DamageDetail Apply(Unit source, Unit target)
         {
             float critMod = 1f;
             if (Random.value <= MoveCritical.CritChance(move.CritStage, source, target))

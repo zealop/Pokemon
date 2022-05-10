@@ -3,7 +3,7 @@ using UnityEngine;
 public class MoveCritical
 {
     private static readonly float[] CritTable = { 1 / 24f, 1 / 8f, 1 / 2f, 1f };
-    public static float CritChance(int stage, BattleUnit source, BattleUnit target)
+    public static float CritChance(int stage, Unit source, Unit target)
     {
         stage = Mathf.Clamp(stage + source.CritStage, 0, 3);
 

@@ -3,5 +3,5 @@ using Move;
 
 public abstract class MoveDamage : MoveComponent
 {
-    public abstract DamageDetail Apply(BattleUnit source, BattleUnit target);
+    public abstract DamageDetail Apply(Unit source, Unit target);
 }

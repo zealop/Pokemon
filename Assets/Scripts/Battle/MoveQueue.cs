@@ -9,7 +9,7 @@ namespace Battle
         private readonly List<MoveNode> list = new List<MoveNode>();
         public int Count => list.Count;
 
-        public void Enqueue(Move.Move move, BattleUnit source, BattleUnit target)
+        public void Enqueue(Move.Move move, Unit source, Unit target)
         {
             list.Add(new MoveNode(move, source, target));
         }
@@ -34,7 +34,7 @@ namespace Battle
             list.Clear();
         }
 
-        public void Cancel(BattleUnit unit)
+        public void Cancel(Unit unit)
         {
             var deletedNode = list.FirstOrDefault(node => node.Source.Equals(unit));
             list.Remove(deletedNode);
@@ -74,10 +74,10 @@ namespace Battle
     public class MoveNode
     {
         public Move.Move Move { get; }
-        public BattleUnit Source { get; }
-        public BattleUnit Target { get; }
+        public Unit Source { get; }
+        public Unit Target { get; }
 
-        public MoveNode(Move.Move move, BattleUnit source, BattleUnit target)
+        public MoveNode(Move.Move move, Unit source, Unit target)
         {
             Move = move;
             Source = source;

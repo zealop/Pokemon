@@ -18,7 +18,7 @@ namespace Move
             this.effect = effect;
         }
         
-        public void Apply(BattleUnit source, BattleUnit target)
+        public void Apply(Unit source, Unit target)
         {
             if (Random.value <= chance)
             {

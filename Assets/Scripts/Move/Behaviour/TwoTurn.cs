@@ -3,13 +3,12 @@ using Battle;
 using Data;
 using Data.Volatile;
 using Sirenix.Serialization;
-using UnityEngine;
 
 namespace Move.Behaviour
 {
     public class TwoTurn : Default
     {
-        [SerializeField] private readonly string message;
+        [OdinSerialize] private readonly string message;
         [OdinSerialize] private readonly TwoTurnMove condition;
 
         public TwoTurn(string message, TwoTurnMove condition)
@@ -18,7 +17,7 @@ namespace Move.Behaviour
             this.condition = condition;
         }
 
-        public override void Apply(BattleUnit source, BattleUnit target, Action consumePp)
+        public override void Apply(Unit source, Unit target, Action consumePp)
         {
             if (!IsReady(source))
             {
@@ -36,7 +35,7 @@ namespace Move.Behaviour
             }
         }
         
-        private static bool IsReady(BattleUnit source)
+        private static bool IsReady(Unit source)
         {
             return source.Volatiles.ContainsKey(VolatileID.TwoTurnMove);
         }

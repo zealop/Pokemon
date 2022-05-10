@@ -7,14 +7,14 @@ namespace Battle
     {
         private MoveParty[] moveSlots;
 
-        private BattleUnit unit;
+        private Unit unit;
         private int currentMove;
         private void Awake()
         {
             moveSlots = GetComponentsInChildren<MoveParty>(true);
         }
 
-        public void SetMovesData(BattleUnit unit)
+        public void SetMovesData(Unit unit)
         {
             this.unit = unit;
             currentMove = 0;

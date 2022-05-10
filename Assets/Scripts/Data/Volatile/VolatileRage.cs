@@ -29,7 +29,7 @@ public class VolatileRage : VolatileCondition
         ;
     }
 
-    private void Rage(MoveBase move, BattleUnit source, int damage)
+    private void Rage(MoveBase move, Unit source, int damage)
     {
         // Unit.ApplyStatBoost(boost);
         ;

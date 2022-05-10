@@ -1,3 +1,4 @@
+using System;
 using Battle;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace Move
     public class Move
     {
         public MoveBase Base { get; }
-        public int Pp { get; private set; }
+        public int Pp { get; set; }
         public int MaxPp { get; }
         public bool IsDisabled { get; set; }
         public string Name => Base.Name;
@@ -17,19 +18,21 @@ namespace Move
             Pp = Base.Pp;
             MaxPp = Base.Pp;
         }
+
         public Move(MoveBase pBase, int pp)
         {
             Base = pBase;
             Pp = pp;
             MaxPp = pp;
         }
+
         public Move(MoveSaveData data)
         {
             Base = Resources.Load<MoveBase>($"Moves/{data.name}");
             Pp = data.pp;
             MaxPp = Base.Pp;
         }
-    
+
         public MoveSaveData GetSaveData()
         {
             var data = new MoveSaveData
@@ -40,10 +43,17 @@ namespace Move
             return data;
         }
 
-        public void Execute(BattleUnit source, BattleUnit target)
+        public void Execute(Unit source, Unit target)
         {
             // Base.Clone(); //TODO clone the  move to modify
-            Base.Execute(source, target, () => Pp--);
+            var moveBuilder = Base.Builder().Move(this);
+            
+            Base.Execute(source, target, () => consumePp());
+        }
+
+        public void consumePp(int value = 1)
+        {
+            Pp = Math.Min(0, Pp - value);
         }
     }
 

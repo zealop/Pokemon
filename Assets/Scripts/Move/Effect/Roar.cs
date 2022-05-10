@@ -14,7 +14,7 @@ namespace Move.Effect
             this.message = message;
         }
 
-        public override void Apply(BattleUnit source, BattleUnit target)
+        public override void Apply(Unit source, Unit target)
         {
             if (BattleManager.IsTrainerBattle)
             {
@@ -26,7 +26,7 @@ namespace Move.Effect
             }
         }
 
-        private void ApplyTrainerBattle(BattleUnit target)
+        private void ApplyTrainerBattle(Unit target)
         {
             var party = target.Party;
             var candidate = GetForceSwitchTarget(party.Party, target.Pokemon);
@@ -42,7 +42,7 @@ namespace Move.Effect
             }
         }
 
-        private void ApplyWildBattle(BattleUnit source, BattleUnit target)
+        private void ApplyWildBattle(Unit source, Unit target)
         {
             if (source.Level < target.Level)
             {

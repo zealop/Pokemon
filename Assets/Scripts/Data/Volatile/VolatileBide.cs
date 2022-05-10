@@ -24,7 +24,7 @@ public class VolatileBide : VolatileCondition
         //Unit.OnHitList.Remove(StoreDamage);
     }
 
-    private void StoreDamage(MoveBase move, BattleUnit source, int damage)
+    private void StoreDamage(MoveBase move, Unit source, int damage)
     {
         StoredDamage += damage;
     }

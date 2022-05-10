@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 namespace Battle
 {
-    public class BattleUnit
+    public class Unit
     {
         [SerializeField] private bool isPlayerUnit;
         public Pokemon Pokemon { get; private set; }
@@ -34,7 +34,7 @@ namespace Battle
         public StatStage StatStage { get; set; }
         public Dictionary<VolatileID, VolatileCondition> Volatiles;
 
-        private Dictionary<BattleUnit, MoveBase> MirrorMoves;
+        private Dictionary<Unit, MoveBase> MirrorMoves;
         public int Weight => Pokemon.Base.Weight;
         public int Height => Pokemon.Base.Height;
         
@@ -71,7 +71,7 @@ namespace Battle
             StatStage = new StatStage();
 
             Volatiles = new Dictionary<VolatileID, VolatileCondition>();
-            MirrorMoves = new Dictionary<BattleUnit, MoveBase>();
+            MirrorMoves = new Dictionary<Unit, MoveBase>();
             Modifier = new Modifier(this);
             
             attack = pokemon.Attack;
@@ -94,7 +94,7 @@ namespace Battle
         public MoveBase LastUsedMove { get; set; }
         public int LastSelectedMoveSlot { get; set; }
 
-        public void UseMove(Move.Move move, BattleUnit target)
+        public void UseMove(Move.Move move, Unit target)
         {
             move.Execute(this, target);
 
@@ -123,7 +123,7 @@ namespace Battle
 
             CheckFaint();
         }
-        public void ApplyDamage(BattleUnit target, DamageDetail damage)
+        public void ApplyDamage(Unit target, DamageDetail damage)
         {
             OnAttack?.Invoke();
             
