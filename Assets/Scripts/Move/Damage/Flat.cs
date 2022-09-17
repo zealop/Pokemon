@@ -1,11 +1,16 @@
 ﻿using Battle;
-using UnityEngine;
+using Sirenix.Serialization;
 
 namespace Move.Damage
 {
     public class Flat : MoveDamage
     {
-        [SerializeField] private int damage;
+        [OdinSerialize] private int damage;
+
+        public Flat(int damage)
+        {
+            this.damage = damage;
+        }
         public override DamageDetail Apply(Unit source, Unit target)
         {
             return new DamageDetail(damage);

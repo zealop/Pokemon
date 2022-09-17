@@ -1,5 +1,5 @@
-﻿using System;
-using Battle;
+﻿using Battle;
+using Sirenix.Serialization;
 using UnityEngine;
 
 namespace Move.Behaviour
@@ -8,17 +8,17 @@ namespace Move.Behaviour
     {
         private const string Message = "{0} was damaged by the recoil!";
 
-        [SerializeField] private readonly float ratio;
+        [OdinSerialize] private readonly float ratio;
 
         public Recoil(float ratio)
         {
             this.ratio = ratio;
         }
 
-        public override void Apply(Unit source, Unit target, Action consumePp)
+        public override void Apply(Unit source, Unit target)
         {
             source.Modifier.OnApplyDamage += RecoilDamage;
-            base.Apply(source, target, consumePp);
+            base.Apply(source, target);
             source.Modifier.OnApplyDamage -= RecoilDamage;
         }
 

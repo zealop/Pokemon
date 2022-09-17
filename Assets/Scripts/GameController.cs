@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Battle;
+using Pokemons;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -34,11 +35,11 @@ public class GameController : SerializedMonoBehaviour
     private TrainerController trainer;
 
     private MenuController menuController;
-    public static GameController Instance { get; private set; }
+    public static GameController I { get; private set; }
 
     private void Awake()
     {
-        Instance = this;
+        I = this;
         menuController = GetComponent<MenuController>();
     }
 
@@ -111,8 +112,7 @@ public class GameController : SerializedMonoBehaviour
         battleSystem.gameObject.SetActive(true);
         worldCamera.gameObject.SetActive(false);
 
-        var playerParty = playerController.GetComponent<PokemonParty>();
-        battleSystem.StartWildBattle(playerParty, wildPokemon);
+        battleSystem.StartWildBattle(wildPokemon);
     }
 
     public void StartTrainerBattle(TrainerController trainerController)
@@ -122,11 +122,8 @@ public class GameController : SerializedMonoBehaviour
         worldCamera.gameObject.SetActive(false);
 
         trainer = trainerController;
-
-        var playerParty = playerController.GetComponent<PokemonParty>();
-        var trainerParty = trainerController.GetComponent<PokemonParty>();
-
-        battleSystem.StartTrainerBattle(playerParty, trainerParty);
+        
+        battleSystem.StartTrainerBattle(trainerController);
     }
 
     private void EndBattle(bool won)

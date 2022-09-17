@@ -25,13 +25,13 @@ public class VolatileMinimize : VolatileCondition
         unit.Modifier.AccuracyMod.Remove(Tiny);
     }
 
-    private static float Small(MoveBase move, Unit source)
+    private static float Small(MoveBuilder move, Unit source)
     {
-        return big.Contains(move.Name) ? 2 : 1;
+        return big.Contains(move.name) ? 2 : 1;
     }
 
-    private static bool Tiny(MoveBase move, Unit source)
+    private static bool Tiny(MoveBuilder move, Unit source)
     {
-        return big.Contains(move.Name);
+        return big.Contains(move.name);
     }
 }

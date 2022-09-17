@@ -27,26 +27,26 @@ public class Portal : MonoBehaviour, IPlayerTriggerable
     private IEnumerator SwitchScene()
     {
         DontDestroyOnLoad(gameObject);
-        GameController.Instance.PauseGame(true);
+        GameController.I.PauseGame(true);
         yield return fader.FadeIn(0.5f);
 
 
 
-        yield return GameController.Instance.LoadScene(sceneToLoad);
+        yield return GameController.I.LoadScene(sceneToLoad);
         //yield return SceneManager.LoadSceneAsync(sceneToLoad, LoadSceneMode.Additive);
 
 
 
         var destPortal = FindObjectsOfType<Portal>().First(x => x != this && x.destinationPortal == this.destinationPortal);
 
-        player.Character.SetPositionAndSnapToTile(destPortal.SpawnPoint.position);
+        player.character.SetPositionAndSnapToTile(destPortal.SpawnPoint.position);
 
 
 
 
 
         yield return fader.FadeOut(0.5f);
-        GameController.Instance.PauseGame(false);
+        GameController.I.PauseGame(false);
         Destroy(gameObject);
     }
 }

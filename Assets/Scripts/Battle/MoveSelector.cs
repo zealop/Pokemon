@@ -7,7 +7,7 @@ namespace Battle
     public class MoveSelector : MonoBehaviour
     {
         private MoveSelection[] moveSelections;
-        private List<Move.Move> moves;
+        private List<Move.MoveSlot> moves;
 
         private int currentIndex;
         private int MoveCount => moves.Count;
@@ -19,11 +19,11 @@ namespace Battle
             moveSelections = GetComponentsInChildren<MoveSelection>(true);
         }
 
-        public void SetMoves(List<Move.Move> moves)
+        public void SetMoves(List<Move.MoveSlot> moves)
         {
             this.moves = moves;
 
-            for (int i = 0; i < moveSelections.Length; i++)
+            for (var i = 0; i < moveSelections.Length; i++)
             {
                 if (i < moves.Count)
                 {

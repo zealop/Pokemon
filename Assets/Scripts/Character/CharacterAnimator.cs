@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
 public enum FacingDirection { Up, Down, Left, Right }
 public class CharacterAnimator : MonoBehaviour

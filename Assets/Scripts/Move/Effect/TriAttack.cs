@@ -1,5 +1,6 @@
 using Battle;
 using Data;
+using Data.Condition;
 using UnityEngine;
 
 namespace Move.Effect

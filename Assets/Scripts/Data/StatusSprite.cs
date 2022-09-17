@@ -1,7 +1,8 @@
 using System.Collections.Generic;
+using Data.Condition;
 using Sirenix.Serialization;
 using UnityEngine;
-using Util;
+using Utils;
 
 //[CreateAssetMenu(fileName = "Pokemon", menuName = "New status sprite ")]
 namespace Data

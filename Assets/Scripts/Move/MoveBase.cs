@@ -1,4 +1,3 @@
-using System;
 using Battle;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
@@ -9,8 +8,7 @@ namespace Move
     [CreateAssetMenu(fileName = "Move", menuName = "New move")]
     public class MoveBase : SerializedScriptableObject
     {
-        // ReSharper disable once InconsistentNaming
-        [SerializeField] private string _name;
+        [SerializeField] private string baseName;
 
         [TextArea] [SerializeField] private string description;
 
@@ -31,7 +29,7 @@ namespace Move
         [FoldoutGroup("B")] [OdinSerialize] private SecondaryEffect secondaryEffect;
         [FoldoutGroup("B")] [OdinSerialize] private MoveBehavior behavior;
 
-        public string Name => _name;
+        public string Name => baseName;
         public string Description => description;
         public PokemonType Type => type;
         public MoveCategory Category => category;
@@ -39,46 +37,35 @@ namespace Move
         public int Accuracy => accuracy;
         public int Pp => pp;
         public int Power => power;
-        public MoveDamage Damage => damage;
-        public MoveAccuracy AccuracyCheck => accuracyCheck;
-        public MoveEffect Effect => effect;
-        public SecondaryEffect SecondaryEffect => secondaryEffect;
-        public MoveBehavior Behavior => behavior;
-        public int Priority => priority;
-        public int CritStage => critStage;
-
-        private void Init()
-        {
-            damage.Init(this);
-            accuracyCheck.Init(this);
-            effect?.Init(this);
-            secondaryEffect?.Init(this);
-            behavior.Init(this);
-        }
-
-        public void Execute(Unit source, Unit target, Move move)
-        {
-            Init();
-            behavior?.Apply(source, target);
-        }
 
         public MoveBuilder Builder()
         {
             return new MoveBuilder()
-                .Name(_name)
-                .Description(description);
+                .Base(this)
+                .Name(baseName)
+                .Type(type)
+                .Category(category)
+                .Power(power)
+                .Accuracy(accuracy)
+                .Priority(priority)
+                .CritStage(critStage)
+                .Damage(damage)
+                .AccuracyCheck(accuracyCheck)
+                .Effect(effect)
+                .SecondaryEffect(secondaryEffect)
+                .Behavior(behavior);
         }
     }
 
     public abstract class MoveComponent
     {
-        protected MoveBuilder move;
+        protected MoveBuilder moveBuilder;
 
-        protected static BattleManager BattleManager => BattleManager.I;
+        protected static BattleManager BattleManager => BattleManager.i;
 
         public void Init(MoveBuilder move)
         {
-            this.move = move;
+            this.moveBuilder = move;
         }
 
         protected static void Log(string message, Unit source = null, Unit target = null)

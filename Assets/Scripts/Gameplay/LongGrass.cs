@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Pokemons;
 using UnityEngine;
 
 public class LongGrass : MonoBehaviour, IPlayerTriggerable
@@ -10,7 +11,7 @@ public class LongGrass : MonoBehaviour, IPlayerTriggerable
     {
         if (Random.Range(1, 101) <= 10)
         {
-            GameController.Instance.StartWildBattle(GetRandomPokemon());
+            GameController.I.StartWildBattle(GetRandomPokemon());
         }
     }
 

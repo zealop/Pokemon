@@ -1,12 +1,12 @@
 using Battle;
-using Data;
-using UnityEngine;
+using Data.Condition;
+using Sirenix.Serialization;
 
 namespace Move.Effect
 {
     public class Status : MoveEffect
     {
-        [SerializeField] private readonly StatusID condition;
+        [OdinSerialize] private readonly StatusID condition;
 
         public Status(StatusID condition)
         {

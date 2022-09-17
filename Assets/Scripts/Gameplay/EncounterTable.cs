@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Pokemons;
 using UnityEngine;
 
 public class EncounterTable : MonoBehaviour

@@ -13,7 +13,7 @@ public class VolatileSeeded : VolatileCondition
     public override void OnStart()
     {
         //Unit.OnTurnEndList.Add(Drain);
-        BattleManager.I.DialogBox.TypeDialog($"{unit.Name} was seeded!");
+        BattleManager.i.DialogBox.TypeDialog($"{unit.Name} was seeded!");
     }
 
     public override void OnEnd()
@@ -28,6 +28,6 @@ public class VolatileSeeded : VolatileCondition
         // Unit.TakeDamage(damage);
         // source.TakeDamage(-damage);
 
-        BattleManager.I.DialogBox.TypeDialog($"{unit.Name} was seeded!");
+        BattleManager.i.DialogBox.TypeDialog($"{unit.Name} was seeded!");
     }
 }

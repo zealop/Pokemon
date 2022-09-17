@@ -1,15 +1,14 @@
 using Battle;
 using Sirenix.Serialization;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Move
 {
     public class SecondaryEffect : MoveComponent
     {
-        [SerializeField] private readonly float chance;
+        [OdinSerialize] private readonly float chance;
         [OdinSerialize] private readonly MoveEffect effect;
-        [SerializeField] private readonly bool isSelf;
+        [OdinSerialize] private readonly bool isSelf;
         
         public SecondaryEffect(float chance, MoveEffect effect, bool isSelf = false)
         {

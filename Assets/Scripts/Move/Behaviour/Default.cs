@@ -1,43 +1,38 @@
-﻿using System;
-using Battle;
-using UnityEngine;
+﻿using Battle;
 
 namespace Move.Behaviour
 {
     public class Default : MoveBehavior
     {
-        protected void RegisterMove(Unit source, Action consumePp)
+        protected void RegisterMove(Unit source)
         {
-            Log($"{source.Name} used {move.Name}!");
-            source.LastUsedMove = move;
-            consumePp();
+            Log($"{source.Name} used {moveBuilder.name}!");
+            source.LastUsedMove = moveBuilder.moveBase;
+            moveBuilder.consumePp?.Invoke();
         }
-        public override void Apply(Unit source, Unit target, Action consumePp = null)
-        {
-            RegisterMove(source, consumePp);
 
-            bool isHit = move.accuracyCheck(source, target);
+        public override void Apply(Unit source, Unit target)
+        {
+            RegisterMove(source);
+
+            bool isHit = moveBuilder.accuracyCheck.Apply(source, target);
             if (!isHit)
             {
                 source.Modifier.OnMiss();
                 return;
             }
-        
-            if (move.Category == MoveCategory.Status)
-            {
-                move.Effect.Apply(source, target);
-            }
-            else
+
+            if (moveBuilder.category != MoveCategory.Status)
             {
                 ApplyDamage(source, target);
-                move.SecondaryEffect?.Apply(source, target);
+                moveBuilder.secondaryEffect?.Apply(source, target);
             }
+            moveBuilder.effect?.Apply(source, target);
         }
+
         protected void ApplyDamage(Unit source, Unit target)
         {
-            var damage = move.Damage.Apply(source, target);
-            
-            Debug.Log(damage.Value);
+            var damage = moveBuilder.damage.Apply(source, target);
             source.ApplyDamage(target, damage);
         }
     }

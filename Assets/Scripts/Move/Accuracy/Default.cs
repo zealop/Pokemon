@@ -32,17 +32,17 @@ namespace Move.Accuracy
 
         private bool IsBypassAccuracyCheck(Unit target)
         {
-            return move.Accuracy == 0 || target.Modifier.Vulnerable(move);
+            return moveBuilder.accuracy == 0 || target.Modifier.Vulnerable(moveBuilder);
         }
 
         private bool IsDefenderSemiInvulnerable(Unit target)
         {
-            return target.Modifier.SemiInvulnerable(move);
+            return target.Modifier.SemiInvulnerable(moveBuilder);
         }
 
         private bool HitChanceCheck(Unit source, Unit target)
         {
-            return Random.value <= move.Accuracy * source.Accuracy * target.Evasion / 100f;
+            return Random.value <= moveBuilder.accuracy * source.Accuracy * target.Evasion / 100f;
         }
     }
 }

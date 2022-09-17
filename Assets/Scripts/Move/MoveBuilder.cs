@@ -5,41 +5,48 @@ namespace Move
 {
     public class MoveBuilder
     {
-        private string name;
-        private string description;
+        public MoveSlot moveSlot;
+        public MoveBase moveBase;
 
-        private PokemonType type;
-        private MoveCategory category;
-        private MoveTarget target;
+        public string name;
 
-        private int pp;
-        private int power;
-        private int accuracy;
+        public PokemonType type;
+        public MoveCategory category;
+        public MoveTarget moveTarget;
 
-        private int priority;
-        private int critStage;
+        public int power;
+        public int accuracy;
 
-        private MoveDamage damage;
-        public Func<Unit, Unit, bool> accuracyCheck { get; private set; }
-        private MoveEffect effect;
-        private SecondaryEffect secondaryEffect;
-        private MoveBehavior behavior;
-
-        private Move move;
+        public int priority;
+        public int critStage;
+        
+        public MoveDamage damage;
+        public MoveAccuracy accuracyCheck;
+        public MoveEffect effect;
+        public SecondaryEffect secondaryEffect;
+        public MoveBehavior behavior;
+        
+        public Action consumePp;
 
         public void Execute(Unit source, Unit target)
         {
             behavior?.Apply(source, target);
         }
-        public MoveBuilder Name(string name)
+        
+        public void Prepare(Unit source)
         {
-            this.name = name;
+            throw new NotImplementedException();
+        }
+        
+        public MoveBuilder Base(MoveBase _base)
+        {
+            this.moveBase = _base;
             return this;
         }
 
-        public MoveBuilder Description(string description)
+        public MoveBuilder Name(string name)
         {
-            this.description = description;
+            this.name = name;
             return this;
         }
 
@@ -52,12 +59,6 @@ namespace Move
         public MoveBuilder Category(MoveCategory category)
         {
             this.category = category;
-            return this;
-        }
-
-        public MoveBuilder Pp(int pp)
-        {
-            this.pp = pp;
             return this;
         }
 
@@ -88,38 +89,42 @@ namespace Move
         public MoveBuilder Damage(MoveDamage damage)
         {
             damage.Init(this);
-            this.damage = damage.Apply;
+            this.damage = damage;
             return this;
         }
 
         public MoveBuilder AccuracyCheck(MoveAccuracy accuracyCheck)
         {
+            this.accuracyCheck = accuracyCheck;
             accuracyCheck.Init(this);
-            this.accuracyCheck = accuracyCheck.Apply;
             return this;
         }
 
         public MoveBuilder Effect(MoveEffect effect)
         {
             this.effect = effect;
+            effect?.Init(this);
             return this;
         }
 
         public MoveBuilder SecondaryEffect(SecondaryEffect secondaryEffect)
         {
             this.secondaryEffect = secondaryEffect;
+            secondaryEffect?.Init(this);
             return this;
         }
 
         public MoveBuilder Behavior(MoveBehavior behavior)
         {
             this.behavior = behavior;
+            behavior.Init(this);
             return this;
         }
 
-        public MoveBuilder Move(Move move)
+        public MoveBuilder Move(MoveSlot moveSlot)
         {
-            this.move = move;
+            this.moveSlot = moveSlot;
+            this.consumePp = () => moveSlot.Pp--;
             return this;
         }
     }

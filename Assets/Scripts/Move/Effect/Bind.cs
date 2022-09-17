@@ -1,12 +1,13 @@
 using Battle;
 using Data.Volatile;
+using Sirenix.Serialization;
 using UnityEngine;
 
 namespace Move.Effect
 {
     public class Bind : MoveEffect
     {
-        [SerializeField] private readonly string message;
+        [OdinSerialize] private readonly string message;
         
         public Bind(string message)
         {
@@ -15,14 +16,8 @@ namespace Move.Effect
 
         public override void Apply(Unit source, Unit target)
         {
-            var condition = new Bound(move, source);
+            var condition = new Bound(moveBuilder.moveBase, source, message);
             target.AddVolatileCondition(condition);
-            QueueMessage(source, target);
-        }
-
-        private void QueueMessage(Unit source, Unit target)
-        {
-            Log(message, source, target);
         }
     }
 }

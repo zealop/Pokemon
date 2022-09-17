@@ -19,14 +19,14 @@ public class VolatileTransform : VolatileCondition
         unit.StatStage = target.StatStage;
 
         unit.Moves.Clear();
-        foreach (var newMove in target.Moves.Select(move => new Move.Move(move.Base, 5)))
+        foreach (var newMove in target.Moves.Select(move => new Move.MoveSlot(move.Base, 5)))
         {
             unit.Moves.Add(newMove);
         }
 
-        BattleManager.I.MoveSelector.SetMoves(unit.Moves);
+        BattleManager.i.MoveSelector.SetMoves(unit.Moves);
 
-        BattleManager.I.DialogBox.TypeDialog($"{unit.Name} transformed into {target.Name}");
+        BattleManager.i.DialogBox.TypeDialog($"{unit.Name} transformed into {target.Name}");
     }
 
     public override void OnEnd()

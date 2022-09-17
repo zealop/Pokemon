@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Pokemons;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +11,7 @@ namespace Battle
     {
         [SerializeField] private bool isPlayerSprite;
         
-        private static Queue<IEnumerator> AnimationQueue => BattleManager.I.AnimationQueue;
+        private static Queue<IEnumerator> AnimationQueue => BattleManager.i.AnimationQueue;
 
         private Image image;
         private Vector3 originalPos;
@@ -22,8 +23,7 @@ namespace Battle
             originalPos = image.transform.localPosition;
             originalColor = image.color;
         }
-
-        public void Setup(Unit unit)
+        public void Bind(Unit unit)
         {
             unit.OnHit += () => AnimationQueue.Enqueue(PlayHitAnimation());
             unit.OnFaint += () => AnimationQueue.Enqueue(PlayFaintAnimation());
@@ -32,8 +32,6 @@ namespace Battle
             image.color = originalColor;
 
             transform.localScale = new Vector3(1, 1, 1);
-
-            SetSprite(unit.Pokemon.Base);
         }
         
         public IEnumerator Transform(PokemonBase pokemon)
@@ -42,7 +40,7 @@ namespace Battle
             yield return null;
         }
 
-        private void SetSprite(PokemonBase pokemon)
+        public void SetSprite(PokemonBase pokemon)
         {
             image.sprite = isPlayerSprite ? pokemon.Sprite.Back : pokemon.Sprite.Front;
         }

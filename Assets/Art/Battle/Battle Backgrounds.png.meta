@@ -60,6 +60,7 @@ TextureImporter:
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
+  ignoreMasterTextureLimit: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -388,6 +389,19 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    nameFileIdTable:
+      Battle Backgrounds_2: -4277343822309770070
+      Battle Backgrounds_3: -657182110463708883
+      Battle Backgrounds_6: 2754896833546307751
+      Battle Backgrounds_8: 5627729976014493891
+      Battle Backgrounds_11: 5237200589228584036
+      Battle Backgrounds_5: 4422032505096542742
+      Battle Backgrounds_7: 1106511937541109406
+      Battle Backgrounds_4: -1827526445838835693
+      Battle Backgrounds_10: 4463900163318786688
+      Battle Backgrounds_1: -4732131389061371210
+      Battle Backgrounds_0: 1769429448931828106
+      Battle Backgrounds_9: 560493919683478708
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

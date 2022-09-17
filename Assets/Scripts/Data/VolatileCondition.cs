@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Battle;
 
 namespace Data
@@ -8,15 +6,15 @@ namespace Data
     {
         public abstract VolatileID ID { get; }
         protected Unit unit;
-        protected static Queue<IEnumerator> AnimationQueue => BattleManager.I.AnimationQueue;
-        protected static DialogBox DialogBox => BattleManager.I.DialogBox;
-        public static T Create<T>(Unit unit) where T : VolatileCondition, new()
+
+        protected static void Log(string message)
         {
-            var condition = new T
-            {
-                unit = unit
-            };
-            return condition;
+            BattleManager.i.Log(message);
+        }
+
+        public void Bind(Unit unit)
+        {
+            this.unit = unit;
         }
 
         public abstract void OnStart();
@@ -26,14 +24,11 @@ namespace Data
     public enum VolatileID
     {
         TwoTurnMove,
-        Dig,
-        Dive,
-        Fly,
-        Recharge,
+        Recharging,
         Bide,
         Bound,
         Flinch,
-        Thrash,
+        Frenzy,
         Confused,
         Disabled,
         Seeded,

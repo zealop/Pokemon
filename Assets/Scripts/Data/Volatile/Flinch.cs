@@ -1,6 +1,4 @@
-﻿using Battle;
-
-namespace Data.Volatile
+﻿namespace Data.Volatile
 {
     public class Flinch : VolatileCondition
     {
@@ -21,7 +19,7 @@ namespace Data.Volatile
         private void Flinched()
         {
             unit.CanMove = false;
-            BattleManager.I.DialogBox.TypeDialog($"{unit.Name} flinched!");
+            Log($"{unit.Name} flinched!");
         }
 
         private void Unflinching()

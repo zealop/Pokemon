@@ -10,13 +10,15 @@ namespace Battle
         private const int ActionCount = 4;
 
         private int currentIndex;
-        private Image[] actions;
+        private Image[] images;
+        private TextMeshProUGUI[] texts;
 
-        public Action<int> OnSelectAction;
+        public event Action<int> OnSelectAction;
 
         private void Awake()
         {
-            actions = GetComponentsInChildren<Image>();
+            images = GetComponentsInChildren<Image>();
+            texts = GetComponentsInChildren<TextMeshProUGUI>();
         }
 
         public void HandleUpdate()
@@ -32,24 +34,29 @@ namespace Battle
             }
             else if (Input.GetKeyDown(KeyCode.Z))
             {
-                OnSelectAction(currentIndex);
+                OnSelectAction?.Invoke(currentIndex);
             }
 
             currentIndex = (currentIndex + ActionCount) % ActionCount;
 
-            if (previousIndex != currentIndex) UpdateActionSelection(previousIndex);
+            if (previousIndex != currentIndex)
+            {
+                UpdateActionSelection(previousIndex);
+            }
         }
 
         private void UpdateActionSelection(int previousIndex)
         {
-            var currentAction = actions[currentIndex];
-            var previousAction = actions[previousIndex];
+            var currentImage = images[currentIndex];
+            var currentText = texts[currentIndex];
+            var previousImage = images[previousIndex];
+            var previousText = texts[previousIndex];
 
-            currentAction.color = Color.black;
-            currentAction.GetComponentInChildren<TextMeshProUGUI>().color = Color.white;
+            currentImage.color = Color.black;
+            currentText.color = Color.white;
 
-            previousAction.color = Color.white;
-            previousAction.GetComponentInChildren<TextMeshProUGUI>().color = Color.black;
+            previousImage.color = Color.white;
+            previousText.color = Color.black;
         }
     }
 }

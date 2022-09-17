@@ -20,13 +20,13 @@ namespace Battle
         {
             image = GetComponent<Image>();
         }
-        public void SetMove(Move.Move move)
+        public void SetMove(Move.MoveSlot moveSlot)
         {
-            typeIcon.sprite = typeSprite.Data[move.Base.Type].Icon;
-            moveText.text = move.Name;
-            ppText.text = $"{move.Pp}/{move.MaxPp}";
+            typeIcon.sprite = typeSprite.Data[moveSlot.Base.Type].Icon;
+            moveText.text = moveSlot.Name;
+            ppText.text = $"{moveSlot.Pp}/{moveSlot.MaxPp}";
 
-            image.color = typeSprite.Data[move.Base.Type].Color;
+            image.color = typeSprite.Data[moveSlot.Base.Type].Color;
         }
         public void SetSelected()
         {

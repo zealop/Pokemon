@@ -25,10 +25,10 @@ public class SavableEntity : MonoBehaviour
     // Used to restore state of the gameobject on which the savableEntity is attached
     public void RestoreState(object state)
     {
-        Dictionary<string, object> stateDict = (Dictionary<string, object>)state;
-        foreach (ISavable savable in GetComponents<ISavable>())
+        var stateDict = (Dictionary<string, object>)state;
+        foreach (var savable in GetComponents<ISavable>())
         {
-            string id = savable.GetType().ToString();
+            var id = savable.GetType().ToString();
 
             if (stateDict.ContainsKey(id))
                 savable.RestoreState(stateDict[id]);

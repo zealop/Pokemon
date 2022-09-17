@@ -16,7 +16,7 @@ public class SceneDetails : SerializedMonoBehaviour
         {
             Debug.Log($"Enter {Name}");
 
-            GameController.Instance.ActiveScenes.Add(Name);
+            GameController.I.ActiveScenes.Add(Name);
 
             LoadConenctedScenes();
             UnloadUnconnectedScenes();
@@ -33,19 +33,19 @@ public class SceneDetails : SerializedMonoBehaviour
             //    SceneManager.LoadSceneAsync(scene, LoadSceneMode.Additive);
             //    GameController.Instance.ActiveScenes.Add(scene);
             //}
-            StartCoroutine(GameController.Instance.LoadScene(scene));
+            StartCoroutine(GameController.I.LoadScene(scene));
         }
     }
 
     public void UnloadUnconnectedScenes()
     {
-        foreach (var scene in GameController.Instance.ActiveScenes.ToList())
+        foreach (var scene in GameController.I.ActiveScenes.ToList())
         {
             if (scene != Name && !connectedScenes.Contains(scene))
             {
                 //SceneManager.UnloadSceneAsync(scene);
                 //GameController.Instance.ActiveScenes.Remove(scene);
-                GameController.Instance.UnloadScene(scene);
+                GameController.I.UnloadScene(scene);
             }
         }
     }

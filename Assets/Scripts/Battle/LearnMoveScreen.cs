@@ -43,7 +43,7 @@ namespace Battle
                 unit.Pokemon.Moves.RemoveAt(currentMove);
                 unit.Moves.RemoveAt(currentMove);
 
-                StartCoroutine(BattleManager.I.CloseLearnMoveScreen(forgetMove, newMove));
+                StartCoroutine(BattleManager.i.CloseLearnMoveScreen(forgetMove, newMove));
             }
         }
 

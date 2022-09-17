@@ -1,4 +1,5 @@
 ﻿using Battle;
+using Data;
 
 namespace Move.Effect
 {
@@ -6,7 +7,7 @@ namespace Move.Effect
     {
         public override void Apply(Unit source, Unit target)
         {
-            target.AddVolatileCondition(new Data.Volatile.Flinch());
+            source.AddVolatileCondition(new Data.Volatile.Flinch());
         }
     }
 }

@@ -18,11 +18,11 @@ namespace Battle
             image = GetComponent<Image>();
         }
 
-        public void SetData(Move.Move move)
+        public void SetData(Move.MoveSlot moveSlot)
         {
-            typeCard.sprite = typeSprite.Data[move.Base.Type].Card;
-            moveText.text = move.Name;
-            ppText.text = $"{move.Pp}/{move.MaxPp}";
+            typeCard.sprite = typeSprite.Data[moveSlot.Base.Type].Card;
+            moveText.text = moveSlot.Name;
+            ppText.text = $"{moveSlot.Pp}/{moveSlot.MaxPp}";
         }
 
         public void SetSelected(bool selected)

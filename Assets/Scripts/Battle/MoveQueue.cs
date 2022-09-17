@@ -1,15 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
+using Move;
 using UnityEngine;
 
 namespace Battle
 {
     public class MoveQueue
     {
-        private readonly List<MoveNode> list = new List<MoveNode>();
+        private readonly List<MoveNode> list = new();
         public int Count => list.Count;
-
-        public void Enqueue(Move.Move move, Unit source, Unit target)
+        
+        public void Enqueue(MoveBuilder move, Unit source, Unit target)
         {
             list.Add(new MoveNode(move, source, target));
         }
@@ -19,9 +20,7 @@ namespace Battle
             MoveNode result = null;
             if (list.Count > 0)
             {
-                result = list.First();
-
-                result = list.Aggregate(result, FindFaster);
+                result = list.Aggregate(FindFaster);
             }
 
             list.Remove(result);
@@ -36,21 +35,29 @@ namespace Battle
 
         public void Cancel(Unit unit)
         {
-            var deletedNode = list.FirstOrDefault(node => node.Source.Equals(unit));
+            var deletedNode = list.FirstOrDefault(node => node.source.Equals(unit));
             list.Remove(deletedNode);
         }
 
+        public void Prepare()
+        {
+            foreach (var node in list)
+            {
+                node.move.Prepare(node.source);
+            }
+        }
+        
         private static MoveNode FindFaster(MoveNode node1, MoveNode node2)
         {
             MoveNode result;
 
-            var m1 = node1.Move.Base;
-            var s1 = node1.Source;
+            var m1 = node1.move;
+            var s1 = node1.source;
 
-            var m2 = node2.Move.Base;
-            var s2 = node2.Source;
+            var m2 = node2.move;
+            var s2 = node2.source;
 
-            if (m1.Priority == m2.Priority)
+            if (m1.priority == m2.priority)
             {
                 if (s1.Speed == s2.Speed)
                 {
@@ -63,7 +70,7 @@ namespace Battle
             }
             else
             {
-                result = m1.Priority > m2.Priority ? node1 : node2;
+                result = m1.priority > m2.priority ? node1 : node2;
             }
 
             return result;
@@ -73,15 +80,15 @@ namespace Battle
 
     public class MoveNode
     {
-        public Move.Move Move { get; }
-        public Unit Source { get; }
-        public Unit Target { get; }
+        public readonly MoveBuilder move;
+        public readonly Unit source;
+        public readonly Unit target;
 
-        public MoveNode(Move.Move move, Unit source, Unit target)
+        public MoveNode(MoveBuilder move, Unit source, Unit target)
         {
-            Move = move;
-            Source = source;
-            Target = target;
+            this.move = move;
+            this.source = source;
+            this.target = target;
         }
     }
 }

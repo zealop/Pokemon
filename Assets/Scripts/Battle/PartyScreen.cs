@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Pokemons;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,8 +16,8 @@ namespace Battle
 
         private PartyMemberUI[] memberSlots;
         private MoveParty[] moveSlots;
-        private static List<Pokemon> party => BattleManager.I.PlayerParty.Party;
-        private static Unit PlayerUnit => BattleManager.I.PlayerUnit;
+        private static List<Pokemon> party => PlayerController.i.party.Pokemons;
+        private static Unit PlayerUnit => BattleManager.i.playerUnit;
         private static int MemberCount => party.Count;
         
         private int currentIndex;
@@ -130,7 +131,7 @@ namespace Battle
             {
                 SetMessageText($"{PlayerUnit.Name} can't switch out!");
             }
-            else if (pokemon.HP <= 0)
+            else if (pokemon.Hp <= 0)
             {
                 SetMessageText("You can't send out a fainted Pokemon!");
             }

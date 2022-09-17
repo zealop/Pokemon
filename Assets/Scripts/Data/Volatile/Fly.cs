@@ -25,14 +25,14 @@ namespace Data.Volatile
             unit.Modifier.DefenderModList.Remove(WindyFlight);
         }
 
-        private static bool SemiInvulnerable(MoveBase move)
+        private static bool SemiInvulnerable(MoveBuilder move)
         {
-            return !Normal.Concat(Doubled).Contains(move.Name);
+            return !Normal.Concat(Doubled).Contains(move.name);
         }
 
-        private static float WindyFlight(MoveBase move, Unit source)
+        private static float WindyFlight(MoveBuilder move, Unit source)
         {
-            return Doubled.Contains(move.Name) ? 2f : 1f;
+            return Doubled.Contains(move.name) ? 2f : 1f;
         }
     }
 }

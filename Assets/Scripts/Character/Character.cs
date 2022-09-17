@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ public class Character : MonoBehaviour
         transform.position = pos;
     }
 
-    public IEnumerator Move(Vector2 moveVector, System.Action OnMoveOver = null)
+    public IEnumerator Move(Vector2 moveVector, Action OnMoveOver = null)
     {
         Animator.MoveX = Mathf.Clamp(moveVector.x, -1, 1);
         Animator.MoveY = Mathf.Clamp(moveVector.y, -1, 1);

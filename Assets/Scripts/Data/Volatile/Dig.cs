@@ -24,14 +24,14 @@ namespace Data.Volatile
             unit.Modifier.DefenderModList.Remove(Underground);
         }
 
-        private static bool SemiInvulnerable(MoveBase move)
+        private static bool SemiInvulnerable(MoveBuilder move)
         {
-            return !Doubled.Contains(move.Name);
+            return !Doubled.Contains(move.name);
         }
 
-        private static float Underground(MoveBase move, Unit source)
+        private static float Underground(MoveBuilder move, Unit source)
         {
-            return Doubled.Contains(move.Name) ? 2f : 1f;
+            return Doubled.Contains(move.name) ? 2f : 1f;
         }
     }
 }

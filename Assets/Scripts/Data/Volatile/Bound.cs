@@ -13,13 +13,14 @@ namespace Data.Volatile
 
         private readonly Unit source;
         private readonly MoveBase move;
-
-        public Bound(MoveBase move, Unit source)
+        private readonly string message;
+        public Bound(MoveBase move, Unit source, string message)
         {
             counter = Random.Range(4, 6);
 
             this.move = move;
             this.source = source;
+            this.message = message;
         }
 
         public override void OnStart()
@@ -27,8 +28,10 @@ namespace Data.Volatile
             unit.Modifier.OnTurnEndList.Add(ResidualDamage);
             unit.CanSwitch += Trapped;
             
-            //implement ending status when source is out
+            //Todo: implement ending status when source is out
             //source.OnSwitchOut
+            
+            Log(string.Format(message, source?.Name, unit.Name));
         }
 
         public override void OnEnd()
@@ -36,7 +39,7 @@ namespace Data.Volatile
             unit.Modifier.OnTurnEndList.Remove(ResidualDamage);
             unit.CanSwitch -= Trapped;
             
-            AnimationQueue.Enqueue(DialogBox.TypeDialog($"{unit.Name} is freed from {move.Name}!"));
+            Log($"{unit.Name} is freed from {move.Name}!");
         }
 
         private void ResidualDamage()

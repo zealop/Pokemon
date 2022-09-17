@@ -284,11 +284,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4422061917589299652, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.2
+      value: -5.4
       objectReference: {fileID: 0}
     - target: {fileID: 4422061917589299652, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -15.15
+      value: 4.8
       objectReference: {fileID: 0}
     - target: {fileID: 4422061917589299652, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -330,6 +330,14 @@ PrefabInstance:
       propertyPath: party.Array.data[0].level
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 4422061917681460200, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
+      propertyPath: pokemons.Array.data[0]._base
+      value: 
+      objectReference: {fileID: 11400000, guid: 50b47aeed850a3e47bc8162dac121928, type: 2}
+    - target: {fileID: 4422061917681460200, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
+      propertyPath: pokemons.Array.data[0].level
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 4422061917681460202, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.13
@@ -351,13 +359,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4422061919246861573, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
+      propertyPath: testPokemon._base
+      value: 
+      objectReference: {fileID: 11400000, guid: d7d402caf8f44fe47942ce5541fa2599, type: 2}
+    - target: {fileID: 4422061919246861573, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
       propertyPath: testPokemon.level
       value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 4422061919246861573, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
       propertyPath: serializationData.Prefab
       value: 
-      objectReference: {fileID: 4422061919246861573, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4422061919389903319, guid: 58970701637eeef44b2468bf904c84a4, type: 3}
       propertyPath: m_IsActive
       value: 0

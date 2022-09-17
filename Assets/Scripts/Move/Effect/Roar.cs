@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Battle;
+using Pokemons;
 using UnityEngine;
 
 namespace Move.Effect
@@ -28,8 +29,8 @@ namespace Move.Effect
 
         private void ApplyTrainerBattle(Unit target)
         {
-            var party = target.Party;
-            var candidate = GetForceSwitchTarget(party.Party, target.Pokemon);
+            var party = target.party;
+            var candidate = GetForceSwitchTarget(party.Pokemons, target.Pokemon);
             if (candidate is null)
             {
                 OnFail();
@@ -57,7 +58,7 @@ namespace Move.Effect
 
         private static Pokemon GetForceSwitchTarget(IEnumerable<Pokemon> party, Pokemon target)
         {
-            return party.FirstOrDefault(pokemon => pokemon.HP > 0 && pokemon != target);
+            return party.FirstOrDefault(pokemon => pokemon.Hp > 0 && pokemon != target);
         }
     }
 }

@@ -6,10 +6,10 @@ namespace Move.Behaviour
     public class JumpKick : Default
     {
         private const string Message = "{0} kept going and crashes!";
-        public override void Apply(Unit source, Unit target, Action consumePp)
+        public override void Apply(Unit source, Unit target)
         {
             source.Modifier.OnMissList.Add(CrashDamage);
-            base.Apply(source, target, consumePp);
+            base.Apply(source, target);
             source.Modifier.OnMissList.Remove(CrashDamage);
         }
 

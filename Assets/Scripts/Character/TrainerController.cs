@@ -1,4 +1,5 @@
 using System.Collections;
+using Pokemons;
 using UnityEngine;
 
 public class TrainerController : MonoBehaviour, Interactable, ISavable
@@ -14,12 +15,12 @@ public class TrainerController : MonoBehaviour, Interactable, ISavable
     public string Name => name;
     public Sprite Sprite => sprite;
 
-
-    private Character character;
-
+    private Character character { get; set; }
+    public PokemonPartyMono party { get; private set; }
     private void Awake()
     {
         character = GetComponent<Character>();
+        party = GetComponent<PokemonPartyMono>();
     }
 
     private void Start()
@@ -44,7 +45,7 @@ public class TrainerController : MonoBehaviour, Interactable, ISavable
 
         //show dialog
         yield return DialogManager.Instance.ShowDialog(dialog,
-            () => { GameController.Instance.StartTrainerBattle(this); });
+            () => { GameController.I.StartTrainerBattle(this); });
     }
 
     private void SetFOVRotation(FacingDirection direction)
@@ -72,7 +73,7 @@ public class TrainerController : MonoBehaviour, Interactable, ISavable
         {
             //show dialog
             StartCoroutine(DialogManager.Instance.ShowDialog(dialog,
-                () => { GameController.Instance.StartTrainerBattle(this); }));
+                () => { GameController.I.StartTrainerBattle(this); }));
         }
     }
 

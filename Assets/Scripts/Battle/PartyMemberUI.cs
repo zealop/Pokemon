@@ -1,3 +1,4 @@
+using Pokemons;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,14 +20,14 @@ namespace Battle
         {
             image = GetComponent<Image>();
         }
-        private float NormalizedHp => (float)pokemon.HP / pokemon.MaxHP;
+        private float NormalizedHp => (float)pokemon.Hp / pokemon.MaxHp;
         public void SetData(Pokemon pokemon)
         {
             this.pokemon = pokemon;
 
             icon.sprite = pokemon.Base.Sprite.Box;
             nameText.text = pokemon.Name;
-            hpText.text = $"{pokemon.HP}/{pokemon.MaxHP}";
+            hpText.text = $"{pokemon.Hp}/{pokemon.MaxHp}";
             levelText.text = $"Lv. {pokemon.Level}";
             hpBar.transform.localScale = new Vector3(NormalizedHp, 1);
         }

@@ -18,7 +18,7 @@ public class VolatileRage : VolatileCondition
         //Unit.OnHitList.Add(Rage);
         //Unit.OnTurnEndList.Add(Clear);
 
-        BattleManager.I.DialogBox.TypeDialog($"{unit.Name} started building its rage!");
+        BattleManager.i.DialogBox.TypeDialog($"{unit.Name} started building its rage!");
     }
 
     public override void OnEnd()

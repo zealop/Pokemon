@@ -19,7 +19,10 @@ namespace Move.Effect
         }
         public override void Apply(Unit source, Unit target)
         {
-            target.ApplyStatBoost(boosts);
+            foreach ((var stat, int boost) in boosts)
+            {
+                target.ApplyStatBoost(stat, boost, source);
+            }
         }
     }
 }

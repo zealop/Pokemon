@@ -1,15 +1,17 @@
 ﻿using Battle;
 using Data;
-using Move;
 
-public class Counter : MoveDamage
+namespace Move.Damage
 {
-    private const int MULTIPLIER = 2;
-    public override DamageDetail Apply(Unit source, Unit target)
+    public class Counter : MoveDamage
     {
-        var counter = (VolatileCounter)source.Volatiles[VolatileID.Counter];
-        int damage = counter.StoredDamage * MULTIPLIER;
+        private const int MULTIPLIER = 2;
+        public override DamageDetail Apply(Unit source, Unit target)
+        {
+            var counter = (Data.Volatile.Counter)source.Volatiles[VolatileID.Counter];
+            int damage = counter.storedDamage * MULTIPLIER;
 
-        return new DamageDetail(damage);
+            return new DamageDetail(damage);
+        }
     }
 }

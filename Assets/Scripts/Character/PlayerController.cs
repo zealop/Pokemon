@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using Pokemons;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, ISavable
 {
+    public static PlayerController i { get; private set; }
+    
     [SerializeField] private new string name;
     [SerializeField] private Sprite sprite;
 
@@ -12,12 +15,13 @@ public class PlayerController : MonoBehaviour, ISavable
 
     private Vector2 input;
 
-    public Character Character { get; private set; }
-    public PokemonParty Party { get; private set; }
+    public Character character { get; private set; }
+    public PokemonPartyMono party { get; private set; }
     private void Awake()
     {
-        Character = GetComponent<Character>();
-        Party = GetComponent<PokemonParty>();
+        i = this;
+        character = GetComponent<Character>();
+        party = GetComponent<PokemonPartyMono>();
     }
 
     public void HandleUpdate()
@@ -26,7 +30,7 @@ public class PlayerController : MonoBehaviour, ISavable
         //character.Animator.IsMoving = false;
         //OnEncountered();
 
-        if (!Character.IsMoving)
+        if (!character.IsMoving)
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
@@ -37,11 +41,11 @@ public class PlayerController : MonoBehaviour, ISavable
 
             if (input != Vector2.zero)
             {
-                StartCoroutine(Character.Move(input, OnMoveOver));
+                StartCoroutine(character.Move(input, OnMoveOver));
             }
         }
 
-        Character.HandleUpdate();
+        character.HandleUpdate();
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
@@ -51,7 +55,7 @@ public class PlayerController : MonoBehaviour, ISavable
 
     private void Interact()
     {
-        var faceDirection = new Vector3(Character.Animator.MoveX, Character.Animator.MoveY);
+        var faceDirection = new Vector3(character.Animator.MoveX, character.Animator.MoveY);
         var interactPos = transform.position + faceDirection;
 
         //Debug.DrawLine(transform.position, interactPos, Color.green, 0.5f);
@@ -71,12 +75,10 @@ public class PlayerController : MonoBehaviour, ISavable
         foreach (var collider in colliders)
         {
             var triggerable = collider.GetComponent<IPlayerTriggerable>();
-            if (triggerable is object)
-            {
-                Character.Animator.IsMoving = false;
-                triggerable.OnPlayerTriggered(this);
-                break;
-            }
+            if (triggerable is null) continue;
+            character.Animator.IsMoving = false;
+            triggerable.OnPlayerTriggered(this);
+            break;
         }
     }
 
@@ -85,7 +87,7 @@ public class PlayerController : MonoBehaviour, ISavable
         var data = new PlayerSaveData()
         {
             position = transform.position,
-            party = GetComponent<PokemonParty>().Party.Select(p => p.GetSaveData()).ToList()
+            party = party.Pokemons.Select(p => p.GetSaveData()).ToList()
         };
 
 
@@ -97,7 +99,7 @@ public class PlayerController : MonoBehaviour, ISavable
         var data = (PlayerSaveData) state;
         transform.position = data.position;
 
-        Party.RestorePartyState(data.party.Select(s => new Pokemon(s)).ToList());
+        party.RestorePartyState(data.party.Select(s => new Pokemon(s)).ToList());
     }
 }
 

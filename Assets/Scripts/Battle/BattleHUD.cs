@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Data;
+using Data.Condition;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -11,7 +12,10 @@ namespace Battle
     public class BattleHUD : MonoBehaviour
     {
         private const float AnimationDuration = 1.5f;
-
+        private static readonly Color HpGreen = Color.green;
+        private static readonly Color HpYellow = Color.yellow;
+        private static readonly Color HpRed = Color.red;
+        
         [SerializeField] private TextMeshProUGUI nameText;
         [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private Image hpBar;
@@ -19,6 +23,9 @@ namespace Battle
         [SerializeField] private Image expBar;
         [SerializeField] private Image statusImage;
 
+        private bool hasHpText;
+        private bool hasExpBar;
+            
         private int curHp;
         private int maxHp;
 
@@ -32,24 +39,30 @@ namespace Battle
         }
 
         private float NormalizedHp => (float) curHp / maxHp;
-
-        private static readonly Color HpGreen = Color.green;
-        private static readonly Color HpYellow = Color.yellow;
-        private static readonly Color HpRed = Color.red;
-
-        private static Queue<IEnumerator> AnimationQueue => BattleManager.I.AnimationQueue;
         
+        private static Queue<IEnumerator> AnimationQueue => BattleManager.i.AnimationQueue;
+
+        public void Bind(Unit unit)
+        {
+            unit.OnHealthChanged += () => AnimationQueue.Enqueue(UpdateHp(unit.Hp));
+            unit.OnStatusChanged += () => AnimationQueue.Enqueue(SetStatusImageCoroutine(unit.status));
+        }
+
+        private void Awake()
+        {
+            hasHpText = hpText != null;
+            hasExpBar = expBar != null;
+        }
+
         public void Setup(Unit unit)
         {
             maxHp = unit.MaxHp;
             CurHp = unit.Hp;
-            unit.OnHealthChanged += () => AnimationQueue.Enqueue(UpdateHp(unit.Hp));
-            unit.OnStatusChanged += () => AnimationQueue.Enqueue(SetStatusImageCoroutine(unit.Status));
             
             nameText.text = unit.Name;
             levelText.text = $"Lvl {unit.Level}";
 
-            SetStatusImage(unit.Status);
+            SetStatusImage(unit.status);
             
             // if (expBar is object)
             // {
@@ -93,9 +106,9 @@ namespace Battle
         //     }
         // }
 
-        private void SetStatusImage(StatusCondition status)
+        private void SetStatusImage(Status status)
         {
-            if (status is object)
+            if (status != null)
             {
                 statusImage.gameObject.SetActive(true);
                 statusImage.sprite = StatusSprite.I.Sprites[status.ID];
@@ -108,7 +121,7 @@ namespace Battle
             }
         }
 
-        private IEnumerator SetStatusImageCoroutine(StatusCondition status)
+        private IEnumerator SetStatusImageCoroutine(Status status)
         {
             SetStatusImage(status);
             yield return null;
@@ -118,7 +131,7 @@ namespace Battle
             hpBar.transform.localScale = new Vector3(NormalizedHp, 1);
             SetHpColor(NormalizedHp);
 
-            if (hpText is object)
+            if (hasHpText)
             {
                 SetHpText(curHp, maxHp);
             }
@@ -126,15 +139,12 @@ namespace Battle
 
         private void SetHpColor(float normalizedHp)
         {
-            var hpColor = HpGreen;
-            if (normalizedHp < 0.25f)
+            var hpColor = normalizedHp switch
             {
-                hpColor = HpRed;
-            }
-            else if (normalizedHp < 0.5f)
-            {
-                hpColor = HpYellow;
-            }
+                < 0.25f => HpRed,
+                < 0.5f => HpYellow,
+                _ => HpGreen
+            };
 
             hpBar.color = hpColor;
         }

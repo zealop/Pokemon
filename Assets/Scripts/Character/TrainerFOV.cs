@@ -4,6 +4,6 @@ public class TrainerFOV : MonoBehaviour, IPlayerTriggerable
 {
     public void OnPlayerTriggered(PlayerController player)
     {
-        GameController.Instance.OnEnterTrainerFOV(GetComponentInParent<TrainerController>());
+        GameController.I.OnEnterTrainerFOV(GetComponentInParent<TrainerController>());
     }
 }

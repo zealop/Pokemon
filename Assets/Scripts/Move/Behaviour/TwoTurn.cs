@@ -1,5 +1,4 @@
-﻿using System;
-using Battle;
+﻿using Battle;
 using Data;
 using Data.Volatile;
 using Sirenix.Serialization;
@@ -17,13 +16,13 @@ namespace Move.Behaviour
             this.condition = condition;
         }
 
-        public override void Apply(Unit source, Unit target, Action consumePp)
+        public override void Apply(Unit source, Unit target)
         {
             if (!IsReady(source))
             {
-                RegisterMove(source, consumePp);
+                RegisterMove(source);
                 
-                condition?.BindToUnit(source);
+                condition?.Bind(source);
                 source.AddVolatileCondition(condition);
 
                 Log(message, source);

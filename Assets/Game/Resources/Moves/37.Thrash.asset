@@ -34,14 +34,17 @@ MonoBehaviour:
       Entry: 8
       Data: 
     - Name: effect
-      Entry: 6
+      Entry: 7
+      Data: 2|Move.Effect.Frenzy, Assembly-CSharp
+    - Name: 
+      Entry: 8
       Data: 
     - Name: secondaryEffect
       Entry: 6
       Data: 
     - Name: behavior
       Entry: 7
-      Data: 2|Move.Behaviour.Default, Assembly-CSharp
+      Data: 3|Move.Behaviour.Default, Assembly-CSharp
     - Name: 
       Entry: 8
       Data: 

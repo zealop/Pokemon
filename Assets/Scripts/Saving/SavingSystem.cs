@@ -23,7 +23,7 @@ public class SavingSystem : MonoBehaviour
 
     public void RestoreEntityStates(List<SavableEntity> savableEntities)
     {
-        foreach (SavableEntity savable in savableEntities)
+        foreach (var savable in savableEntities)
         {
             string id = savable.UniqueId;
             if (gameState.ContainsKey(id))

@@ -5,7 +5,7 @@ namespace Move
     public class DamageDetail
     {
         public readonly int Value;
-        public readonly List<string> Messages = new List<string>();
+        public readonly List<string> Messages = new();
 
         public DamageDetail(int value)
         {
