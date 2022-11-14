@@ -26,4 +26,5 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/OakLab.unity
     guid: dbdaa7b16f642444fb315fba6ce2a857
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.addressableassets: {fileID: 11400000, guid: ba40a30d666c2fc4f89e575d9b7b4868, type: 2}

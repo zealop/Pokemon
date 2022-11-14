@@ -22,7 +22,7 @@ namespace Move.Behaviour
         {
             RegisterMove(source);
 
-            bool isHit = moveBuilder.accuracyCheck.Apply(source, target);
+            var isHit = moveBuilder.accuracyCheck.Apply(source, target);
             if (!isHit)
             {
                 source.Modifier.OnMiss();
@@ -34,6 +34,11 @@ namespace Move.Behaviour
             {
                 ApplyDamage(source, target);
             }
+        }
+
+        private void RegisterMove(Unit source)
+        {
+            throw new NotImplementedException();
         }
     }
 }

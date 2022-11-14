@@ -2,20 +2,10 @@
 
 namespace Game.Battles
 {
-    public class WildBattle : IBattle
+    public class WildBattle : Battle
     {
-        public Side PlayerSide { get; }
-        public Side EnemySide { get; }
-        private MoveQueue MoveQueue { get; }
-
-        public WildBattle(PokemonParty party, Pokemon wildPokemon)
-        {
-            PlayerSide = new Side(this, party, 1);
-            EnemySide = new Side(this, new PokemonParty(wildPokemon), 1);
-            MoveQueue = new MoveQueue();
-        }
-
-        public void ChooseMove(int moveSlot)
+        public WildBattle(BattleContext context, PokemonParty party, Pokemon wildPokemon)
+            : base(context, party, new PokemonParty(wildPokemon), 1)
         {
         }
     }

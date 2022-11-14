@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 namespace Game.Pokemons
 {
@@ -14,9 +15,10 @@ namespace Game.Pokemons
             Pokemons = pokemons.ToList();
         }
         
-        public Pokemon GetHealthyPokemon()
+        public IEnumerable<Pokemon> GetHealthyPokemon(int amount)
         {
-            return Pokemons.FirstOrDefault(x => x.Hp > 0);
+            var a = Pokemons.Where(p => !p.IsFainted);
+            return Pokemons.Where(p => !p.IsFainted);
         }
 
         public void AddPokemon(Pokemon newPokemon)

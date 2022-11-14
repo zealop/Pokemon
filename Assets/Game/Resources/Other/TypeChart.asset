@@ -21,7 +21,7 @@ MonoBehaviour:
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
-    - Name: chart
+    - Name: _chart
       Entry: 7
       Data: 0|System.Collections.Generic.Dictionary`2[[Game.Constants.PokemonType,
         Game],[System.Collections.Generic.Dictionary`2[[Game.Constants.PokemonType,
@@ -4855,3 +4855,4 @@ MonoBehaviour:
     - Name: 
       Entry: 8
       Data: 
+  stabBonus: 1.5

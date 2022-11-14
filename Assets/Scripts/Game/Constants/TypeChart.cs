@@ -1,18 +1,30 @@
 using System.Collections.Generic;
+using System.Linq;
 using Sirenix.OdinInspector;
 using Sirenix.Serialization;
 using UnityEngine;
 
 namespace Game.Constants
 {
-    [CreateAssetMenu(fileName = "Pokemon", menuName = "New type chart")]
+    [CreateAssetMenu(menuName = "Pokemon/Type chart")]
     public class TypeChart : SerializedScriptableObject
     {
-        [OdinSerialize] private Dictionary<PokemonType, Dictionary<PokemonType, float>> chart;
+        [SerializeField] private float stabBonus;
+        [OdinSerialize] private Dictionary<PokemonType, Dictionary<PokemonType, float>> _chart;
+        public float StabBonus => stabBonus;
 
-        public float GetEffectiveNess(PokemonType attackType, PokemonType defenseType)
+        public float GetEffectiveness(PokemonType attackType, IEnumerable<PokemonType> defenseTypes)
         {
-            return chart[attackType][defenseType];
+            try
+            {
+                return defenseTypes
+                    .Select(t => _chart[attackType][t])
+                    .Aggregate((a, b) => a * b);
+            }
+            catch (KeyNotFoundException)
+            {
+                return 1;
+            }
         }
     }
 }

@@ -1,5 +1,8 @@
+
 using System.Collections.Generic;
 using System.Linq;
+using Game.Moves;
+using Sirenix.Utilities;
 using UnityEngine;
 
 namespace Game.Battles
@@ -8,11 +11,12 @@ namespace Game.Battles
     {
         private readonly List<MoveNode> list = new();
         public int Count => list.Count;
+        public bool IsEmpty => list.IsNullOrEmpty();
         
-        // public void Enqueue(MoveBuilder move, Unit source, Unit target)
-        // {
-        //     list.Add(new MoveNode(move, source, target));
-        // }
+        public void Enqueue(MoveBuilder move, Unit source, Unit target)
+        {   
+            list.Add(new MoveNode(move, source, target));
+        }
 
         public MoveNode Dequeue()
         {
@@ -34,13 +38,13 @@ namespace Game.Battles
 
         public void Cancel(Unit unit)
         {
-            var deletedNode = list.FirstOrDefault(node => node.source.Equals(unit));
+            var deletedNode = list.FirstOrDefault(node => node.Source.Equals(unit));
             list.Remove(deletedNode);
         }
 
         public void Prepare()
         {
-            foreach (var node in list)
+            foreach (var _ in list)
             {
                 // node.move.Prepare(node.source);
             }
@@ -48,29 +52,29 @@ namespace Game.Battles
         
         private static MoveNode FindFaster(MoveNode node1, MoveNode node2)
         {
-            MoveNode result = null;
+            MoveNode result;
 
-            // var m1 = node1.move;
-            // var s1 = node1.source;
-            //
-            // var m2 = node2.move;
-            // var s2 = node2.source;
-            //
-            // if (m1.priority == m2.priority)
-            // {
-            //     if (s1.Speed == s2.Speed)
-            //     {
-            //         result = Random.value > 0.5f ? node1 : node2;
-            //     }
-            //     else
-            //     {
-            //         result = s1.Speed > s2.Speed ? node1 : node2;
-            //     }
-            // }
-            // else
-            // {
-            //     result = m1.priority > m2.priority ? node1 : node2;
-            // }
+            var m1 = node1.Move;
+            var s1 = node1.Source;
+            
+            var m2 = node2.Move;
+            var s2 = node2.Source;
+            
+            if (m1.Priority == m2.Priority)
+            {
+                if (s1.Speed == s2.Speed)
+                {
+                    result = Random.value > 0.5f ? node1 : node2;
+                }
+                else
+                {
+                    result = s1.Speed > s2.Speed ? node1 : node2;
+                }
+            }
+            else
+            {
+                result = m1.Priority > m2.Priority ? node1 : node2;
+            }
 
             return result;
         }

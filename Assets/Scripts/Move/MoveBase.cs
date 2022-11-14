@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Move
 {
-    [CreateAssetMenu(fileName = "Move", menuName = "New move")]
+    // [CreateAssetMenu(fileName = "Move", menuName = "New move")]
     public class MoveBase : SerializedScriptableObject
     {
         [SerializeField] private string baseName;

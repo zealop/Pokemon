@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f4e20bcdbc74b77a4c5654d5116e5f2, type: 3}
+  m_Name: GameContext
+  m_EditorClassIdentifier: 
+  typeChart: {fileID: 11400000, guid: c4890fda1403dd5409afc0acd225b9f0, type: 2}
+  expChart: {fileID: 0}
+  stageModifier: {fileID: 11400000, guid: 61093f7c0d08b3849b84aa514e4c2a37, type: 2}

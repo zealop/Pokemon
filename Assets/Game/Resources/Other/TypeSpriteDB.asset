@@ -59,11 +59,11 @@ MonoBehaviour:
     SerializationNodes:
     - Name: data
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[PokemonType, Assembly-CSharp],[TypeSprite,
-        Assembly-CSharp]], mscorlib
+      Data: 0|System.Collections.Generic.Dictionary`2[[PokemonType, Scripts],[TypeSprite,
+        Scripts]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[PokemonType, Assembly-CSharp]],
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[PokemonType, Scripts]],
         mscorlib
     - Name: 
       Entry: 12
@@ -85,7 +85,7 @@ MonoBehaviour:
       Data: 1
     - Name: $v
       Entry: 7
-      Data: 2|TypeSprite, Assembly-CSharp
+      Data: 2|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 0
@@ -124,7 +124,7 @@ MonoBehaviour:
       Data: 2
     - Name: $v
       Entry: 7
-      Data: 3|TypeSprite, Assembly-CSharp
+      Data: 3|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 2
@@ -163,7 +163,7 @@ MonoBehaviour:
       Data: 3
     - Name: $v
       Entry: 7
-      Data: 4|TypeSprite, Assembly-CSharp
+      Data: 4|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 4
@@ -202,7 +202,7 @@ MonoBehaviour:
       Data: 4
     - Name: $v
       Entry: 7
-      Data: 5|TypeSprite, Assembly-CSharp
+      Data: 5|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 6
@@ -241,7 +241,7 @@ MonoBehaviour:
       Data: 5
     - Name: $v
       Entry: 7
-      Data: 6|TypeSprite, Assembly-CSharp
+      Data: 6|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 8
@@ -280,7 +280,7 @@ MonoBehaviour:
       Data: 6
     - Name: $v
       Entry: 7
-      Data: 7|TypeSprite, Assembly-CSharp
+      Data: 7|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 10
@@ -319,7 +319,7 @@ MonoBehaviour:
       Data: 7
     - Name: $v
       Entry: 7
-      Data: 8|TypeSprite, Assembly-CSharp
+      Data: 8|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 12
@@ -358,7 +358,7 @@ MonoBehaviour:
       Data: 8
     - Name: $v
       Entry: 7
-      Data: 9|TypeSprite, Assembly-CSharp
+      Data: 9|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 14
@@ -397,7 +397,7 @@ MonoBehaviour:
       Data: 9
     - Name: $v
       Entry: 7
-      Data: 10|TypeSprite, Assembly-CSharp
+      Data: 10|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 16
@@ -436,7 +436,7 @@ MonoBehaviour:
       Data: 10
     - Name: $v
       Entry: 7
-      Data: 11|TypeSprite, Assembly-CSharp
+      Data: 11|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 18
@@ -475,7 +475,7 @@ MonoBehaviour:
       Data: 11
     - Name: $v
       Entry: 7
-      Data: 12|TypeSprite, Assembly-CSharp
+      Data: 12|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 20
@@ -514,7 +514,7 @@ MonoBehaviour:
       Data: 12
     - Name: $v
       Entry: 7
-      Data: 13|TypeSprite, Assembly-CSharp
+      Data: 13|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 22
@@ -553,7 +553,7 @@ MonoBehaviour:
       Data: 13
     - Name: $v
       Entry: 7
-      Data: 14|TypeSprite, Assembly-CSharp
+      Data: 14|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 24
@@ -592,7 +592,7 @@ MonoBehaviour:
       Data: 14
     - Name: $v
       Entry: 7
-      Data: 15|TypeSprite, Assembly-CSharp
+      Data: 15|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 26
@@ -631,7 +631,7 @@ MonoBehaviour:
       Data: 15
     - Name: $v
       Entry: 7
-      Data: 16|TypeSprite, Assembly-CSharp
+      Data: 16|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 28
@@ -670,7 +670,7 @@ MonoBehaviour:
       Data: 16
     - Name: $v
       Entry: 7
-      Data: 17|TypeSprite, Assembly-CSharp
+      Data: 17|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 30
@@ -709,7 +709,7 @@ MonoBehaviour:
       Data: 17
     - Name: $v
       Entry: 7
-      Data: 18|TypeSprite, Assembly-CSharp
+      Data: 18|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 32
@@ -748,7 +748,7 @@ MonoBehaviour:
       Data: 18
     - Name: $v
       Entry: 7
-      Data: 19|TypeSprite, Assembly-CSharp
+      Data: 19|TypeSprite, Scripts
     - Name: icon
       Entry: 10
       Data: 34

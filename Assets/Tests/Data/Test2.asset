@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6046b357537157841a4e888bbb927442, type: 3}
+  m_Name: Test2
+  m_EditorClassIdentifier: 
+  baseName: Test1
+  sprite:
+    front: {fileID: 0}
+    back: {fileID: 0}
+    box: {fileID: 0}
+  catchRate: 0
+  type1: 0
+  type2: 0
+  height: 0
+  weight: 0
+  expYield: 0
+  growthRate: 0
+  hp: 100
+  attack: 100
+  defense: 100
+  spAttack: 100
+  spDefense: 100
+  speed: 100
+  learnableMoves: []

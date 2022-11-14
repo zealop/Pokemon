@@ -1,4 +1,7 @@
-﻿using Game.Pokemons;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Game.Condition;
+using Game.Pokemons;
 
 namespace Game.Battles
 {
@@ -8,15 +11,19 @@ namespace Game.Battles
 
         // public readonly List<Action> onTurnEndList = new();
         
-        public IBattle Battle { get; }
+        public Battle Battle { get; }
         public PokemonParty Party { get; }
         public Unit[] Units { get; }
-        
-        public Side(IBattle battle, PokemonParty party, int size)
+        public Dictionary<SideConditionID, SideCondition> Conditions { get; }
+        public Side(Battle battle, PokemonParty party, int size)
         {
             Battle = battle;
             Party = party;
-            Units = new Unit[size];
+            Units = party
+                .GetHealthyPokemon(size)
+                .Select(p => new Unit(this, p))
+                .ToArray();
+            Conditions = new Dictionary<SideConditionID, SideCondition>();
         }
 
         // public void AddCondition(SideCondition condition)

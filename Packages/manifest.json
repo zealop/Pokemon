@@ -1,9 +1,10 @@
 {
   "dependencies": {
+    "com.gemserk.selectionhistory": "https://github.com/acoppes/unity-history-window.git#1.1.2",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
-    "com.unity.collab-proxy": "1.17.2",
-    "com.unity.ide.rider": "3.0.15",
+    "com.unity.addressables": "1.19.19",
+    "com.unity.ide.rider": "3.0.16",
     "com.unity.test-framework": "1.1.33",
     "com.unity.textmeshpro": "3.0.6",
     "com.unity.timeline": "1.6.4",

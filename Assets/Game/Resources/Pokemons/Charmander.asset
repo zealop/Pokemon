@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 432e5092e81528c438cddfd4b8011248, type: 3}
   m_Name: Charmander
   m_EditorClassIdentifier: 
-  _name: Charmander
+  specieName: Charmander
   sprite:
     front: {fileID: 21300000, guid: 2b1c0466b733d024f9201daddef3a65b, type: 3}
     back: {fileID: 21300000, guid: ed8e1d9976a1fd94d961840d8f6e7764, type: 3}

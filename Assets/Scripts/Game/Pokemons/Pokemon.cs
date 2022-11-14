@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Game.Condition;
+using Game.Constants;
 using Game.Moves;
 using Game.Statuses;
 using UnityEngine;
@@ -14,20 +16,25 @@ namespace Game.Pokemons
         [SerializeField] private int level;
         [SerializeField] private string nickName;
         [SerializeField] private List<MoveSlot> moves;
-        public PokemonBase Base => @base;
+        
+        private PokemonBase Base => @base;
         public int Exp { get; set; }
         public int Level => level;
-        public Status Status { get; set; }
+        public StatusCondition StatusCondition { get; set; }
         public string Name => string.IsNullOrEmpty(nickName) ? Base.Name : nickName;
         public List<MoveSlot> Moves => moves;
-        public int Attack { get; private set; }
-        public int Defense { get; private set; }
-        public int SpAttack { get; private set; }
-        public int SpDefense { get; private set; }
-        public int Speed { get; private set; }
-        public int MaxHp { get; private set; }
+        public int Attack => Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5;
+        public int Defense => Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5;
+        public int SpAttack => Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5;
+        public int SpDefense => Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5;
+        public int Speed => Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5;
+        public PokemonType Type1 => Base.Type1;
+        public PokemonType Type2 => Base.Type2;
+        public int MaxHp { get; set; }
+
         public int Hp { get; set; }
         public int ExpReward => level * Base.ExpYield;
+        public bool IsFainted => Hp <= 0;
 
         public void Init()
         {
@@ -43,9 +50,8 @@ namespace Game.Pokemons
 
             // Exp = EXPChart.GetEXPAtLevel(Base.GrowthRate, level);
 
-            CalculateStats();
-
-            Status = null;
+            StatusCondition = null;
+            MaxHp = Mathf.FloorToInt((Base.Hp * Level) / 100f) + Level + 10;
             Hp = MaxHp;
         }
 
@@ -69,16 +75,6 @@ namespace Game.Pokemons
         //     CalculateStats();
         // }
 
-        private void CalculateStats()
-        {
-            Attack = Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5;
-            Defense = Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5;
-            SpAttack = Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5;
-            SpDefense = Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5;
-            Speed = Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5;
-
-            MaxHp = Mathf.FloorToInt((Base.Hp * Level) / 100f) + Level + 10;
-        }
 
         public void UpdateHp(int newHp)
         {
@@ -97,10 +93,9 @@ namespace Game.Pokemons
 
         public void LevelUp()
         {
+            var oldMaxHp = MaxHp;
             level++;
-            int temp = MaxHp;
-            CalculateStats();
-            Hp += MaxHp - temp;
+            Hp += MaxHp - oldMaxHp;
         }
 
         public List<MoveBase> GetMovesToLearnOnLevelUp()

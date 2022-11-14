@@ -1,16 +1,18 @@
-﻿namespace Game.Battles
+﻿using Game.Moves;
+
+namespace Game.Battles
 {
     public class MoveNode
     {
-        // public readonly MoveBuilder move;
-        public readonly Unit source;
-        public readonly Unit target;
+        public MoveBuilder Move { get; }
+        public  Unit Source { get; }
+        public  Unit Target { get; }
 
-        // public MoveNode(MoveBuilder move, Unit source, Unit target)
-        // {
-        //     this.move = move;
-        //     this.source = source;
-        //     this.target = target;
-        // }
+        public MoveNode(MoveBuilder move, Unit source, Unit target)
+        {
+            Move = move;
+            Source = source;
+            Target = target;
+        }
     }
 }

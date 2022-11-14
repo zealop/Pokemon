@@ -29,12 +29,12 @@ MonoBehaviour:
     SerializationNodes:
     - Name: sprites
       Entry: 7
-      Data: 0|System.Collections.Generic.Dictionary`2[[Data.StatusID, Assembly-CSharp],[UnityEngine.Sprite,
+      Data: 0|System.Collections.Generic.Dictionary`2[[Data.Condition.StatusID, Scripts],[UnityEngine.Sprite,
         UnityEngine.CoreModule]], mscorlib
     - Name: comparer
       Entry: 7
-      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Data.StatusID, Assembly-CSharp]],
-        mscorlib
+      Data: 1|System.Collections.Generic.EnumEqualityComparer`1[[Data.Condition.StatusID,
+        Scripts]], mscorlib
     - Name: 
       Entry: 12
       Data: 0

@@ -4,9 +4,9 @@ namespace Utils
 {
     public static class Lists
     {
-        public static List<T> Of<T>(T item)
+        public static List<T> Of<T>(params T[] items)
         {
-            return new List<T> { item };
+            return new List<T>(items);
         }
     }
 }
