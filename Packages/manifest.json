@@ -1,13 +1,15 @@
 {
   "dependencies": {
-    "com.gemserk.selectionhistory": "https://github.com/acoppes/unity-history-window.git#1.1.2",
+    "com.gemserk.selectionhistory": "1.1.13",
+    "com.github-glitchenzo.nugetforunity": "https://github.com/GlitchEnzo/NuGetForUnity.git?path=/src/NuGetForUnity",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.2d.tilemap": "1.0.0",
-    "com.unity.addressables": "1.19.19",
-    "com.unity.ide.rider": "3.0.16",
+    "com.unity.addressables": "1.21.14",
+    "com.unity.ai.navigation": "1.1.4",
+    "com.unity.ide.rider": "3.0.24",
     "com.unity.test-framework": "1.1.33",
     "com.unity.textmeshpro": "3.0.6",
-    "com.unity.timeline": "1.6.4",
+    "com.unity.timeline": "1.7.4",
     "com.unity.ugui": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
     "com.unity.modules.androidjni": "1.0.0",
@@ -40,5 +42,14 @@
     "com.unity.modules.vr": "1.0.0",
     "com.unity.modules.wind": "1.0.0",
     "com.unity.modules.xr": "1.0.0"
-  }
+  },
+  "scopedRegistries": [
+    {
+      "name": "package.openupm.com",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.gemserk.selectionhistory"
+      ]
+    }
+  ]
 }

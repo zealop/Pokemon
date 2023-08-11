@@ -1,0 +1,120 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8be7b47c56c84a82bb41db2ffaaaff72, type: 3}
+  m_Name: 62
+  m_EditorClassIdentifier: 
+  serializationData:
+    SerializedFormat: 2
+    SerializedBytes: 
+    ReferencedUnityObjects: []
+    SerializedBytesString: 
+    Prefab: {fileID: 0}
+    PrefabModificationsReferencedUnityObjects: []
+    PrefabModifications: []
+    SerializationNodes:
+    - Name: damage
+      Entry: 7
+      Data: 0|Game.Moves.Damage.Default, Game
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: accuracyCheck
+      Entry: 7
+      Data: 1|Game.Moves.Accuracy.Default, Game
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: effect
+      Entry: 6
+      Data: 
+    - Name: secondaryEffect
+      Entry: 7
+      Data: 2|Game.Moves.SecondaryEffect, Game
+    - Name: chance
+      Entry: 7
+      Data: Utils.Chance, Utils
+    - Name: numerator
+      Entry: 3
+      Data: 85
+    - Name: denominator
+      Entry: 3
+      Data: 255
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: effect
+      Entry: 7
+      Data: 3|Game.Moves.Effect.StatBoost, Game
+    - Name: boosts
+      Entry: 7
+      Data: 4|System.Collections.Generic.Dictionary`2[[Game.Battles.BoostableStat,
+        Game],[System.Int32, mscorlib]], mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 5|System.Collections.Generic.EnumEqualityComparer`1[[Game.Battles.BoostableStat,
+        Game]], mscorlib
+    - Name: 
+      Entry: 12
+      Data: 0
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 3
+      Data: 0
+    - Name: $v
+      Entry: 3
+      Data: -1
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: isSelf
+      Entry: 5
+      Data: false
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: behavior
+      Entry: 7
+      Data: 6|Game.Moves.Behavior.Default, Game
+    - Name: 
+      Entry: 8
+      Data: 
+  id: 62
+  baseName: Aurora Beam
+  description: 
+  type: 6
+  category: 1
+  target: 0
+  pp: 20
+  power: 65
+  accuracy: 100
+  priority: 0
+  critStage: 0

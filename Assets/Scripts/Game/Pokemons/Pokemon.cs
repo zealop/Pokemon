@@ -1,130 +1,129 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Game.Condition;
-using Game.Constants;
-using Game.Moves;
-using Game.Statuses;
-using UnityEngine;
+using Game.Effects;
+using Game.Sides;
+using Game.Utils;
+using OneOf;
 
 namespace Game.Pokemons
 {
-    [Serializable]
     public class Pokemon
     {
-        [SerializeField] private PokemonBase @base;
-        [SerializeField] private int level;
-        [SerializeField] private string nickName;
-        [SerializeField] private List<MoveSlot> moves;
-        
-        private PokemonBase Base => @base;
-        public int Exp { get; set; }
-        public int Level => level;
-        public StatusCondition StatusCondition { get; set; }
-        public string Name => string.IsNullOrEmpty(nickName) ? Base.Name : nickName;
-        public List<MoveSlot> Moves => moves;
-        public int Attack => Mathf.FloorToInt((Base.Attack * Level) / 100f) + 5;
-        public int Defense => Mathf.FloorToInt((Base.Defense * Level) / 100f) + 5;
-        public int SpAttack => Mathf.FloorToInt((Base.SpAttack * Level) / 100f) + 5;
-        public int SpDefense => Mathf.FloorToInt((Base.SpDefense * Level) / 100f) + 5;
-        public int Speed => Mathf.FloorToInt((Base.Speed * Level) / 100f) + 5;
-        public PokemonType Type1 => Base.Type1;
-        public PokemonType Type2 => Base.Type2;
-        public int MaxHp { get; set; }
+        private bool isActive;
 
-        public int Hp { get; set; }
-        public int ExpReward => level * Base.ExpYield;
-        public bool IsFainted => Hp <= 0;
-
-        public void Init()
+        public Pokemon(PokemonSet pokemonSet, Side side1)
         {
-            moves = new List<MoveSlot>();
-            foreach (var move in Base.LearnableMoves)
-            {
-                if (move.Level <= Level)
-                    Moves.Add(new MoveSlot(move.Base));
+            throw new System.NotImplementedException();
+        }
 
-                if (Moves.Count >= 4)
-                    break;
+        public bool MaybeTrapped { get; set; }
+        public int Position { get; set; }
+        public bool SwitchFlag { get; set; }
+        public bool Fainted { get; set; }
+        public Dictionary<string, EffectState> Volatiles { get; set; }
+        public string Name { get; set; }
+        public Specie Specie { get; set; }
+        public bool Trapped { get; set; }
+        public string Item { get; set; }
+        public Side Side { get; set; }
+        public int Hp { get; set; }
+        public int MaxHp { get; set; }
+        public int? LastMoveTargetLoc { get; set; }
+
+        public bool IsLastActive()
+        {
+            if (!isActive)
+            {
+                return false;
             }
 
-            // Exp = EXPChart.GetEXPAtLevel(Base.GrowthRate, level);
+            var allyActive = Side.Active;
+            for (var i = Position + 1; i < allyActive.Length; i++)
+            {
+                if (allyActive[i] is not null && !allyActive[i].Fainted)
+                {
+                    return false;
+                }
+            }
 
-            StatusCondition = null;
-            MaxHp = Mathf.FloorToInt((Base.Hp * Level) / 100f) + Level + 10;
-            Hp = MaxHp;
+            return true;
         }
 
-        public Pokemon(PokemonBase @base, int level)
+        public object GetSwitchRequestData(bool forAlly = false)
         {
-            this.@base = @base;
-            this.level = level;
-
-            Init();
+            throw new System.NotImplementedException();
         }
 
-        // public Pokemon(PokemonSaveData data)
-        // {
-        //     Hp = data.hp;
-        //     level = data.level;
-        //     Exp = data.exp;
-        //     Status = data.status;
-        //     @base = Resources.Load<PokemonBase>($"Pokemons/{data.specie}");
-        //     Moves = data.moves.Select(m => new MoveSlot(m)).ToList();
-        //
-        //     CalculateStats();
-        // }
-
-
-        public void UpdateHp(int newHp)
+        public string GetSlot()
         {
-            Hp = Mathf.Clamp(newHp, 0, MaxHp);
+            var positionOffset = this.Side.N / 2 * this.Side.Active.Length;
+            var positionLetter = "abcdef"[this.Position + positionOffset];
+            return this.Side.ID.ToString() + positionLetter;
         }
 
-        public bool KnowMove(MoveBase move)
+        public MoveRequestData GetMoveRequestData()
         {
-            return Moves.Exists(m => m.Base == move);
+            throw new NotImplementedException();
         }
 
-        public int IndexofMove(MoveBase move)
+        public MoveData[] GetMoves(string lockedMove = null, bool restrictData = false)
         {
-            return Moves.FindIndex(m => m.Base == move);
+            throw new NotImplementedException();
         }
 
-        public void LevelUp()
+        public class MoveData
         {
-            var oldMaxHp = MaxHp;
-            level++;
-            Hp += MaxHp - oldMaxHp;
+            public string Move { get; set; }
+            public string Id { get; set; }
+            public OneOf<string, bool>? Disabled { get; set; }
+            public string DisabledSource { get; set; }
+            public string Target { get; set; }
+            public int? Pp { get; set; }
+            public int? MaxPp { get; set; }
         }
 
-        public List<MoveBase> GetMovesToLearnOnLevelUp()
+        public string GetLockedMove()
         {
-            return Base.LearnableMoves.Where(m => m.Level == level).Select(m => m.Base).ToList();
+            throw new NotImplementedException();
         }
-
-        // public PokemonSaveData GetSaveData()
-        // {
-        //     var data = new PokemonSaveData()
-        //     {
-        //         hp = Hp,
-        //         level = level,
-        //         exp = Exp,
-        //         status = Status,
-        //         specie = @base.name,
-        //         moves = Moves.Select(m => m.GetSaveData()).ToList(),
-        //     };
-        //     return data;
-        // }
     }
 
-    // public class PokemonSaveData
-    // {
-    //     public string specie;
-    //     public int hp;
-    //     public int level;
-    //     public int exp;
-    //     public Status status;
-    //     public List<MoveSaveData> moves;
-    // }
+    public class MoveRequestData
+    {
+        public MoveData[] Moves { get; set; }
+        public bool? MaybeDisabled { get; set; }
+        public bool? Trapped { get; set; }
+        public bool? MaybeTrapped { get; set; }
+        public bool? CanMegaEvo { get; set; }
+        public bool? CanUltraBurst { get; set; }
+        public AnyObject CanZMove { get; set; }
+        public bool? CanDynamax { get; set; }
+        public DynamaxOption MaxMoves { get; set; }
+        public string CanTerastallize { get; set; }
+
+        public class MoveData
+        {
+            public string Move { get; set; }
+            public string Id { get; set; }
+            public string Target { get; set; }
+            public OneOf<string, bool>? Disabled { get; set; }
+        }
+    }
+
+    public class DynamaxOption
+    {
+        public MoveData[] MaxMoves { get; set; }
+        public string Gigantamax { get; set; }
+
+        public class MoveData
+        {
+            public string Move { get; set; }
+            public MoveTarget Target { get; set; }
+            public bool? Disabled { get; set; }
+        }
+    }
+
+    public enum MoveTarget
+    {
+    }
 }
